@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MyCoreBanking.API.Data;
 
-namespace MyCoreBanking.API.Data;
 internal class MeuDbContext
 {
 }
