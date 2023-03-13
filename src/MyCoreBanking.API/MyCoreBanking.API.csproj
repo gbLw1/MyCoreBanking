@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
@@ -20,7 +20,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Folder Include="Data\Entities\" />
+    <Folder Include="Data\Configurations\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
