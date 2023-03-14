@@ -24,12 +24,12 @@
 </div>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeAsync<IJSObjectReference>("import", "./assets/js/theme.js");
-            await JS.InvokeAsync<IJSObjectReference>("import", "./assets/js/bs-init.js");
-        }
-    }
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        await JS.InvokeAsync<IJSObjectReference>("import", "./assets/js/theme.js");
+    //        await JS.InvokeAsync<IJSObjectReference>("import", "./assets/js/bs-init.js");
+    //    }
+    //}
 }
