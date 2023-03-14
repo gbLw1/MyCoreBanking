@@ -1,0 +1,22 @@
+﻿@page "/cartoes"
+
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
+    <h3 class="text-dark">Meus Cartões</h3>
+    <a href="/cartoes/cadastrar"
+       title="cadastrar novo cartão"
+       class="text-primary text-center fw-bold border border-primary rounded m-0 py-1 px-2"
+       style="text-decoration: none;">
+        Cadastrar novo cartão
+    </a>
+</div>
+
+
+@code {
+
+    void IrParaDetalhesCartao(Guid id)
+    {
+        // Abrir modal de confirmação por senha . . . ou algo do tipo
+
+        Navigation.NavigateTo($"/cartoes/{id}");
+    }
+}

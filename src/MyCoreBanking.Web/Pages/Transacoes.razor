@@ -1,13 +1,31 @@
 ﻿@page "/transacoes"
 @using System.Globalization;
 
-<h3 class="text-dark mb-4">Transações</h3>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
+    <h3 class="text-dark">Transações</h3>
+    <a href="/transacoes/cadastrar"
+       title="cadastrar nova transação"
+       class="text-primary text-center fw-bold border border-primary rounded m-0 py-1 px-2"
+       style="text-decoration: none;">
+        Cadastrar nova Transação
+    </a>
+</div>
+
+
+
 <div class="card shadow">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <p class="text-primary m-0 fw-bold">Extrato</p>
+        <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
+                role="button">
+            <i class="fas fa-download fa-sm text-primary-50"></i>
+            &nbsp;Exportar Dados
+        </button>
     </div>
+
     <div class="card-body">
 
+        <!-- Topo tabela -->
         <div class="row">
             <!-- Qtde em exibição -->
             <div class="col-md-6 text-nowrap">
@@ -51,12 +69,12 @@
                         <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
                         <td class="align-middle text-center">
                             <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square text-info"></i>
                             </button>
                         </td>
                         <td class="align-middle">
                             <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash text-danger"></i>
                             </button>
                         </td>
                     </tr>
@@ -68,12 +86,12 @@
                         <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
                         <td class="align-middle text-center">
                             <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square text-info"></i>
                             </button>
                         </td>
                         <td class="align-middle">
                             <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash text-danger"></i>
                             </button>
                         </td>
                     </tr>
@@ -85,18 +103,20 @@
                         <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
                         <td class="align-middle text-center">
                             <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-pen-to-square text-info"></i>
                             </button>
                         </td>
                         <td class="align-middle">
                             <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash text-danger"></i>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <!-- Qtde em exibição + Paginação-->
         <div class="row">
             <div class="col-md-6 align-self-center">
                 <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
@@ -120,9 +140,14 @@
 @code {
     Random rnd = new();
 
+    void IrParaCadastroTransacao()
+    {
+        Navigation.NavigateTo("/transacoes/cadastrar");
+    }
+
     void IrParaEdicaoTransacao(Guid id)
     {
-        Navigation.NavigateTo($"/transacao/{id}");
+        Navigation.NavigateTo($"/transacoes/{id}");
     }
 
     void ExcluirTransacao(Guid id)

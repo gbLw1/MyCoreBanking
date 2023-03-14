@@ -1,0 +1,147 @@
+﻿@page "/meu-perfil"
+
+<!-- Dados pessoais -->
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Meu Perfil</h3>
+    <div class="row mb-5">
+        <div class="col-lg-4">
+            <div class="card" style="height: 100%">
+                <div class="d-flex justify-content-center align-items-center flex-column card-body shadow">
+                    <img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
+                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Alterar foto</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow" style="height: 100%">
+                <div class="card-header py-3">
+                    <p class="text-primary m-0 fw-bold">Dados pessoais</p>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="nome_completo"><strong>Nome completo</strong></label>
+                                    <input class="form-control" type="text" id="nome_completo" placeholder="Joseph Giuseppe" name="nome_completo" disabled>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="email"><strong>Email</strong></label>
+                                    <input class="form-control" type="email" id="email" placeholder="user@example.com" name="email" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="telefone"><strong>Telefone</strong></label>
+                                    <input class="form-control" type="text" id="telefone" placeholder="(11) 99999-9999" name="telefone" disabled>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="documento"><strong>CPF</strong></label>
+                                    <input class="form-control" type="text" id="documento" placeholder="000.000.000-00" name="documento" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="mb-3 d-flex justify-content-end">
+                            <button class="btn btn-primary btn-sm" type="submit">Salvar alterações</button>
+                        </div>
+                        -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contas Bancárias -->
+<div class="container-fluid">
+    <div class="col-12 col-md-12">
+        <div class="d-flex justify-content-between align-items-end mb-3">
+            <h5 style="margin-right: 12px;">Minhas Contas Bancárias</h5>
+            <a href="/contas/cadastrar"
+               title="vincular nova conta"
+               class="text-primary text-center fw-bold border border-primary rounded m-0 py-1 px-2"
+               style="text-decoration: none;">
+                Vincular nova conta
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Almeida Pay</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Bradesco</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Nubank</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Inter</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Siccob</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title">Itau</h5>
+                    <p>Conta: 09256-9</p>
+                    <p>Agência: 0001</p>
+                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

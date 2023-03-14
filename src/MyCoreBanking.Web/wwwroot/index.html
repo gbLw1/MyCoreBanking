@@ -20,7 +20,7 @@
           referrerpolicy="no-referrer" />
 </head>
 
-<body id="page-top">
+<body>
     <div id="app">
         <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh">
             <div class="spinner-border text-primary" role="status" style="width: 50px; height: 50px">
@@ -35,7 +35,11 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <a class="border rounded-circle d-inline cursor-pointer" id="myBtn"><i class="fas fa-angle-up"></i></a>
+    <a class="scroll-to-top border rounded-circle d-inline cursor-pointer"
+            id="myBtn"
+            style="display: none!important;">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
 
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -50,16 +54,16 @@
         // Get the button
         let btn = document.getElementById("myBtn");
 
-        // When the user scrolls down 40px from the top of the document, show the button
-        window.onscroll = function () { scrollFunction() };
+        // When the user scrolls down 60px from the top of the document, show the button
+        //window.onscroll = function () { scrollFunction() };
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
-                btn.classList.add('scroll-to-top');
-            } else {
-                btn.classList.remove('scroll-to-top');
-            }
-        }
+        //function scrollFunction() {
+        //    if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+        //        btn.style.cssText = "display: initial !important;";
+        //    } else {
+        //        btn.style.cssText = "display: none !important;";
+        //    }
+        //}
 
         // When the user clicks on the button, scroll to the top of the document
         btn.addEventListener('click', () => {
