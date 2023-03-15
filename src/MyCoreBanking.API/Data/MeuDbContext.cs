@@ -1,5 +1,12 @@
-﻿namespace MyCoreBanking.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
 
-internal class MeuDbContext
+namespace MyCoreBanking.API.Data;
+
+internal class MeuDbContext : DbContext
 {
+    public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)
+    {
+    }
+
+
 }
