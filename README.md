@@ -48,15 +48,7 @@ class Transacao{
     TipoTransacao: TipoTransacao
 }
 
-class CartaoCredito{
-    Nome: string
-    DigitosFinais: string
-    Bandeira: string
-    Vencimento: DateTime
-    Banco: Banco
-}
-
-class CartaoDebito{
+class Cartao{
     Nome: string
     DigitosFinais: string
     Bandeira: string
@@ -65,11 +57,10 @@ class CartaoDebito{
 }
 
 class ContaBancaria{
-    Nome: string
-    Saldo: decimal
+    TitularNome: string
+    Banco: Banco
     Transacoes: List<Transacao>
-    CartoesCredito: List<CartaoCredito>
-    CartoesDebito: List<CartaoDebito>
+    Cartoes: List<Cartao>
 }
 
 class Usuario{
@@ -84,8 +75,7 @@ class Usuario{
 
 %% Relacionamentos:
 Transacao --|> BaseEntity
-CartaoCredito --|> BaseEntity
-CartaoDebito --|> BaseEntity
+Cartao --|> BaseEntity
 ContaBancaria --|> BaseEntity
 Usuario --|> BaseEntity
 ```

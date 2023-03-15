@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MyCoreBanking.API.Data.Entities;
+﻿namespace MyCoreBanking.API.Data.Entities;
 
 internal sealed class ContaBancaria : BaseEntity
 {
@@ -10,6 +8,6 @@ internal sealed class ContaBancaria : BaseEntity
 
     public string NumeroConta { get; set; } = default!;
 
-
     public IEnumerable<Cartao>? Cartoes { get; set; }
+    public IEnumerable<Transacao>? Transacoes { get; set; }
 }

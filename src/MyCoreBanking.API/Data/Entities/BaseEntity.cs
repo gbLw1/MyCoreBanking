@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyCoreBanking.API.Data.Entities;
+﻿namespace MyCoreBanking.API.Data.Entities;
 
 internal abstract class BaseEntity
 {
