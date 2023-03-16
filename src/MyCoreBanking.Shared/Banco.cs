@@ -1,6 +1,6 @@
-﻿namespace MyCoreBanking.API.Data.Entities;
+﻿namespace MyCoreBanking;
 
-internal enum Banco
+public enum Banco
 {
     BancoDoBrasil,
     Bradesco,

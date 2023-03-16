@@ -9,8 +9,9 @@ internal class MeuDbContext : DbContext
     {
     }
 
-    public DbSet<ContaBancaria> ContasBancarias { get; set; } = default!;
     public DbSet<Transacao> Transacoes { get; set; } = default!;
     public DbSet<Usuario> Usuarios { get; set; } = default!;
-    public DbSet<Cartao> Cartoes { get; set; } = default!;
+    public DbSet<MeioDePagamento> MeiosDePagamento { get; set; } = default!;
+    public DbSet<MeioDePagamentoContaCorrente> ConstasCorrente { get; set; } = default!;
+    public DbSet<MeioDePagamentoCartaoDeCredito> CartoesDeCredito { get; set; } = default!;
 }

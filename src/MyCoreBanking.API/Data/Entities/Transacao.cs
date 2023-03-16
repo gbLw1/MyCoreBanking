@@ -1,6 +1,6 @@
-﻿namespace MyCoreBanking.API.Data.Entities;
+namespace MyCoreBanking.API.Data.Entities;
 
-internal sealed class Transacao : BaseEntity
+internal class Transacao : BaseDataEntity
 {
     public string Descricao { get; set; } = default!;
 
@@ -12,8 +12,9 @@ internal sealed class Transacao : BaseEntity
 
     public DateTime? DataVencimento { get; set; }
 
-    public MetodoPagamento MetodoPagamento { get; set; }
+    public Usuario? Usuario { get; set; }
+    public Guid UsuarioId { get; set; }
 
-
-    public ContaBancaria? Conta { get; set; }
+    public MeioDePagamento? MeioDePagamento { get; set; }
+    public Guid MeioDePagamentoId { get; set; }
 }
