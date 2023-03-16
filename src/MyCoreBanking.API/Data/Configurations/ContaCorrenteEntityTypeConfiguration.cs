@@ -19,7 +19,8 @@ internal sealed class ContaCorrenteEntityTypeConfiguration : IEntityTypeConfigur
 
         //public string Agencia { get; set; } = string.Empty;
         builder.Property(m => m.Agencia)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(4);
 
         //public string Conta { get; set; } = string.Empty;
         builder.Property(m => m.Conta)

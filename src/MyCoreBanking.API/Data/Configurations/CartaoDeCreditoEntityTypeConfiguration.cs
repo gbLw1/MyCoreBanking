@@ -27,7 +27,7 @@ internal sealed class CartaoDeCreditoEntityTypeConfiguration : IEntityTypeConfig
                 .IsRequired()
                 .HasConversion<string>();
 
-        // public MeioDePagamento? MeioDePagamento { get; set; }
+        //public MeioDePagamento MeioDePagamento { get; set; } = null!;
         builder.HasOne(m => m.MeioDePagamento)
                 .WithOne(m => m.CartaoDeCredito)
                 .HasForeignKey<CartaoDeCredito>(m => m.Id)
