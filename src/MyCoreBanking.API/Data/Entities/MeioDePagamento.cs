@@ -11,6 +11,6 @@ internal class MeioDePagamento : BaseDataEntity
 
     public ICollection<Transacao>? Transacoes { get; set; }
 
-    public MeioDePagamentoCartaoDeCredito? CartaoDeCredito { get; set; }
-    public MeioDePagamentoContaCorrente? ContaCorrente { get; set; }
+    public CartaoDeCredito? CartaoDeCredito { get; set; }
+    public ContaCorrente? ContaCorrente { get; set; }
 }

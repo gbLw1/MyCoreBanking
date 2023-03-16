@@ -4,18 +4,18 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class MeioDePagamentoCartaoDeCreditoEntityTypeConfiguration : IEntityTypeConfiguration<MeioDePagamentoCartaoDeCredito>
+internal sealed class CartaoDeCreditoEntityTypeConfiguration : IEntityTypeConfiguration<CartaoDeCredito>
 {
-    public void Configure(EntityTypeBuilder<MeioDePagamentoCartaoDeCredito> builder)
+    public void Configure(EntityTypeBuilder<CartaoDeCredito> builder)
     {
-        builder.ToTable(nameof(MeioDePagamentoCartaoDeCredito));
+        builder.ToTable(nameof(CartaoDeCredito));
 
         builder.HasKey(m => m.Id);
 
         // public string NumerosFinais { get; set; } = string.Empty;
         builder.Property(m => m.NumerosFinais)
-            .IsRequired()
-            .HasMaxLength(4);
+                .IsRequired()
+                .HasMaxLength(4);
 
         //public Banco? Banco { get; set; }
         builder.Property(m => m.Banco)
@@ -29,13 +29,13 @@ internal sealed class MeioDePagamentoCartaoDeCreditoEntityTypeConfiguration : IE
 
         // public MeioDePagamento? MeioDePagamento { get; set; }
         builder.HasOne(m => m.MeioDePagamento)
-            .WithOne(m => m.CartaoDeCredito)
-            .HasForeignKey<MeioDePagamentoCartaoDeCredito>(m => m.Id)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+                .WithOne(m => m.CartaoDeCredito)
+                .HasForeignKey<CartaoDeCredito>(m => m.Id)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
         builder.Navigation(m => m.MeioDePagamento)
-            .IsRequired()
-            .AutoInclude();
+                .IsRequired()
+                .AutoInclude();
     }
 }

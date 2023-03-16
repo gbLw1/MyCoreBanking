@@ -6,7 +6,7 @@ public class CartoesPostExemplo
 {
     public void ExemploCriarCartao()
     {
-        var cartao = new MeioDePagamentoCartaoDeCredito
+        var cartao = new CartaoDeCredito
         {
             NumerosFinais = "1234",
             Bandeira = BandeiraCartao.Mastercard,

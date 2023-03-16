@@ -11,6 +11,6 @@ internal sealed class Usuario : BaseDataEntity
     public ICollection<Transacao>? Transacoes { get; set; }
     public ICollection<MeioDePagamento>? MeiosDePagamento { get; set; }
 
-    public ICollection<MeioDePagamentoContaCorrente>? ContaCorrentes { get; set; }
-    public ICollection<MeioDePagamentoCartaoDeCredito>? CartaoDeCreditos { get; set; }
+    public ICollection<ContaCorrente>? ContaCorrentes { get; set; }
+    public ICollection<CartaoDeCredito>? CartaoDeCreditos { get; set; }
 }
