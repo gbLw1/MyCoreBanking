@@ -7,5 +7,5 @@ internal class MeioDePagamentoCartaoDeCredito : BaseEntity
     // TODO: Criar enum para bandeiras
     public string Bandeira { get; set; } = string.Empty;
 
-    public MeioDePagamento? MeioDePagamento { get; set; }
+    public MeioDePagamento MeioDePagamento { get; set; } = null!;
 }
