@@ -36,10 +36,8 @@ internal sealed class TransacaoEntityTypeConfiguration : IEntityTypeConfiguratio
             .IsRequired();
 
         // public DateTime? DataPagamento { get; set; }
-        builder.Property(t => t.DataPagamento);
-
-        // public DateTime? DataVencimento { get; set; }
-        builder.Property(t => t.DataVencimento);
+        builder.Property(t => t.DataPagamento)
+            .IsRequired();
 
         // public Usuario? Usuario { get; set; }
         // public Guid UsuarioId { get; set; }
