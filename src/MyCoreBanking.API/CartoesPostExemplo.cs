@@ -9,7 +9,7 @@ public class CartoesPostExemplo
         var cartao = new MeioDePagamentoCartaoDeCredito
         {
             NumerosFinais = "1234",
-            Bandeira = "Mastercard",
+            Bandeira = BandeiraCartao.Mastercard,
             MeioDePagamento = new MeioDePagamento
             {
                 Apelido = "Cartão de Crédito",
