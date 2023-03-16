@@ -32,5 +32,9 @@ internal sealed class MeioDePagamentoCartaoDeCreditoEntityTypeConfiguration : IE
             .HasForeignKey<MeioDePagamentoCartaoDeCredito>(m => m.Id)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Navigation(m => m.MeioDePagamento)
+            .IsRequired()
+            .AutoInclude();
     }
 }
