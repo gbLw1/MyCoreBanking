@@ -1,0 +1,64 @@
+@page "/cadastroCartao"
+
+<div class="row justify-content-center">
+
+    <div class="containerCartao">
+        <img class="logoMasterCard" src="../assets/img/cards/mastercardlogo.png">
+        <img class="chip" src="../assets/img/cards/chip.png">
+        <p class="nomeCartao">@(string.IsNullOrWhiteSpace(Model.NomeTitularCartao) ? "Titular do cartão" : Model.NomeTitularCartao)</p>
+        <h4 class="numeroCartao">@(string.IsNullOrWhiteSpace(Model.PrimeirosQuatroDigitos) ? "0000" : Model.PrimeirosQuatroDigitos) **** **** @(string.IsNullOrWhiteSpace(Model.UltimosQuatroDigitos) ? "0000" : Model.UltimosQuatroDigitos)</h4>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-lg-12 col-xl-6">
+        <div class="card shadow-lg o-hidden border-0 my-5">
+            <div class="card-body p-0">
+                <div class="row">
+
+                    <div class="col">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="text-dark mb-4" style="font-size: 18px;">Cadastre um novo cartão</h4>
+                            </div>
+                            <EditForm Model="Model" OnValidSubmit="OnValidSubmit">
+                                <DataAnnotationsValidator />
+
+                                <div class="mb-3">
+                                    <input @bind-value="Model.NomeTitularCartao" @bind-value:event="oninput"
+                                           class="form-control form-control-user" type="text"
+                                           placeholder="Nome do titular">
+                                    <ValidationMessage For="() => Model.NomeTitularCartao" />
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input @bind-value="Model.PrimeirosQuatroDigitos" @bind-value:event="oninput"
+                                               class="form-control form-control-user" type="text" maxlength="4"
+                                               placeholder="Primeiros 4 digitos">
+                                        <ValidationMessage For="() => Model.PrimeirosQuatroDigitos" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input @bind-value="Model.UltimosQuatroDigitos" @bind-value:event="oninput"
+                                               class="form-control form-control-user" type="text" maxlength="4"
+                                               placeholder="Últimos 4 digitos">
+                                        <ValidationMessage For="() => Model.UltimosQuatroDigitos" />
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary d-block btn-user w-100" type="submit">Registrar Cartão</button>
+                                <hr>
+                            </EditForm>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    public CartaoViewModel Model { get; set; } = new();
+
+    void OnValidSubmit() => Navigation.NavigateTo("/cartoes");
+}
