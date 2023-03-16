@@ -8,9 +8,7 @@ internal class Transacao : BaseDataEntity
 
     public decimal Valor { get; set; }
 
-    public DateTime? DataPagamento { get; set; }
-
-    public DateTime? DataVencimento { get; set; }
+    public DateTime DataPagamento { get; set; }
 
     public Usuario? Usuario { get; set; }
     public Guid UsuarioId { get; set; }

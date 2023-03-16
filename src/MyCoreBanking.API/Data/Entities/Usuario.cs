@@ -4,11 +4,7 @@ internal sealed class Usuario : BaseDataEntity
 {
     public string Nome { get; set; } = default!;
 
-    // public string Cpf { get; set; } = default!; realmente ncessário?
-
     public string Email { get; set; } = default!;
-
-    // public DateTime Nascimento { get; set; } realmente necessário?
 
     public string Senha { get; set; } = default!;
 
