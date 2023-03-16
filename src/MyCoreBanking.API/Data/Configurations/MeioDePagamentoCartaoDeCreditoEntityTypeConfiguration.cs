@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyCoreBanking.API.Data.Entities;
@@ -21,10 +17,15 @@ internal sealed class MeioDePagamentoCartaoDeCreditoEntityTypeConfiguration : IE
             .IsRequired()
             .HasMaxLength(4);
 
-        // public string Bandeira { get; set; } = string.Empty;
+        //public Banco? Banco { get; set; }
+        builder.Property(m => m.Banco)
+                .IsRequired()
+                .HasConversion<string>();
+
+        //public BandeiraCartao Bandeira { get; set; }
         builder.Property(m => m.Bandeira)
-            .IsRequired()
-            .HasMaxLength(50);
+                .IsRequired()
+                .HasConversion<string>();
 
         // public MeioDePagamento? MeioDePagamento { get; set; }
         builder.HasOne(m => m.MeioDePagamento)
