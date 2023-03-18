@@ -4,13 +4,11 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class ContaCorrenteEntityTypeConfiguration : IEntityTypeConfiguration<ContaCorrente>
+internal sealed class ContaCorrenteEntityTypeConfiguration : BaseEntityTypeConfiguration<ContaCorrente>
 {
-    public void Configure(EntityTypeBuilder<ContaCorrente> builder)
+    public override void Configure(EntityTypeBuilder<ContaCorrente> builder)
     {
-        builder.ToTable(nameof(ContaCorrente));
-
-        builder.HasKey(m => m.Id);
+        base.Configure(builder);
 
         //public Banco Banco { get; set; }
         builder.Property(m => m.Banco)

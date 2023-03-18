@@ -44,15 +44,14 @@ namespace MyCoreBanking.API.Migrations
                         name: "FK_MeioDePagamento_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "CartaoDeCredito",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     NumerosFinais = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     Banco = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Bandeira = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -65,8 +64,7 @@ namespace MyCoreBanking.API.Migrations
                         name: "FK_CartaoDeCredito_MeioDePagamento_Id",
                         column: x => x.Id,
                         principalTable: "MeioDePagamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CartaoDeCredito_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
@@ -78,7 +76,7 @@ namespace MyCoreBanking.API.Migrations
                 name: "ContaCorrente",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     Banco = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agencia = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     Conta = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
@@ -91,8 +89,7 @@ namespace MyCoreBanking.API.Migrations
                         name: "FK_ContaCorrente_MeioDePagamento_Id",
                         column: x => x.Id,
                         principalTable: "MeioDePagamento",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ContaCorrente_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
@@ -153,6 +150,12 @@ namespace MyCoreBanking.API.Migrations
                 name: "IX_Transacao_UsuarioId",
                 table: "Transacao",
                 column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuario_Email",
+                table: "Usuario",
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

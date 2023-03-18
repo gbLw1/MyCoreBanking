@@ -14,7 +14,7 @@ internal sealed class Usuario : BaseDataEntity
     public ICollection<ContaCorrente>? ContasCorrente { get; set; }
     public ICollection<CartaoDeCredito>? CartoesDeCredito { get; set; }
 
-    public bool VerificarSenha(string senha)
+    public bool SenhaValida(string senha)
     {
         return BCrypt.Net.BCrypt.Verify(senha, SenhaHash);
     }

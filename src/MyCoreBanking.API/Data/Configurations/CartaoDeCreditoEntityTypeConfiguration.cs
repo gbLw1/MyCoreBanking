@@ -4,13 +4,11 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class CartaoDeCreditoEntityTypeConfiguration : IEntityTypeConfiguration<CartaoDeCredito>
+internal sealed class CartaoDeCreditoEntityTypeConfiguration : BaseEntityTypeConfiguration<CartaoDeCredito>
 {
-    public void Configure(EntityTypeBuilder<CartaoDeCredito> builder)
+    public override void Configure(EntityTypeBuilder<CartaoDeCredito> builder)
     {
-        builder.ToTable(nameof(CartaoDeCredito));
-
-        builder.HasKey(m => m.Id);
+        base.Configure(builder);
 
         // public string NumerosFinais { get; set; } = string.Empty;
         builder.Property(m => m.NumerosFinais)

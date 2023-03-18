@@ -4,23 +4,11 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class TransacaoEntityTypeConfiguration : IEntityTypeConfiguration<Transacao>
+internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfiguration<Transacao>
 {
-    public void Configure(EntityTypeBuilder<Transacao> builder)
+    public override void Configure(EntityTypeBuilder<Transacao> builder)
     {
-        builder.ToTable(nameof(Transacao));
-
-        builder.HasKey(t => t.Id);
-
-        builder.Property(t => t.Id)
-            .IsRequired()
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-        builder.Property(t => t.CriadoEm)
-            .IsRequired();
-
-        builder.Property(t => t.UltimaAtualizacaoEm)
-            .IsRequired();
+        base.Configure(builder);
 
         // public string Descricao { get; set; } = default!;
         builder.Property(t => t.Descricao)

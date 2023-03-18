@@ -4,17 +4,11 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class MeioDePagamentoEntityTypeConfiguration : IEntityTypeConfiguration<MeioDePagamento>
+internal sealed class MeioDePagamentoEntityTypeConfiguration : BaseEntityTypeConfiguration<MeioDePagamento>
 {
-    public void Configure(EntityTypeBuilder<MeioDePagamento> builder)
+    public override void Configure(EntityTypeBuilder<MeioDePagamento> builder)
     {
-        builder.ToTable(nameof(MeioDePagamento));
-
-        builder.HasKey(m => m.Id);
-
-        builder.Property(m => m.Id)
-            .IsRequired()
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
+        base.Configure(builder);
 
         // public string Apelido { get; set; } = string.Empty;
         builder.Property(m => m.Apelido)

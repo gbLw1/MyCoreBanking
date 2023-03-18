@@ -1,11 +1,12 @@
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
+using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
-namespace MyCoreBanking.API.Helpers;
+namespace MyCoreBanking.API.Extensions;
 
-public static class JwtHelper
+public static class JwtExtension
 {
     public static string GenerateJwtToken(string secretKey, string issuer, string audience, int expireInMinutes, string userId)
     {
@@ -33,7 +34,7 @@ public static class JwtHelper
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public static void ValidateAndThrow(string secretKey, string issuer, string audience, string token)
+    public static Guid ValidateAndThrow(string secretKey, string token)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -44,23 +45,17 @@ public static class JwtHelper
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = creds.Key,
             ValidateIssuer = true,
-            ValidIssuer = issuer,
+            ValidIssuer = "localhost",
             ValidateAudience = true,
-            ValidAudience = audience,
+            ValidAudience = "localhost",
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
 
-        _ = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+        var claims = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             throw new SecurityTokenException("Invalid token");
-    }
 
-    public static string GetUserIdFromToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadToken(token);
-        var tokenS = jsonToken as JwtSecurityToken;
-        return tokenS?.Claims.First(claim => claim.Type == "sub").Value;
+        return new Guid(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
     }
 }

@@ -25,7 +25,9 @@ namespace MyCoreBanking.API.Migrations
             modelBuilder.Entity("MyCoreBanking.API.Data.Entities.CartaoDeCredito", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<string>("Banco")
                         .IsRequired()
@@ -53,7 +55,9 @@ namespace MyCoreBanking.API.Migrations
             modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaCorrente", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<string>("Agencia")
                         .IsRequired()
@@ -188,6 +192,9 @@ namespace MyCoreBanking.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Usuario", (string)null);
                 });
 
@@ -196,7 +203,7 @@ namespace MyCoreBanking.API.Migrations
                     b.HasOne("MyCoreBanking.API.Data.Entities.MeioDePagamento", "MeioDePagamento")
                         .WithOne("CartaoDeCredito")
                         .HasForeignKey("MyCoreBanking.API.Data.Entities.CartaoDeCredito", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MyCoreBanking.API.Data.Entities.Usuario", null)
@@ -211,7 +218,7 @@ namespace MyCoreBanking.API.Migrations
                     b.HasOne("MyCoreBanking.API.Data.Entities.MeioDePagamento", "MeioDePagamento")
                         .WithOne("ContaCorrente")
                         .HasForeignKey("MyCoreBanking.API.Data.Entities.ContaCorrente", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MyCoreBanking.API.Data.Entities.Usuario", null)
@@ -226,7 +233,7 @@ namespace MyCoreBanking.API.Migrations
                     b.HasOne("MyCoreBanking.API.Data.Entities.Usuario", "Usuario")
                         .WithMany("MeiosDePagamento")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Usuario");

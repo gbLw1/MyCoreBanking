@@ -1,41 +1,31 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-public class UsuarioEntityTypeConfiguration : IEntityTypeConfiguration<Usuario>
+internal sealed class UsuarioEntityTypeConfiguration : BaseEntityTypeConfiguration<Usuario>
 {
-    void IEntityTypeConfiguration<Usuario>.Configure(EntityTypeBuilder<Usuario> builder)
+    public override void Configure(EntityTypeBuilder<Usuario> builder)
     {
-        builder.ToTable(nameof(Usuario));
-
-        builder.HasKey(t => t.Id);
-
-        builder.Property(t => t.Id)
-            .IsRequired()
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-        builder.Property(t => t.CriadoEm)
-            .IsRequired();
-
-        builder.Property(t => t.UltimaAtualizacaoEm)
-            .IsRequired();
-
+        base.Configure(builder);
 
         // public string Nome { get; set; } = default!;
-        builder.Property(t => t.Nome)
+        builder.Property(u => u.Nome)
             .IsRequired()
             .HasMaxLength(250);
 
         // public string Email { get; set; } = default!;
-        builder.Property(t => t.Email)
+        builder.Property(u => u.Email)
             .IsRequired()
             .HasMaxLength(250);
 
         // public string SenhaHash { get; private set; } = default!;
-        builder.Property(t => t.SenhaHash)
+        builder.Property(u => u.SenhaHash)
             .IsRequired()
             .HasMaxLength(250);
+
+        // Constraint: Email único
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
     }
 }

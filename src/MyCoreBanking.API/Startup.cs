@@ -23,5 +23,7 @@ public class Startup : FunctionsStartup
             JwtSecret = Environment.GetEnvironmentVariable("JwtSecret")
                 ?? throw new ArgumentNullException("JwtSecret"),
         };
+
+        builder.Services.AddSingleton(appSettings);
     }
 }

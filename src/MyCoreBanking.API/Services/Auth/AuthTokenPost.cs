@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using MyCoreBanking.API;
 using MyCoreBanking.API.Data;
-using MyCoreBanking.API.Helpers;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -45,19 +44,22 @@ public static class AuthTokenPost
             if (usuarioEntity is null)
                 throw new UnauthorizedAccessException();
 
-            if (usuarioEntity.VerificarSenha(password))
+            if (!usuarioEntity.SenhaValida(password))
             {
                 throw new UnauthorizedAccessException();
             }
 
             var appSettings = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
 
+            // LMAO
+            var expiracaoEmMinutos = 60 * 24 * 30;
+
             return new OkObjectResult(
                 new
                 {
                     tokenType = "Bearer",
-                    accessToken = JwtHelper.GenerateJwtToken(appSettings.JwtSecret, httpRequest.Host.Host, httpRequest.Host.Host, 60, usuarioEntity.Id.ToString()),
-                    expiresIn = DateTime.Now.AddHours(1),
+                    accessToken = JwtExtension.GenerateJwtToken(appSettings.JwtSecret, httpRequest.Host.Host, httpRequest.Host.Host, expiracaoEmMinutos, usuarioEntity.Id.ToString()),
+                    expiresIn = DateTime.Now.AddMinutes(expiracaoEmMinutos),
                 });
         }
         catch (Exception ex)
