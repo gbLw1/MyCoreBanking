@@ -8,6 +8,9 @@
         "**/Thumbs.db": true,
         "**/bin": true,
         "**/obj": true,
+        "__blobstorage__": true,
+        "__queuestorage__": true,
+        "__azurite_db_*": true,
     },
     "search.exclude": {
         "**/bin": true,

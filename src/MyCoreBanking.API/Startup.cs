@@ -15,13 +15,13 @@ public class Startup : FunctionsStartup
         builder.Services.AddDbContext<MeuDbContext>(options =>
         {
             options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection")
-                ?? throw new ArgumentNullException("ConnectionStrings:DefaultConnection"));
+                ?? throw new ArgumentException("ConnectionStrings:DefaultConnection"));
         });
 
         var appSettings = new AppSettings
         {
             JwtSecret = Environment.GetEnvironmentVariable("JwtSecret")
-                ?? throw new ArgumentNullException("JwtSecret"),
+                ?? throw new ArgumentException("JwtSecret"),
         };
 
         builder.Services.AddSingleton(appSettings);

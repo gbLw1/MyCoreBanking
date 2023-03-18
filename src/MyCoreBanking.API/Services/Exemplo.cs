@@ -16,7 +16,7 @@ public static class Exemplo
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
 
-        var guidDoUsuario = req.Authorize();
+        var userId = req.Authorize();
 
         string name = req.Query["name"];
 
@@ -31,7 +31,7 @@ public static class Exemplo
         return new OkObjectResult(new
         {
             response = responseMessage,
-            GuidUser = guidDoUsuario,
+            GuidUser = userId,
         });
     }
 }

@@ -1,8 +1,9 @@
-using System.Text.Json;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyCoreBanking.API.Data;
@@ -18,23 +19,33 @@ public class UsuariosPost
         [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "usuarios")] HttpRequest httpRequest,
         ILogger logger)
     {
-        var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
-
-        var content = await httpRequest.ReadAsStringAsync();
-
-        var args = JsonSerializer.Deserialize<UsuariosPostArgs>(content)!;
-
-        var usuarioEntity = new Usuario
+        try
         {
-            Nome = args.Nome,
-            Email = args.Email,
-        };
+            var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-        usuarioEntity.HashSenha(args.Senha);
+            var args = await httpRequest.ReadJsonBodyAsAsync<UsuariosPostArgs>();
 
-        context.Usuarios.Add(usuarioEntity);
-        await context.SaveChangesAsync();
+            new UsuariosPostArgs.Validator().ValidateAndThrow(args);
 
-        return new OkResult();
+            if (await context.Usuarios.AnyAsync(x => x.Email == args.Email))
+                throw new InvalidOperationException("Email já cadastrado");
+
+            var usuarioEntity = new Usuario
+            {
+                Nome = args.Nome,
+                Email = args.Email,
+            };
+
+            usuarioEntity.HashSenha(args.Senha);
+
+            context.Usuarios.Add(usuarioEntity);
+            await context.SaveChangesAsync();
+
+            return httpRequest.CreateResult();
+        }
+        catch (Exception ex)
+        {
+            return httpRequest.CreateResult(ex, logger);
+        }
     }
 }

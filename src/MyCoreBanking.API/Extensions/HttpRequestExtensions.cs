@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Text;
+using System.Text.Json;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -7,30 +10,77 @@ namespace MyCoreBanking.API.Extensions;
 
 internal static class HttpRequestExtensions
 {
-    // 4xx
-    public static IActionResult CreateResult<TException>(this HttpRequest req, TException exception, ILogger logger)
-        where TException : Exception
-    => exception switch
-    {
-        UnauthorizedAccessException => new UnauthorizedObjectResult(exception.Message),
-        _ => new BadRequestObjectResult(exception.Message),
-    };
+    #region [+ CreateResult]
 
-    // 200
-    public static IActionResult CreateResult<TResult>(this HttpRequest req, TResult result)
+    // 4xx
+    public static IActionResult CreateResult<TException>(this HttpRequest httpRequest, TException exception, ILogger logger)
+        where TException : Exception
     {
-        return new OkObjectResult(result);
+        logger.LogError(exception, $"log: {exception.Message}");
+
+        return exception switch
+        {
+            InvalidOperationException => new ContentResult()
+            {
+                Content = exception.Message,
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status400BadRequest,
+            },
+            ValidationException validationException => new ContentResult()
+            {
+                Content = validationException.Errors.First().ErrorMessage,
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status400BadRequest,
+            },
+            UnauthorizedAccessException => new ContentResult()
+            {
+                Content = exception.Message,
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status401Unauthorized,
+            },
+            _ => new ContentResult()
+            {
+                Content = "Ocorreu um erro inesperado",
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status500InternalServerError,
+            }
+        };
     }
 
+    // 200
+    public static IActionResult CreateResult<TResult>(this HttpRequest httpRequest, TResult result)
+        => new ContentResult()
+        {
+            Content = JsonSerializer.Serialize(result, ProjectConstants.JsonOptions),
+            ContentType = "application/json",
+            StatusCode = StatusCodes.Status200OK,
+        };
+
     // 204
-    public static IActionResult CreateResult(this HttpRequest req) => new OkResult();
+    public static IActionResult CreateResult(this HttpRequest httpRequest) => new OkResult();
 
-    public static Guid Authorize(this HttpRequest req)
+    #endregion
+
+    // Obter usuário logado
+    public static Guid Authorize(this HttpRequest httpRequest)
     {
-        var auth = req.Headers["Authorization"];
+        var auth = httpRequest.Headers["Authorization"];
 
-        var appSettingsService = req.HttpContext.RequestServices.GetRequiredService<AppSettings>();
+        var appSettingsService = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
 
         return JwtExtension.ValidateAndThrow(appSettingsService.JwtSecret, auth.ToString().Split(" ")[1]);
+    }
+
+    // Le o body do request json e deserializa para o tipo T
+    public static async Task<T> ReadJsonBodyAsAsync<T>(this HttpRequest httpRequest)
+    {
+        var body = httpRequest.Body;
+
+        using var reader = new StreamReader(body, Encoding.UTF8);
+
+        var json = await reader.ReadToEndAsync();
+
+        return JsonSerializer.Deserialize<T>(json, ProjectConstants.JsonOptions)
+            ?? throw new InvalidOperationException("O corpo da requisição não pode ser vazio");
     }
 }

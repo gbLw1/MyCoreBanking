@@ -60,7 +60,7 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "type": "process",
-            "dependsOn": "clean (functions)",
+            // "dependsOn": "clean (functions)",
             "group": {
                 "kind": "build",
                 "isDefault": true
