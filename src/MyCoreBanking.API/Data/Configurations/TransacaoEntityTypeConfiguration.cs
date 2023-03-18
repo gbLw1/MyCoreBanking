@@ -45,7 +45,7 @@ internal sealed class TransacaoEntityTypeConfiguration : IEntityTypeConfiguratio
             .WithMany(u => u.Transacoes)
             .HasForeignKey(t => t.UsuarioId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         // public MeioDePagamento? MeioDePagamento { get; set; }
         // public Guid MeioDePagamentoId { get; set; }
@@ -53,6 +53,6 @@ internal sealed class TransacaoEntityTypeConfiguration : IEntityTypeConfiguratio
             .WithMany(m => m.Transacoes)
             .HasForeignKey(t => t.MeioDePagamentoId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

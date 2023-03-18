@@ -2,6 +2,8 @@
     "IsEncrypted": false,
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "JwtSecret": "123456",
+        "ConnectionStrings:DefaultConnection": "Data Source=(localdb)\\mssqllocaldb; Initial Catalog=XXXXXXXXXX; Trusted_Connection=True; TrustServerCertificate=True"
     }
 }

@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using MyCoreBanking.API;
 using MyCoreBanking.API.Data;
-using MyCoreBanking.API.Data.Entities;
+using MyCoreBanking.API.Helpers;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -24,41 +26,37 @@ public static class AuthTokenPost
 
             var formCollection = await httpRequest.ReadFormAsync();
 
-            // TODO: obter serviço de criptografia -> bcrypt.net
-            // TODO: obter unitOfWork ou dbContext diretamente
-
-            Usuario? usuarioEntity = null;
-
-            if (!formCollection.TryGetValue("username", out StringValues usernameStringValue))
+            if (!formCollection.TryGetValue("email", out StringValues usernameStringValue))
                 throw new ArgumentException();
 
             if (!formCollection.TryGetValue("password", out StringValues passwordStringValue))
                 throw new ArgumentException();
 
-            var username = usernameStringValue.ToString();
+            var email = usernameStringValue.ToString();
             var password = passwordStringValue.ToString();
 
-            // obter contexto injetado
-            var _context = new MeuDbContext(null);
+            var _context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            usuarioEntity = await _context
+            var usuarioEntity = await _context
                 .Usuarios
                 .AsNoTracking()
-                .FirstOrDefaultAsync(lbda => lbda.Email == username)
-                ?? throw new UnauthorizedAccessException();
+                .FirstOrDefaultAsync(lbda => lbda.Email == email);
 
-            // TODO: implementar serviço de criptografia de senha -> bcrypt.net
-            // https://github.com/BcryptNet/bcrypt.net
+            if (usuarioEntity is null)
+                throw new UnauthorizedAccessException();
 
-            // verificar se a senha informada convertida para a criptografia utilizada não for igual a senha salva no banco
-            // throw UnauthorizedAccessException
+            if (usuarioEntity.VerificarSenha(password))
+            {
+                throw new UnauthorizedAccessException();
+            }
 
-            // TODO: retornar token JWT
+            var appSettings = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
+
             return new OkObjectResult(
                 new
                 {
                     tokenType = "Bearer",
-                    accessToken = "JWT . . .",
+                    accessToken = JwtHelper.GenerateJwtToken(appSettings.JwtSecret, httpRequest.Host.Host, httpRequest.Host.Host, 60, usuarioEntity.Id.ToString()),
                     expiresIn = DateTime.Now.AddHours(1),
                 });
         }
