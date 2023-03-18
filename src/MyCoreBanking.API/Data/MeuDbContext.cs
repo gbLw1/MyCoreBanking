@@ -13,4 +13,11 @@ internal class MeuDbContext : DbContext
     public DbSet<MeioDePagamento> MeiosDePagamento { get; set; } = default!;
     public DbSet<ContaCorrente> ContasCorrente { get; set; } = default!;
     public DbSet<CartaoDeCredito> CartoesDeCredito { get; set; } = default!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+    }
 }

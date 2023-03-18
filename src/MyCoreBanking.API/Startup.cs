@@ -14,12 +14,14 @@ public class Startup : FunctionsStartup
 
         builder.Services.AddDbContext<MeuDbContext>(options =>
         {
-            options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection") ?? throw new InvalidOperationException("MyCoreBankingConnectionString is null"));
+            options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection")
+                ?? throw new ArgumentNullException("ConnectionStrings:DefaultConnection"));
         });
 
         var appSettings = new AppSettings
         {
-            JwtSecret = Environment.GetEnvironmentVariable("JwtSecret") ?? throw new InvalidOperationException("JwtSecret is null"),
+            JwtSecret = Environment.GetEnvironmentVariable("JwtSecret")
+                ?? throw new ArgumentNullException("JwtSecret"),
         };
     }
 }

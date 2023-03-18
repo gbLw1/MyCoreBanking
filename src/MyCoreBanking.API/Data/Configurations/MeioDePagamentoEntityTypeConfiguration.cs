@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyCoreBanking.API.Data.Entities;
@@ -31,7 +27,8 @@ internal sealed class MeioDePagamentoEntityTypeConfiguration : IEntityTypeConfig
 
         // public MeioDePagamentoTipo Tipo { get; set; }
         builder.Property(m => m.Tipo)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion<string>();
 
         // public Usuario? Usuario { get; set; }
         // public Guid UsuarioId { get; set; }
