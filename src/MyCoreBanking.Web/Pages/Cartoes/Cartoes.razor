@@ -1,14 +1,13 @@
 ﻿@page "/cartoes"
 
-<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
-    <h3 class="text-dark">Meus Cartões</h3>
-    <a href="/cadastroCartao"
-       title="cadastrar novo cartão"
-       class="text-primary text-center fw-bold border border-primary rounded m-0 py-1 px-2"
-       style="text-decoration: none;">
-        Cadastrar novo cartão
-    </a>
+<div class="container-fluid" style="margin-bottom: 36px;">
+                    <div class="d-flex align-items-end">
+                        <h5 style="margin-right: 12px;">Adicionar Cartão</h5><button class="btn btn-primary" type="button"><i class="fas fa-plus-circle"></i></button>
+                        <a href="/cadastroCartao"><i class="fas fa-plus-circle"></i></a>
+                    </div>
 </div>
+
+
 
 
 @code {
