@@ -36,7 +36,7 @@ internal sealed class MeioDePagamentoEntityTypeConfiguration : IEntityTypeConfig
             .WithMany(u => u.MeiosDePagamento)
             .HasForeignKey(m => m.UsuarioId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         // public ICollection<Transacao>? Transacoes { get; set; }
 

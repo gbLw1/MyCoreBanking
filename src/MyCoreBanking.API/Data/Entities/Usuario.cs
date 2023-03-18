@@ -6,7 +6,7 @@ internal sealed class Usuario : BaseDataEntity
 
     public string Email { get; set; } = default!;
 
-    public string SenhaHash { get; private set; } = default!;
+    public string SenhaHash { get; set; } = default!;
 
     public ICollection<Transacao>? Transacoes { get; set; }
     public ICollection<MeioDePagamento>? MeiosDePagamento { get; set; }

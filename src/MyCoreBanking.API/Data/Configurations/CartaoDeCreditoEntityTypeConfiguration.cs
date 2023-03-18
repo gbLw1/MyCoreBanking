@@ -32,7 +32,7 @@ internal sealed class CartaoDeCreditoEntityTypeConfiguration : IEntityTypeConfig
                 .WithOne(m => m.CartaoDeCredito)
                 .HasForeignKey<CartaoDeCredito>(m => m.Id)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
         builder.Navigation(m => m.MeioDePagamento)
                 .IsRequired()

@@ -32,7 +32,7 @@ internal sealed class ContaCorrenteEntityTypeConfiguration : IEntityTypeConfigur
                 .WithOne(m => m.ContaCorrente)
                 .HasForeignKey<ContaCorrente>(m => m.Id)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
         builder.Navigation(m => m.MeioDePagamento)
                 .IsRequired()
