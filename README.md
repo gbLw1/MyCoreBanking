@@ -85,7 +85,7 @@ erDiagram
 
 ContaCorrente{
     uniqueidentifier Id PK, FK
-    nvarchar(max) Banco
+    nvarchar(max) Banco "enum Banco"
     nvarchar(max) Agencia
     nvarchar(max) Conta
 }
@@ -96,14 +96,14 @@ MeioDePagamento{
     datetime2 UltimaAtualizacaoEm
     nvarchar(max) Apelido
     nvarchar(max) Observacao
-    nvarchar(max) Tipo "MeioDePagamentoTipo"
+    nvarchar(max) Tipo "enum MeioDePagamentoTipo"
     uniqueidentifier UsuarioId
 }
 
 CartaoDeCredito{
     uniqueidentifier Id PK, FK
     nvarchar(max) NumerosFinais
-    nvarchar(max) Bandeira
+    nvarchar(max) Bandeira "enum BandeiraCartao"
     Banco Banco
 }
 
@@ -124,7 +124,7 @@ Transacao{
     nvarchar(max) Observacao
     decimal Valor
     datetime2 DataPagamento
-    nvarchar(max) Tipo "TransacaoTipo"
+    nvarchar(max) Tipo "enum TransacaoTipo"
     uniqueidentifier UsuarioId FK
     uniqueidentifier MeioDePagamentoId FK    
 }
