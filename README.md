@@ -249,14 +249,14 @@ MeioDePagamento{
     nvarchar(max) Apelido
     nvarchar(max) Observacao
     nvarchar(max) Tipo "enum MeioDePagamentoTipo"
-    uniqueidentifier UsuarioId
+    uniqueidentifier UsuarioId FK
 }
 
 CartaoDeCredito{
     uniqueidentifier Id PK, FK
     nvarchar(max) NumerosFinais
     nvarchar(max) Bandeira "enum BandeiraCartao"
-    Banco Banco
+    nvarcahr(max) Banco "enum Banco"
 }
 
 Usuario{
