@@ -14,21 +14,40 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - API: Azure Functions 4.0
 - Web: Blazor WebAssembly
 - ORM: Entity Framework Core 6.0
-- DB: SQL Server 2022
+- Database: SQL Server 2022
+- Storage: Azure Storage
+- Authentication: JWT
+- Hosting: Local
+- Monitoring: Terminal (Console)
+
+## Pré-requisitos
+
+- [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
+- [Azure Functions Core Tools](https://docs.microsoft.com/pt-br/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2)
+- [EF Core Tools](https://docs.microsoft.com/pt-br/ef/core/cli/dotnet)
+- [SQL Server 2022](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads)
+- [Visual Studio Code](https://code.visualstudio.com/)
+  - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+  - [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
+  - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
+- [Azure Data Studio (opcional: SGBD)](https://docs.microsoft.com/pt-br/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15)
+- [Postman (opcional: testar requisições)](https://www.postman.com/downloads/)
 
 ## Funcionalidades
 
 - [ ] Usuário
   - [x] Cadastro
   - [x] Login
-  - [ ] Logout
   - [ ] Alterar senha
-  - [ ] Recuperar senha
-  - [ ] Alterar dados
+  - [ ] Alterar dados pessoais
+  - [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 
 - [ ] Transações
   - [x] Cadastro
   - [x] Listagem
+    - [x] Listagem por meio de pagamento (id) -> (visualizar gastos de um cartão de crédito específico ou conta corrente)
+    - [ ] Listagem por meio de pagamento (enum) -> (visualizar gastos de cartões de crédito ou contas correntes)
+    - [ ] Listagem por tipo de transação (enum) -> (receita, despesa)
     - [ ] Listagem por período
   - [ ] Obter por Id
   - [ ] Alteração
