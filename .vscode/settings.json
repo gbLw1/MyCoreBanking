@@ -22,4 +22,6 @@
     "debug.internalConsoleOptions": "neverOpen",
     "azureFunctions.projectSubpath": "src/MyCoreBanking.API",
     "azureFunctions.preDeployTask": "publish (functions)",
+    "thunder-client.saveToWorkspace": true,
+    "thunder-client.workspaceRelativePath": "docs/thunder-client",
 }

@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "123a6218-4c7f-4a03-8bc5-74db116684e4",
+    "name": "SampleEnvironment",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-03-19T22:34:22.771Z",
+    "modified": "2023-03-19T22:34:22.771Z",
+    "data": [
+      {
+        "name": "BaseAddress",
+        "value": "http://localhost:7071"
+      },
+      {
+        "name": "AuthToken",
+        "value": "aaaa"
+      }
+    ],
+    "envFile": ".env.sample"
+  },
+  {
+    "_id": "b696b822-22f2-45d1-a819-0e312a7eb8dc",
+    "name": "EnvSecret (espero eu que esse seja secret)",
+    "default": false,
+    "sortNum": 20000,
+    "created": "2023-03-19T22:43:52.780Z",
+    "modified": "2023-03-19T22:43:52.780Z",
+    "data": [],
+    "envFile": ".env"
+  }
+]

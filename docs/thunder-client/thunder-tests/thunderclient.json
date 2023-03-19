@@ -1,0 +1,51 @@
+[
+  {
+    "_id": "c1ff41d4-e1c7-417a-a3af-30a09b3ae607",
+    "colId": "893cba8c-4a45-466d-81ef-8797358f7072",
+    "containerId": "",
+    "name": "HttpBin",
+    "url": "httpbin.org/",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-03-19T22:33:57.504Z",
+    "modified": "2023-03-19T22:34:11.380Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "2e386ed9-9075-4054-9520-f09222453696",
+    "colId": "893cba8c-4a45-466d-81ef-8797358f7072",
+    "containerId": "",
+    "name": "Auth",
+    "url": "{{BaseAddress}}/auth/token",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-03-19T22:39:29.640Z",
+    "modified": "2023-03-19T22:41:32.305Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "formdata",
+      "raw": "",
+      "form": [
+        {
+          "name": "email",
+          "value": ""
+        },
+        {
+          "name": "password",
+          "value": ""
+        }
+      ]
+    },
+    "tests": [
+      {
+        "type": "set-env-var",
+        "custom": "json.accessToken",
+        "action": "setto",
+        "value": "{{AuthToken}}"
+      }
+    ]
+  }
+]
