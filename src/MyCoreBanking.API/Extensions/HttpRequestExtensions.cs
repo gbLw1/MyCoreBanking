@@ -20,6 +20,10 @@ internal static class HttpRequestExtensions
 
         return exception switch
         {
+            ArgumentException
+            or
+            ArgumentNullException
+            or
             InvalidOperationException => new ContentResult()
             {
                 Content = exception.Message,

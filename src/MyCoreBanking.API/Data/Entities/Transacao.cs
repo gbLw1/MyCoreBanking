@@ -1,3 +1,5 @@
+using MyCoreBanking.Models;
+
 namespace MyCoreBanking.API.Data.Entities;
 
 internal class Transacao : BaseDataEntity
@@ -15,4 +17,15 @@ internal class Transacao : BaseDataEntity
 
     public MeioDePagamento? MeioDePagamento { get; set; }
     public Guid MeioDePagamentoId { get; set; }
+
+
+    public TransacaoModel ToModel() => new()
+    {
+        Id = Id,
+        Descricao = Descricao,
+        Observacao = Observacao,
+        Valor = Valor,
+        DataPagamento = DataPagamento,
+        MeioDePagamentoId = MeioDePagamentoId,
+    };
 }

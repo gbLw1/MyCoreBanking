@@ -35,13 +35,13 @@ public static class AuthTokenPost
             //var email = usernameStringValue.ToString();
             //var password = passwordStringValue.ToString();
 
-            var _context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
+            var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
             var args = await httpRequest.ReadJsonBodyAsAsync<AuthTokenPostArgs>();
 
             new AuthTokenPostArgs.Validator().ValidateAndThrow(args);
 
-            var usuarioEntity = await _context
+            var usuarioEntity = await context
                 .Usuarios
                 .AsNoTracking()
                 .FirstOrDefaultAsync(lbda => lbda.Email == args.Email);
