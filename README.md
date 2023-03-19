@@ -106,3 +106,59 @@ CartaoDeCreditoEntity --|> BaseEntity
 ContaCorrenteEntity --|> BaseEntity
 BaseDataEntity --|> BaseEntity
 ```
+
+```mermaid
+erDiagram
+
+ContaCorrente{
+    uniqueidentifier Id PK, FK
+    nvarchar(max) Banco "enum Banco"
+    nvarchar(max) Agencia
+    nvarchar(max) Conta
+}
+
+MeioDePagamento{
+    uniqueidentifier Id PK
+    datetime2 CriadoEm
+    datetime2 UltimaAtualizacaoEm
+    nvarchar(max) Apelido
+    nvarchar(max) Observacao
+    nvarchar(max) Tipo "enum MeioDePagamentoTipo"
+    uniqueidentifier UsuarioId
+}
+
+CartaoDeCredito{
+    uniqueidentifier Id PK, FK
+    nvarchar(max) NumerosFinais
+    nvarchar(max) Bandeira "enum BandeiraCartao"
+    Banco Banco
+}
+
+Usuario{
+    uniqueidentifier Id PK
+    nvarchar(max) Nome
+    nvarchar(max) Email
+    nvarchar(max) SenhaHash
+    datetime2 CriadoEm
+    datetime2 UltimaAtualizacaoEm
+}
+
+Transacao{
+    uniqueidentifier Id PK
+    datetime2 CriadoEm
+    datetime2 UltimaAtualizacaoEm
+    nvarchar(max) Descricao
+    nvarchar(max) Observacao
+    decimal Valor
+    datetime2 DataPagamento
+    nvarchar(max) Tipo "enum TransacaoTipo"
+    uniqueidentifier UsuarioId FK
+    uniqueidentifier MeioDePagamentoId FK    
+}
+
+Usuario ||..|{ MeioDePagamento : possui
+Usuario ||..|{ Transacao : possui
+ContaCorrente ||..|| MeioDePagamento : eh
+CartaoDeCredito ||..|| MeioDePagamento : eh
+Transacao ||--|| MeioDePagamento : usa
+```
