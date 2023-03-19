@@ -12,13 +12,15 @@ internal class CartaoDeCreditoEntity : BaseEntity
 
     public MeioDePagamentoEntity MeioDePagamento { get; set; } = null!;
 
+
     public CartaoDeCreditoModel ToModel() => new()
     {
         Id = Id,
+        Apelido = MeioDePagamento.Apelido,
+        Observacao = MeioDePagamento.Observacao,
+        Tipo = MeioDePagamento.Tipo,
         NumerosFinais = NumerosFinais,
         Banco = Banco,
         Bandeira = Bandeira,
-        Apelido = MeioDePagamento.Apelido,
-        Observacao = MeioDePagamento.Observacao,
     };
 }

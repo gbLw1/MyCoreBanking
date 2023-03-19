@@ -1,3 +1,5 @@
+using MyCoreBanking.Models;
+
 namespace MyCoreBanking.API.Data.Entities;
 
 internal class MeioDePagamentoEntity : BaseDataEntity
@@ -13,4 +15,13 @@ internal class MeioDePagamentoEntity : BaseDataEntity
 
     public CartaoDeCreditoEntity? CartaoDeCredito { get; set; }
     public ContaCorrenteEntity? ContaCorrente { get; set; }
+
+
+    public MeioDePagamentoModel ToModel() => new()
+    {
+        Id = Id,
+        Apelido = Apelido,
+        Observacao = Observacao,
+        Tipo = Tipo,
+    };
 }

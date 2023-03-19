@@ -26,8 +26,6 @@ internal class TransacaoEntity : BaseDataEntity
         Observacao = Observacao,
         Valor = Valor,
         DataPagamento = DataPagamento,
-        MeioDePagamentoId = MeioDePagamentoId,
-        MeioDePagamentoApelido = MeioDePagamento?.Apelido ?? string.Empty,
-        MeioDePagamentoTipo = MeioDePagamento?.Tipo ?? default,
+        MeioDePagamento = MeioDePagamento?.ToModel() ?? new(),
     };
 }

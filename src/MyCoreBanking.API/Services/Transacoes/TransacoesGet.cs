@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyCoreBanking.API.Data;
+using MyCoreBanking.API.Data.Entities;
 using MyCoreBanking.Models;
 
 namespace FreedomHub.API.Services.Auth;
@@ -24,10 +25,19 @@ public static class TransacoesGet
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var transacoes = await context.Transacoes
+            IQueryable<TransacaoEntity> query = context.Transacoes
+                .AsNoTrackingWithIdentityResolution()
                 .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
-                .OrderByDescending(t => t.CriadoEm)
+                .OrderByDescending(t => t.CriadoEm);
+
+            if (httpRequest.Query.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
+                && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
+            {
+                query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
+            }
+
+            var transacoes = await query
                 .Select(t => t.ToModel())
                 .ToListAsync();
 
