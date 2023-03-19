@@ -14,5 +14,7 @@ public static class ProjectConstants
 #endif
         Converters = { new JsonStringEnumConverter() },
         NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 }

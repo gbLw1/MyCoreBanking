@@ -5,11 +5,10 @@ namespace MyCoreBanking.Args;
 
 public class AuthTokenPostArgs
 {
-    [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
-    [JsonPropertyName("senha")]
     public string Senha { get; set; } = string.Empty;
+
 
     public sealed class Validator : AbstractValidator<AuthTokenPostArgs>
     {

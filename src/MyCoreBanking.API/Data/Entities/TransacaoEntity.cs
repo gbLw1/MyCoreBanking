@@ -27,5 +27,7 @@ internal class TransacaoEntity : BaseDataEntity
         Valor = Valor,
         DataPagamento = DataPagamento,
         MeioDePagamentoId = MeioDePagamentoId,
+        MeioDePagamentoApelido = MeioDePagamento?.Apelido ?? string.Empty,
+        MeioDePagamentoTipo = MeioDePagamento?.Tipo ?? default,
     };
 }

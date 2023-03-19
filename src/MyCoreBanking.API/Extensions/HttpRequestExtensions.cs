@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 
 namespace MyCoreBanking.API.Extensions;
 
@@ -69,6 +70,9 @@ internal static class HttpRequestExtensions
     public static Guid Authorize(this HttpRequest httpRequest)
     {
         var auth = httpRequest.Headers["Authorization"];
+
+        if (auth == StringValues.Empty)
+            throw new UnauthorizedAccessException("Você deve estar logado para acessar este recurso");
 
         var appSettingsService = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
 

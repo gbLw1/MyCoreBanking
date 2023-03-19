@@ -11,11 +11,11 @@ using MyCoreBanking.Models;
 
 namespace FreedomHub.API.Services.Auth;
 
-public static class TransacoesGet
+public static class CartoesGet
 {
-    [FunctionName(nameof(TransacoesGet))]
+    [FunctionName(nameof(CartoesGet))]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "transacoes")] HttpRequest httpRequest,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "cartoes")] HttpRequest httpRequest,
         ILogger logger)
     {
         try
@@ -24,14 +24,14 @@ public static class TransacoesGet
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var transacoes = await context.Transacoes
-                .Include(t => t.MeioDePagamento)
-                .Where(t => t.UsuarioId == userId)
-                .OrderByDescending(t => t.CriadoEm)
-                .Select(t => t.ToModel())
+            var cartoes = await context.CartoesDeCredito
+                .Include(c => c.MeioDePagamento)
+                .Where(c => c.MeioDePagamento.UsuarioId == userId)
+                .OrderByDescending(c => c.MeioDePagamento.CriadoEm)
+                .Select(c => c.ToModel())
                 .ToListAsync();
 
-            var result = new List<TransacaoModel>(transacoes).AsReadOnly();
+            var result = new List<CartaoDeCreditoModel>(cartoes).AsReadOnly();
 
             return httpRequest.CreateResult(result);
         }
