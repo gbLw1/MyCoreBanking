@@ -12,4 +12,5 @@ public class TransacaoModel
     // 2. permite exibir o cartão de crédito ou conta bancária
     // 3. enum para facilitar a exibição do ícone e link para detalhes
     public MeioDePagamentoModel MeioDePagamento { get; set; } = null!;
+    public TransacaoTipo Tipo { get; set; }
 }

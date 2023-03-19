@@ -42,5 +42,10 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .HasForeignKey(t => t.MeioDePagamentoId)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
+
+        // public TransacaoTipo Tipo { get; set; }
+        builder.Property(t => t.Tipo)
+            .HasConversion<string>()
+            .IsRequired();
     }
 }

@@ -43,6 +43,18 @@ internal static class HttpRequestExtensions
                 ContentType = "plain/text",
                 StatusCode = StatusCodes.Status401Unauthorized,
             },
+            NotFoundException => new ContentResult()
+            {
+                Content = exception.Message,
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status404NotFound,
+            },
+            JsonException => new ContentResult()
+            {
+                Content = "O corpo da requisição não pode ser vazio ou não está no formato correto",
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status400BadRequest,
+            },
             _ => new ContentResult()
             {
                 Content = "Ocorreu um erro inesperado",

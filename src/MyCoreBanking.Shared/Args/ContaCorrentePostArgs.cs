@@ -18,7 +18,7 @@ public class ContaCorrentePostArgs
 
             RuleFor(x => x.Conta)
             .NotEmpty().WithMessage("Conta é obrigatória")
-            .Matches(@"^\d{5}-\d{1}$").WithMessage("Conta deve ter 5 dígitos e 1 dígito verificador");
+            .Matches(@"^\d{5}-\d{1}$").WithMessage("Conta deve estar no formato 00000-0");
 
             RuleFor(x => x.Agencia)
             .NotEmpty().WithMessage("Agência é obrigatória")

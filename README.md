@@ -1,9 +1,17 @@
 # MyCoreBanking
 
+## Modelagem de dados dos objetos
+
 <!-- Mermaid object relationships -->
 
 ```mermaid
 classDiagram
+
+class TransacaoTipo{
+    <<enumeration>>
+    Receita
+    Despesa
+}
 
 class Banco{
     <<enumeration>>
@@ -17,65 +25,84 @@ class Banco{
     Caixa
 }
 
-class MetodoPagamento{
+class BandeiraCartao{
     <<enumeration>>
-    CartaoCredito
-    CartaoDebito
-    Boleto
-    Pix
-    Transferencia
+    Visa
+    Mastercard
+    Elo
+    AmericanExpress
+    Hipercard
 }
 
-class TipoTransacao{
+class MeioDePagamentoTipo{
     <<enumeration>>
-    Receita
-    Despesa
+    CartaoDeCreditoEntityDeCredito
+    ContaCorrente
 }
 
 class BaseEntity{
+    Id: Guid
+}
+
+class BaseDataEntity{
     Id: Guid
     CriadoEm: DateTime
     UltimaAtualizacaoEm: DateTime
 }
 
-class Transacao{
-    Descricao: string
-    Observacao: string?
-    MetodoPagamento: MetodoPagamento
-    Valor: decimal
-    DataPagamento: DateTime?
-    DataVencimento: DateTime?
-    TipoTransacao: TipoTransacao
+class UsuarioEntity{
+    Nome: String
+    Email: String
+    SenhaHash: String
+    Transacoes: List~TransacaoEntity~
+    MeiosDePagamento: List~MeioDePagamentoEntity~
+    ContasCorrente: List~ContaCorrenteEntity~
+    CartoesDeCredito: List~CartaoDeCreditoEntity~
 }
 
-class Cartao{
-    Nome: string
-    DigitosFinais: string
-    Bandeira: string
-    Vencimento: DateTime
+class MeioDePagamentoEntity{
+    Apelido: String
+    Observacao: String
+    Tipo: MeioDePagamentoTipo
+    Usuario : UsuarioEntity
+    Transacoes : List~TransacaoEntity~
+    CartaoDeCredito : CartaoDeCreditoEntity
+    ContaCorrente : ContaCorrenteEntity
+}
+
+class TransacaoEntity{
+    Descricao: String
+    Observacao: String?
+    Valor: Decimal
+    DataPagamento: DateTime
+    Usuario: UsuarioEntity
+    MeioDePagamento: MeioDePagamentoEntity
+    Tipo: TransacaoTipo
+}
+
+class CartaoDeCreditoEntity{
+    NumerosFinais: String
     Banco: Banco
+    Bandeira: BandeiraCartao
+    MeioDePagamento: MeioDePagamentoEntity
 }
 
-class ContaBancaria{
-    TitularNome: string
+class ContaCorrenteEntity{
     Banco: Banco
-    Transacoes: List<Transacao>
-    Cartoes: List<Cartao>
+    Agencia: String
+    Conta: String
+    MeioDePagamento: MeioDePagamentoEntity
 }
 
-class Usuario{
-    Nome: string
-    Email: string
-    Senha: string
-    Transacoes: List<Transacao>
-    CartoesCredito: List<CartaoCredito>
-    CartoesDebito: List<CartaoDebito>
-    Contas: List<ContaBancaria>
-}
+
+
+
 
 %% Relacionamentos:
-Transacao --|> BaseEntity
-Cartao --|> BaseEntity
-ContaBancaria --|> BaseEntity
-Usuario --|> BaseEntity
+UsuarioEntity --|> BaseDataEntity
+TransacaoEntity --|> BaseDataEntity
+MeioDePagamentoEntity --|> BaseDataEntity
+CartaoDeCreditoEntity --|> BaseEntity
+ContaCorrenteEntity --|> BaseEntity
+BaseDataEntity --|> BaseEntity
 ```

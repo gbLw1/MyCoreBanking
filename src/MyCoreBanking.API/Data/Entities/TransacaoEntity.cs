@@ -18,6 +18,8 @@ internal class TransacaoEntity : BaseDataEntity
     public MeioDePagamentoEntity? MeioDePagamento { get; set; }
     public Guid MeioDePagamentoId { get; set; }
 
+    public TransacaoTipo Tipo { get; set; }
+
 
     public TransacaoModel ToModel() => new()
     {
@@ -27,5 +29,6 @@ internal class TransacaoEntity : BaseDataEntity
         Valor = Valor,
         DataPagamento = DataPagamento,
         MeioDePagamento = MeioDePagamento?.ToModel() ?? new(),
+        Tipo = Tipo,
     };
 }
