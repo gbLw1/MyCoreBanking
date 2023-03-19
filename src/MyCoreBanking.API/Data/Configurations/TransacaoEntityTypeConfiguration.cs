@@ -4,9 +4,9 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfiguration<Transacao>
+internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfiguration<TransacaoEntity>
 {
-    public override void Configure(EntityTypeBuilder<Transacao> builder)
+    public override void Configure(EntityTypeBuilder<TransacaoEntity> builder)
     {
         base.Configure(builder);
 

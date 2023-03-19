@@ -6,11 +6,11 @@ public class CartoesPostExemplo
 {
     public void ExemploCriarCartao()
     {
-        var cartao = new CartaoDeCredito
+        var cartao = new CartaoDeCreditoEntity
         {
             NumerosFinais = "1234",
             Bandeira = BandeiraCartao.Mastercard,
-            MeioDePagamento = new MeioDePagamento
+            MeioDePagamento = new MeioDePagamentoEntity
             {
                 Apelido = "Cartão de Crédito",
                 Observacao = "Cartão de Crédito Mastercard",

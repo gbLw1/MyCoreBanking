@@ -1,6 +1,6 @@
 namespace MyCoreBanking.API.Data.Entities;
 
-internal class CartaoDeCredito : BaseEntity
+internal class CartaoDeCreditoEntity : BaseEntity
 {
     public string NumerosFinais { get; set; } = string.Empty;
 
@@ -8,5 +8,5 @@ internal class CartaoDeCredito : BaseEntity
 
     public BandeiraCartao Bandeira { get; set; }
 
-    public MeioDePagamento MeioDePagamento { get; set; } = null!;
+    public MeioDePagamentoEntity MeioDePagamento { get; set; } = null!;
 }

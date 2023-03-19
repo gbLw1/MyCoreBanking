@@ -2,7 +2,7 @@ using MyCoreBanking.Models;
 
 namespace MyCoreBanking.API.Data.Entities;
 
-internal class Transacao : BaseDataEntity
+internal class TransacaoEntity : BaseDataEntity
 {
     public string Descricao { get; set; } = default!;
 
@@ -12,10 +12,10 @@ internal class Transacao : BaseDataEntity
 
     public DateTime DataPagamento { get; set; }
 
-    public Usuario? Usuario { get; set; }
+    public UsuarioEntity? Usuario { get; set; }
     public Guid UsuarioId { get; set; }
 
-    public MeioDePagamento? MeioDePagamento { get; set; }
+    public MeioDePagamentoEntity? MeioDePagamento { get; set; }
     public Guid MeioDePagamentoId { get; set; }
 
 

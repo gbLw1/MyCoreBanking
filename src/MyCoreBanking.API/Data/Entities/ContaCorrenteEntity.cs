@@ -1,6 +1,6 @@
 namespace MyCoreBanking.API.Data.Entities;
 
-internal class ContaCorrente : BaseEntity
+internal class ContaCorrenteEntity : BaseEntity
 {
     public Banco Banco { get; set; }
 
@@ -8,5 +8,5 @@ internal class ContaCorrente : BaseEntity
 
     public string Conta { get; set; } = string.Empty;
 
-    public MeioDePagamento MeioDePagamento { get; set; } = null!;
+    public MeioDePagamentoEntity MeioDePagamento { get; set; } = null!;
 }

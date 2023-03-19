@@ -3,9 +3,9 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class UsuarioEntityTypeConfiguration : BaseEntityTypeConfiguration<Usuario>
+internal sealed class UsuarioEntityTypeConfiguration : BaseEntityTypeConfiguration<UsuarioEntity>
 {
-    public override void Configure(EntityTypeBuilder<Usuario> builder)
+    public override void Configure(EntityTypeBuilder<UsuarioEntity> builder)
     {
         base.Configure(builder);
 
@@ -24,7 +24,7 @@ internal sealed class UsuarioEntityTypeConfiguration : BaseEntityTypeConfigurati
             .IsRequired()
             .HasMaxLength(250);
 
-        // Constraint: Email único
+        // Constraint: Email ï¿½nico
         builder.HasIndex(u => u.Email)
             .IsUnique();
     }

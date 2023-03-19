@@ -4,9 +4,9 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class MeioDePagamentoEntityTypeConfiguration : BaseEntityTypeConfiguration<MeioDePagamento>
+internal sealed class MeioDePagamentoEntityTypeConfiguration : BaseEntityTypeConfiguration<MeioDePagamentoEntity>
 {
-    public override void Configure(EntityTypeBuilder<MeioDePagamento> builder)
+    public override void Configure(EntityTypeBuilder<MeioDePagamentoEntity> builder)
     {
         base.Configure(builder);
 

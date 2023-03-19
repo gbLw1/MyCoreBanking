@@ -4,9 +4,9 @@ using MyCoreBanking.API.Data.Entities;
 
 namespace MyCoreBanking.API.Data.Configurations;
 
-internal sealed class CartaoDeCreditoEntityTypeConfiguration : BaseEntityTypeConfiguration<CartaoDeCredito>
+internal sealed class CartaoDeCreditoEntityTypeConfiguration : BaseEntityTypeConfiguration<CartaoDeCreditoEntity>
 {
-    public override void Configure(EntityTypeBuilder<CartaoDeCredito> builder)
+    public override void Configure(EntityTypeBuilder<CartaoDeCreditoEntity> builder)
     {
         base.Configure(builder);
 
@@ -28,7 +28,7 @@ internal sealed class CartaoDeCreditoEntityTypeConfiguration : BaseEntityTypeCon
         //public MeioDePagamento MeioDePagamento { get; set; } = null!;
         builder.HasOne(m => m.MeioDePagamento)
                 .WithOne(m => m.CartaoDeCredito)
-                .HasForeignKey<CartaoDeCredito>(m => m.Id)
+                .HasForeignKey<CartaoDeCreditoEntity>(m => m.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
 

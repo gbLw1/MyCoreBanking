@@ -8,11 +8,11 @@ internal class MeuDbContext : DbContext
     public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)
     { }
 
-    public DbSet<Transacao> Transacoes { get; set; } = default!;
-    public DbSet<Usuario> Usuarios { get; set; } = default!;
-    public DbSet<MeioDePagamento> MeiosDePagamento { get; set; } = default!;
-    public DbSet<ContaCorrente> ContasCorrente { get; set; } = default!;
-    public DbSet<CartaoDeCredito> CartoesDeCredito { get; set; } = default!;
+    public DbSet<TransacaoEntity> Transacoes { get; set; } = default!;
+    public DbSet<UsuarioEntity> Usuarios { get; set; } = default!;
+    public DbSet<MeioDePagamentoEntity> MeiosDePagamento { get; set; } = default!;
+    public DbSet<ContaCorrenteEntity> ContasCorrente { get; set; } = default!;
+    public DbSet<CartaoDeCreditoEntity> CartoesDeCredito { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

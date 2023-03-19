@@ -28,7 +28,7 @@ public static class TransacoesPost
 
             new TransacoesPostArgs.Validator().ValidateAndThrow(args);
 
-            var transacaoEntity = new Transacao
+            var transacaoEntity = new TransacaoEntity
             {
                 Descricao = args.Descricao,
                 Observacao = args.Observacao,

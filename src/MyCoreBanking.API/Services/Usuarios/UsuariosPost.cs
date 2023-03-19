@@ -30,7 +30,7 @@ public class UsuariosPost
             if (await context.Usuarios.AnyAsync(x => x.Email == args.Email))
                 throw new InvalidOperationException("Email já cadastrado");
 
-            var usuarioEntity = new Usuario
+            var usuarioEntity = new UsuarioEntity
             {
                 Nome = args.Nome,
                 Email = args.Email,

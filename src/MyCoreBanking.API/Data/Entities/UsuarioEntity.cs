@@ -1,6 +1,6 @@
 ﻿namespace MyCoreBanking.API.Data.Entities;
 
-internal sealed class Usuario : BaseDataEntity
+internal sealed class UsuarioEntity : BaseDataEntity
 {
     public string Nome { get; set; } = default!;
 
@@ -8,11 +8,11 @@ internal sealed class Usuario : BaseDataEntity
 
     public string SenhaHash { get; set; } = default!;
 
-    public ICollection<Transacao>? Transacoes { get; set; }
-    public ICollection<MeioDePagamento>? MeiosDePagamento { get; set; }
+    public ICollection<TransacaoEntity>? Transacoes { get; set; }
+    public ICollection<MeioDePagamentoEntity>? MeiosDePagamento { get; set; }
 
-    public ICollection<ContaCorrente>? ContasCorrente { get; set; }
-    public ICollection<CartaoDeCredito>? CartoesDeCredito { get; set; }
+    public ICollection<ContaCorrenteEntity>? ContasCorrente { get; set; }
+    public ICollection<CartaoDeCreditoEntity>? CartoesDeCredito { get; set; }
 
     public bool SenhaValida(string senha)
     {
