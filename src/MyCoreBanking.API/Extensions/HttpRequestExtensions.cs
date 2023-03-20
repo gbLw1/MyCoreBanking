@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using MyCoreBanking.API.Helpers;
 
 namespace MyCoreBanking.API.Extensions;
 
@@ -88,7 +89,7 @@ internal static class HttpRequestExtensions
 
         var appSettingsService = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
 
-        return JwtExtension.ValidateAndThrow(appSettingsService.JwtSecret, auth.ToString().Split(" ")[1]);
+        return JwtHelper.ValidateAndThrow(appSettingsService.JwtSecret, auth.ToString().Split(" ")[1]);
     }
 
     // Le o body do request json e deserializa para o tipo T

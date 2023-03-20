@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyCoreBanking.API;
 using MyCoreBanking.API.Data;
+using MyCoreBanking.API.Helpers;
 using MyCoreBanking.Args;
 
 namespace FreedomHub.API.Services.Auth;
@@ -63,7 +64,7 @@ public static class AuthTokenPost
                 new
                 {
                     tokenType = "Bearer",
-                    accessToken = JwtExtension.GenerateJwtToken(appSettings.JwtSecret, httpRequest.Host.Host, httpRequest.Host.Host, expiracaoEmMinutos, usuarioEntity.Id.ToString()),
+                    accessToken = JwtHelper.GenerateJwtToken(appSettings.JwtSecret, httpRequest.Host.Host, httpRequest.Host.Host, expiracaoEmMinutos, usuarioEntity.Id.ToString()),
                     expiresIn = DateTime.Now.AddMinutes(expiracaoEmMinutos),
                 });
         }

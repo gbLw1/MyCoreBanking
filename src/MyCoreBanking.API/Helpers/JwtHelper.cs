@@ -4,9 +4,9 @@ using System.Security.Claims;
 using System.Text;
 using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
-namespace MyCoreBanking.API.Extensions;
+namespace MyCoreBanking.API.Helpers;
 
-public static class JwtExtension
+public static class JwtHelper
 {
     public static string GenerateJwtToken(string secretKey, string issuer, string audience, int expireInMinutes, string userId)
     {
