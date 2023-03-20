@@ -2,7 +2,7 @@
   {
     "_id": "123a6218-4c7f-4a03-8bc5-74db116684e4",
     "name": "SampleEnvironment",
-    "default": true,
+    "default": false,
     "sortNum": 10000,
     "created": "2023-03-19T22:34:22.771Z",
     "modified": "2023-03-19T22:34:22.771Z",
@@ -21,11 +21,16 @@
   {
     "_id": "b696b822-22f2-45d1-a819-0e312a7eb8dc",
     "name": "EnvSecret (espero eu que esse seja secret)",
-    "default": false,
+    "default": true,
     "sortNum": 20000,
     "created": "2023-03-19T22:43:52.780Z",
     "modified": "2023-03-19T22:43:52.780Z",
-    "data": [],
+    "data": [
+      {
+        "name": "AuthToken",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mjc2NzFhYS0wMWM2LWVkMTEtOTk1YS02MGRkOGU3NjA5ZDQiLCJqdGkiOiIwZmJhZjU2ZC01MmZjLTQwOWItYTY4OS0yNzJhYzVmYjk3ZWMiLCJleHAiOjE2ODE4NjM1MDQsImlzcyI6ImxvY2FsaG9zdCIsImF1ZCI6ImxvY2FsaG9zdCJ9.bQR27gjizaUrlxqqOqecoiON5DE0F4G2f6iizvmA9bA"
+      }
+    ],
     "envFile": ".env"
   }
 ]
