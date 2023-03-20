@@ -75,7 +75,7 @@ internal static class HttpRequestExtensions
         };
 
     // 204
-    public static IActionResult CreateResult(this HttpRequest httpRequest) => new OkResult();
+    public static IActionResult CreateResult(this HttpRequest httpRequest) => new NoContentResult();
 
     #endregion
 

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace MyCoreBanking.Args;
 
-public class TransacoesPostArgs
+public class TransacoesPutArgs
 {
     public string Descricao { get; set; } = default!;
 
@@ -17,7 +17,7 @@ public class TransacoesPostArgs
     public TransacaoTipo Tipo { get; set; }
 
 
-    public sealed class Validator : AbstractValidator<TransacoesPostArgs>
+    public sealed class Validator : AbstractValidator<TransacoesPutArgs>
     {
         public Validator()
         {
