@@ -35,42 +35,46 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ## Funcionalidades
 
-- [ ] Usuário
-  - [x] Cadastro
-  - [x] Login
-  - [ ] Alterar senha
-  - [ ] Alterar dados pessoais
-  - [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
+### Usuário
 
-- [ ] Transações
-  - [x] Cadastro
-  - [x] Listagem
-    - [x] Listagem por meio de pagamento (id) -> (visualizar gastos de um cartão de crédito específico ou conta corrente)
-    - [ ] Listagem por meio de pagamento (enum) -> (visualizar gastos de cartões de crédito ou contas correntes)
-    - [ ] Listagem por tipo de transação (enum) -> (receita, despesa)
-    - [ ] Listagem por período
-  - [ ] Obter por Id
-  - [ ] Alteração
-  - [ ] Exclusão
+- [x] Cadastro
+- [x] Login
+- [ ] Alterar senha
+- [ ] Alterar dados pessoais
+- [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 
-- [ ] Contas correntes
-  - [x] Cadastro
-  - [x] Listagem
-    - [ ] Listagem por período
-    - [ ] Listagem por banco
-  - [ ] Obter por Id
-  - [ ] Alteração
-  - [ ] Exclusão
+### Transações
 
-- [ ] Cartões de crédito
-  - [x] Cadastro
-  - [x] Listagem
-    - [ ] Listagem por período
-    - [ ] Listagem por bandeira
-    - [ ] Listagem por banco
-  - [ ] Obter por Id
-  - [ ] Alteração
-  - [ ] Exclusão
+- [x] Cadastro
+- [x] Listagem
+  - [x] Listagem por meio de pagamento (id) -> (visualizar gastos de um cartão de crédito específico ou conta corrente)
+  - [x] Listagem por meio de pagamento (enum) -> (visualizar gastos de cartões de crédito ou contas correntes)
+  - [x] Listagem por tipo de transação (enum) -> (receita, despesa)
+  - [x] Listagem por período -> (data inicial e/ou data final)
+- [x] Obter por Id
+- [x] Alteração
+- [x] Exclusão
+
+### Contas correntes
+
+- [x] Cadastro
+- [x] Listagem
+  - [ ] Listagem por período
+  - [ ] Listagem por banco
+- [ ] Obter por Id
+- [ ] Alteração
+- [ ] Exclusão
+
+### Cartões de crédito
+
+- [x] Cadastro
+- [x] Listagem
+  - [ ] Listagem por período
+  - [ ] Listagem por bandeira
+  - [ ] Listagem por banco
+- [ ] Obter por Id
+- [ ] Alteração
+- [ ] Exclusão
 
 <!-- ## Arquitetura
 

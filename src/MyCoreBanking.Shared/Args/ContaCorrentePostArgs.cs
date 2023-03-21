@@ -14,7 +14,7 @@ public class ContaCorrentePostArgs
         public Validator()
         {
             RuleFor(x => x.Banco)
-            .NotEmpty().WithMessage("Banco é obrigatório");
+            .IsInEnum().WithMessage("Banco inválido");
 
             RuleFor(x => x.Conta)
             .NotEmpty().WithMessage("Conta é obrigatória")

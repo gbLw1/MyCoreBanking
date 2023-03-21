@@ -35,7 +35,7 @@ public class TransacoesPutArgs
                 .NotEmpty().WithMessage("Data de pagamento é obrigatória");
 
             RuleFor(x => x.MeioDePagamentoId)
-                .NotEmpty().WithMessage("Meio de pagamento é obrigatório");
+                .NotEmpty().WithMessage("Meio de pagamento Id é obrigatório");
         }
     }
 }
