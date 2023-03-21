@@ -72,9 +72,9 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [ ] Listagem por período
   - [ ] Listagem por bandeira
   - [ ] Listagem por banco
-- [ ] Obter por Id
-- [ ] Alteração
-- [ ] Exclusão
+- [x] Obter por Id
+- [x] Alteração
+- [x] Exclusão
 
 <!-- ## Arquitetura
 
