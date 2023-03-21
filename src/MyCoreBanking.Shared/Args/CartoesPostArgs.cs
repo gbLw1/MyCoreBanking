@@ -10,7 +10,11 @@ public class CartoesPostArgs
 
     public BandeiraCartao Bandeira { get; set; }
 
-    public string? Observacao { get; set; }
+    /// <summary>
+    /// <para>Exemplos: "Cartão de crédito do meu trabalho", "Cartão de crédito do meu pai", etc.</para>
+    /// <para>Caso não seja informado, será usado o padrão: "{Bandeira} - **** **** **** {NumerosFinais}"</para>
+    /// </summary>
+    public string? Apelido { get; set; }
 
 
     public class Validator : AbstractValidator<CartoesPostArgs>

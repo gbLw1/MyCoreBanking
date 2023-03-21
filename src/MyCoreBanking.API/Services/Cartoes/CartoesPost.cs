@@ -36,8 +36,8 @@ public static class CartoesPost
                 Bandeira = args.Bandeira,
                 MeioDePagamento = new MeioDePagamentoEntity
                 {
-                    Apelido = $"{args.Bandeira} - **** **** **** {args.NumerosFinais}",
-                    Observacao = args.Observacao,
+                    Apelido = args.Apelido ?? $"{args.Bandeira} - **** **** **** {args.NumerosFinais}",
+                    Observacao = null,
                     Tipo = MeioDePagamentoTipo.CartaoDeCredito,
                     UsuarioId = userId,
                 },

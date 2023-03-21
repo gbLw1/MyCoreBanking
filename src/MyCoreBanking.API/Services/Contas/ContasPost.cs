@@ -36,8 +36,8 @@ public static class ContasPost
                 Agencia = args.Agencia,
                 MeioDePagamento = new MeioDePagamentoEntity
                 {
-                    Apelido = $"{args.Banco} - {args.Conta}",
-                    Observacao = args.Observacao,
+                    Apelido = args.FormaDePagamento,
+                    Observacao = $"{args.Banco} - {args.Conta}",
                     Tipo = MeioDePagamentoTipo.ContaCorrente,
                     UsuarioId = userId,
                 },
