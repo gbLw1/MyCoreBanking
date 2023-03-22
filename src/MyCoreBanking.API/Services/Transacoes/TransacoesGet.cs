@@ -76,6 +76,7 @@ public static class TransacoesGet
                 query = query.Where(t => t.DataPagamento <= dataFinal);
             }
 
+            // Validação de "dataInicial" e "dataFinal"
             if (dataInicial != default && dataFinal != default
                 && dataInicial.CompareTo(dataFinal) > 0)
             {
