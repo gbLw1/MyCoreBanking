@@ -10,36 +10,48 @@
                         <div class="p-5">
                             <!-- Titulo do Formulário -->
                             <div class="text-center">
-                                <h4 class="text-dark mb-4" style="font-size: 18px;">Cadastre uma nova transação que já foi Paga</h4>
+                                <h4 class="text-dark mb-4" style="font-size: 18px;">Cadastre uma transação antiga</h4>
                             </div>
                             <!-- Formulário -->
                             <form class="user">
                                 <div class="mb-3">
+                                    <h6 class="text-dark mb-4" style="font-size: 18px;">Descrição</h6>
                                     <input class="form-control form-control-user" type="text" id="descricao" placeholder="Descrição" name="descricao">
                                 </div>
                                 <div class="mb-3">
+                                    <h6 class="text-dark mb-4" style="font-size: 18px;">Observação</h6>
                                     <input class="form-control form-control-user" type="text" id="observacao" placeholder="Observação" name="observacao">
                                 </div>
+                                <h6 class="text-dark mb-4" style="font-size: 18px;">Valor</h6>
                                 <div class="mb-3"><input class="form-control form-control-user" type="number" id="valorCadastroTransacao" placeholder="Valor" name="valorCadastroTransacao"></div>
-                                 <h6 class="text-dark mb-4" style="font-size: 18px;">Data da transação</h6>
-                                <div class="mb-3">
-                                      <input class="form-control form-control-user" type="date" id="dataCadastroTransacaoPagas" max="2023-03-20" name="dataCadastroTransacaoPagas">
-                                </div>
                                 <h6 class="text-dark mb-4" style="font-size: 18px;">Data do pagamento</h6>
                                 <div class="mb-3">
                                       <input class="form-control form-control-user" type="date" id="dataPagamentoTransacaoPagas" max="2023-03-20" name="dataPagamentoTransacaoPagas">
                                 </div>
-                                <div class="mb-3" style="display: flex;justify-content: center; align-items: center;">
-                                    <div class="dropdown">
-                                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="row mb-3">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                          <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             Método de Pagamento
                                           </button>
                                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-menu" href=""></a></li>
-                                                <li><a class="dropdown-item" href="">Cartão de crédito</a></li>
-                                                <li><a class="dropdown-item" href="">Conta Corrente</a></li>
+                                                <li><a class="dropdown-menu" href="#"></a></li>
+                                                <li><a class="dropdown-item" href="#">Cartão de crédito</a></li>
+                                                <li><a class="dropdown-item" href="#">Conta Corrente</a></li>
                                               </ul>
+                                        </div>
+                                </div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                      <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Tipo
+                                      </button>
+                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Receita</a></li>
+                                        <li><a class="dropdown-item" href="#">Despesa</a></li>
+                                      </ul>
                                     </div>
+                                </div>
                                 </div>
                                 <button class="btn btn-primary d-block btn-user w-100" type="submit">Registrar Transação</button>
                                 <hr>

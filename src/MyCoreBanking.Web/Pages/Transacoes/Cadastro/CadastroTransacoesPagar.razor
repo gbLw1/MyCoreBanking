@@ -9,24 +9,28 @@
                     <div class="col">
                         <div class="p-5">
                             <div class="text-center">
-                                <h4 class="text-dark mb-4" style="font-size: 18px;">Cadastre uma nova transação para Pagar</h4>
+                                <h4 class="text-dark mb-4" style="font-size: 18px;">Cadastro de uma nova transação</h4>
                             </div>
                             <!-- Formulário -->
                             <form class="user">
                                 <div class="mb-3">
+                                     <h6 class="text-dark mb-4" style="font-size: 18px;">Descrição</h6>
                                     <input class="form-control form-control-user" type="text" id="descricao" placeholder="Descrição" name="descricao">
                                 </div>
                                 <div class="mb-3">
+                                     <h6 class="text-dark mb-4" style="font-size: 18px;">Observação</h6>
                                     <input class="form-control form-control-user" type="text" id="observacao" placeholder="Observação" name="observacao">
                                 </div>
+                                 <h6 class="text-dark mb-4" style="font-size: 18px;">Valor</h6>
                                  <div class="mb-3"><input class="form-control form-control-user" type="number" id="valorCadastroTransacaoPagar" placeholder="Valor" name="valorCadastroTransacaoPagar"></div>
                                  <h6 class="text-dark mb-4" style="font-size: 18px;">Data da transação</h6>
                                 <div class="mb-3">
                                       <input class="form-control form-control-user" type="date" id="dataCadastroTransacaoPagar" min="2023-03-20" name="dataCadastroTransacaoPagar">
                                     </div>
-                                <div class="mb-3" style="display: flex;justify-content: center; align-items: center;">
-                                    <div class="dropdown">
-                                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="row mb-3">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                          <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             Método de Pagamento
                                           </button>
                                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -35,7 +39,20 @@
                                                 <li><a class="dropdown-item" href="#">Conta Corrente</a></li>
                                               </ul>
                                         </div>
-                                </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Registrar Transação</button>
+                                </div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                      <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Tipo
+                                      </button>
+                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Receita</a></li>
+                                        <li><a class="dropdown-item" href="#">Despesa</a></li>
+                                      </ul>
+                                    </div>
+                                </div>
+                                </div>
+                                <button class="btn btn-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100" type="submit">Registrar Transação</button>
                                 <hr>
                             </form>
                         </div>
