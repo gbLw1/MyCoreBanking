@@ -47,18 +47,31 @@
                                         <ValidationMessage For="() => Model.UltimosQuatroDigitos" />
                                     </div>
                                 </div>
-                                <div class="mb-3" style="display: flex;justify-content: center; align-items: center;">
-                                    <div class="dropdown">
-                                          <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Tipo
+                                <div class="row mb-3">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                          <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Banco
                                           </button>
                                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-menu" href=""></a></li>
-                                                <li><a class="dropdown-item" href=""></a>Receita</li>
-                                                <li><a class="dropdown-item" href=""></a>Despesa</li>
+                                                <li><a class="dropdown-item" href="#">Nubank</a></li>
+                                                <li><a class="dropdown-item" href="#">AlmeidaPay</a></li>
                                               </ul>
+                                        </div>
+                                </div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="dropdown-center">
+                                      <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary btn-user w-100 dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Bandeira
+                                      </button>
+                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                        <li><a class="dropdown-item" href="#">Visa</a></li>
+                                        <li><a class="dropdown-item" href="#">Mastercard</a></li>
+                                      </ul>
                                     </div>
                                 </div>
+                                </div>
+
                                 <button class="btn btn-primary d-block btn-user w-100" type="submit">Registrar Cartão</button>
                                 <hr>
                             </EditForm>
