@@ -47,10 +47,11 @@ public class UsuariosPost
 
                 var contaEntity = new ContaEntity
                 {
-                    UsuarioId = usuarioEntity.Id,
-                    Banco = Banco.Outro,
-                    Tipo = ContaTipo.Carteira,
                     Saldo = 0,
+                    Banco = Banco.Outro,
+                    Descricao = "Carteira",
+                    Tipo = ContaTipo.Carteira,
+                    UsuarioId = usuarioEntity.Id,
                 };
 
                 await context.Contas.AddAsync(contaEntity);

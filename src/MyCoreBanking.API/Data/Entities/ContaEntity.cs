@@ -5,17 +5,15 @@ namespace MyCoreBanking.API.Data.Entities;
 internal class ContaEntity : BaseDataEntity
 {
     public decimal Saldo { get; set; }
-
     public Banco Banco { get; set; }
-
     public string Descricao { get; set; } = string.Empty;
-
     public ContaTipo Tipo { get; set; }
 
     public Guid UsuarioId { get; set; }
     public UsuarioEntity Usuario { get; set; } = null!;
 
     public IReadOnlyCollection<TransacaoEntity> Transacoes { get; set; } = Array.Empty<TransacaoEntity>();
+
 
     public ContaModel ToModel() => new()
     {
