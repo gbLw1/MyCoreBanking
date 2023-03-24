@@ -5,4 +5,5 @@ public enum ContaTipo
     Corrente,
     Poupanca,
     Investimento,
+    Carteira,
 }

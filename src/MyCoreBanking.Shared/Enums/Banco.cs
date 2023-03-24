@@ -10,4 +10,5 @@ public enum Banco
     Santander,
     C6,
     Caixa,
+    Outro,
 }
