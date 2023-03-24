@@ -26,7 +26,7 @@ public static class TransacoesDelete
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
             var transacao = await context.Transacoes
-                .Include(t => t.MeioDePagamento)
+                // .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
                 .FirstOrDefaultAsync(t => t.Id == transacaoId);
 

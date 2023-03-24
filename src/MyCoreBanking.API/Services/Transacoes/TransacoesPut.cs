@@ -39,25 +39,25 @@ public static class TransacoesPut
             if (transacaoEntity is null)
                 throw new NotFoundException(message: "Transação não encontrada", paramName: nameof(transacaoId));
 
-            // tenta obter o meio de pagamento
-            var meioDePagamento = await context.MeiosDePagamento.FirstOrDefaultAsync(m => m.Id == args.MeioDePagamentoId);
+            // // tenta obter o meio de pagamento
+            // var meioDePagamento = await context.MeiosDePagamento.FirstOrDefaultAsync(m => m.Id == args.MeioDePagamentoId);
 
-            if (meioDePagamento is null)
-                throw new NotFoundException(paramName: "Meio de pagamento");
+            // if (meioDePagamento is null)
+            //     throw new NotFoundException(paramName: "Meio de pagamento");
 
-            if (meioDePagamento.UsuarioId != userId)
-                throw new UnauthorizedAccessException("Meio de pagamento não pertence ao usuário logado.");
+            // if (meioDePagamento.UsuarioId != userId)
+            //     throw new UnauthorizedAccessException("Meio de pagamento não pertence ao usuário logado.");
 
-            if (args.Tipo == TransacaoTipo.Receita && meioDePagamento.Tipo != MeioDePagamentoTipo.ContaCorrente)
-                throw new InvalidOperationException("Tipo de transação inválida para o tipo de meio de pagamento selecionado.");
+            // if (args.Tipo == TransacaoTipo.Receita && meioDePagamento.Tipo != MeioDePagamentoTipo.ContaCorrente)
+            //     throw new InvalidOperationException("Tipo de transação inválida para o tipo de meio de pagamento selecionado.");
 
-            // atualizar a transação
-            transacaoEntity.Descricao = args.Descricao;
-            transacaoEntity.Observacao = args.Observacao;
-            transacaoEntity.Valor = args.Valor;
-            transacaoEntity.DataPagamento = args.DataPagamento;
-            transacaoEntity.MeioDePagamentoId = args.MeioDePagamentoId;
-            transacaoEntity.Tipo = args.Tipo;
+            // // atualizar a transação
+            // transacaoEntity.Descricao = args.Descricao;
+            // transacaoEntity.Observacao = args.Observacao;
+            // transacaoEntity.Valor = args.Valor;
+            // transacaoEntity.DataPagamento = args.DataPagamento;
+            // transacaoEntity.MeioDePagamentoId = args.MeioDePagamentoId;
+            // transacaoEntity.Tipo = args.Tipo;
 
             context.Transacoes.Update(transacaoEntity);
             await context.SaveChangesAsync();

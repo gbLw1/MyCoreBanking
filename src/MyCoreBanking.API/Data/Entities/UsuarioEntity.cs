@@ -9,10 +9,11 @@ internal sealed class UsuarioEntity : BaseDataEntity
     public string SenhaHash { get; set; } = default!;
 
     public ICollection<TransacaoEntity>? Transacoes { get; set; }
-    public ICollection<MeioDePagamentoEntity>? MeiosDePagamento { get; set; }
 
-    public ICollection<ContaCorrenteEntity>? ContasCorrente { get; set; }
-    public ICollection<CartaoDeCreditoEntity>? CartoesDeCredito { get; set; }
+    public ICollection<ContaEntity>? Contas { get; set; }
+
+    // public ICollection<CartaoDeCreditoEntity>? CartoesDeCredito { get; set; }
+
 
     public bool SenhaValida(string senha)
     {

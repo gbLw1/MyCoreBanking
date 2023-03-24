@@ -31,22 +31,22 @@ public static class TransacoesGet
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
-                .Include(t => t.MeioDePagamento)
+                // .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
                 .OrderByDescending(t => t.DataPagamento);
 
-            // Filtro por "meioDePagamentoId"
-            if (queryParameters.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
-                && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
-            {
-                query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
-            }
+            // // Filtro por "meioDePagamentoId"
+            // if (queryParameters.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
+            //     && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
+            // {
+            //     query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
+            // }
 
             // Filtro por enum "meio de pagamento"
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
                 && Enum.TryParse<MeioDePagamentoTipo>(meioDePagamento, out var meioDePagamentoEnum))
             {
-                query = query.Where(t => t.MeioDePagamento!.Tipo == meioDePagamentoEnum);
+                query = query.Where(t => t.MeioDePagamento == meioDePagamentoEnum);
             }
 
             // Filtro por enum "tipo de transação"

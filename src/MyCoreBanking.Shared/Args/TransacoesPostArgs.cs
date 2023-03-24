@@ -5,37 +5,38 @@ namespace MyCoreBanking.Args;
 public class TransacoesPostArgs
 {
     public string Descricao { get; set; } = default!;
-
     public string? Observacao { get; set; }
-
-    public decimal Valor { get; set; }
-
-    public DateTime DataPagamento { get; set; }
-
-    public Guid MeioDePagamentoId { get; set; }
-
     public TransacaoTipo Tipo { get; set; }
+    public decimal Valor { get; set; }
+    public DateTime? DataPagamento { get; set; }
+    public MeioDePagamentoTipo MeioPagamento { get; set; }
+    public Categoria Categoria { get; set; }
+    public bool Recorrente { get; set; }
+    public DateTime? DataVigenciaInicio { get; set; }
+    public DateTime? DataVigenciaFim { get; set; }
+    public int? DiaVencimento { get; set; }
+    public int? NumeroParcelas { get; set; }
+    public decimal? ValorParcela { get; set; }
 
 
-    public sealed class Validator : AbstractValidator<TransacoesPostArgs>
+    public class Validator : AbstractValidator<TransacoesPostArgs>
     {
         public Validator()
         {
             RuleFor(x => x.Descricao)
-                .NotEmpty().WithMessage("Descrição é obrigatória")
-                .MaximumLength(100).WithMessage("Descrição deve ter no máximo 100 caracteres");
+                .NotEmpty().WithMessage("Descrição é obrigatória");
 
-            RuleFor(x => x.Observacao)
-                .MaximumLength(100).WithMessage("Observação deve ter no máximo 100 caracteres");
+            RuleFor(x => x.Tipo)
+                .IsInEnum().WithMessage("Tipo inválido");
 
             RuleFor(x => x.Valor)
-                .GreaterThan(0).WithMessage("Valor deve ser maior que 0");
+                .NotEmpty().WithMessage("Valor é obrigatório");
 
-            RuleFor(x => x.DataPagamento)
-                .NotEmpty().WithMessage("Data de pagamento é obrigatória");
+            RuleFor(x => x.MeioPagamento)
+                .IsInEnum().WithMessage("Meio de pagamento inválido");
 
-            RuleFor(x => x.MeioDePagamentoId)
-                .NotEmpty().WithMessage("Meio de pagamento é obrigatório");
+            RuleFor(x => x.Categoria)
+                .IsInEnum().WithMessage("Categoria inválida");
         }
     }
 }

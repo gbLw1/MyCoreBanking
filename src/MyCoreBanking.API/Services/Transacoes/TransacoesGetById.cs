@@ -29,16 +29,16 @@ public static class TransacoesGetById
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
-                .Include(t => t.MeioDePagamento)
+                // .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.Id == transacaoId)
                 .OrderByDescending(t => t.CriadoEm);
 
-            if (httpRequest.Query.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
-                && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
-            {
-                query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
-            }
+            // if (httpRequest.Query.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
+            //     && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
+            // {
+            //     query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
+            // }
 
             var transacaoModel = await query
                 .Select(t => t.ToModel())

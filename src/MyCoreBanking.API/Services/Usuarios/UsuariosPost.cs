@@ -38,6 +38,8 @@ public class UsuariosPost
 
             usuarioEntity.HashSenha(args.Senha);
 
+            // TODO: o usuário deve iniciar com uma conta corrente pré cadastrada
+
             context.Usuarios.Add(usuarioEntity);
             await context.SaveChangesAsync();
 
