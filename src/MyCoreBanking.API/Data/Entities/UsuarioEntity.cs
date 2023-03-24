@@ -1,4 +1,6 @@
-﻿namespace MyCoreBanking.API.Data.Entities;
+﻿using MyCoreBanking.Models;
+
+namespace MyCoreBanking.API.Data.Entities;
 
 internal sealed class UsuarioEntity : BaseDataEntity
 {
@@ -24,4 +26,11 @@ internal sealed class UsuarioEntity : BaseDataEntity
     {
         SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha);
     }
+
+    public UsuarioModel ToModel() => new()
+    {
+        Id = Id,
+        Nome = Nome,
+        Email = Email,
+    };
 }

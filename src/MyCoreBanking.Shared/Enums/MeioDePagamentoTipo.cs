@@ -2,6 +2,13 @@ namespace MyCoreBanking;
 
 public enum MeioDePagamentoTipo
 {
-    CartaoDeCredito,
-    ContaCorrente,
+    Credito,
+    Debito,
+    Pix,
+    Dinheiro,
+    Cheque,
+    Boleto,
+    Transferencia,
+    Outros,
+    Cartao
 }

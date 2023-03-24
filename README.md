@@ -39,42 +39,42 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 - [x] Cadastro
 - [x] Login
-- [ ] Alterar senha
-- [ ] Alterar dados pessoais
+- [x] Obter por Id
+- [x] Alteração
 - [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 
-### Transações
+### Contas
 
 - [x] Cadastro
+  - [x] Regra de negócio: Limite máximo de 05 contas por usuário
 - [x] Listagem
-  - [x] Listagem por meio de pagamento (id) -> (visualizar gastos de um cartão de crédito específico ou conta corrente)
-  - [x] Listagem por meio de pagamento (enum) -> (visualizar gastos de cartões de crédito ou contas correntes)
-  - [x] Listagem por tipo de transação (enum) -> (receita, despesa)
-  - [x] Listagem por período -> (data inicial e/ou data final)
 - [x] Obter por Id
 - [x] Alteração
 - [x] Exclusão
+  - [x] Regra de negócio: Limite mínimo de 01 conta por usuário
+  - [x] Regra de negócio: Não é possível excluir uma conta que transações associadas
 
-### Contas correntes
+### Transações
 
-- [x] Cadastro
-- [x] Listagem
-  - [ ] Listagem por período
-  - [ ] Listagem por banco
+- [ ] Cadastro
+- [ ] Listagem
+  - [ ] Listagem por meio de pagamento (enum) -> (visualizar somente transações PIX, por exemplo)
+  - [ ] Listagem por tipo de transação (enum) -> (receita, despesa)
+  - [ ] Listagem por período -> (data inicial e/ou data final)
 - [ ] Obter por Id
 - [ ] Alteração
 - [ ] Exclusão
 
 ### Cartões de crédito
 
-- [x] Cadastro
-- [x] Listagem
+- [ ] Cadastro
+- [ ] Listagem
   - [ ] Listagem por período
   - [ ] Listagem por bandeira
   - [ ] Listagem por banco
-- [x] Obter por Id
-- [x] Alteração
-- [x] Exclusão
+- [ ] Obter por Id
+- [ ] Alteração
+- [ ] Exclusão
 
 <!-- ## Arquitetura
 

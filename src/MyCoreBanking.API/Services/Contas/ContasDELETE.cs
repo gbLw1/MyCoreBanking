@@ -40,6 +40,10 @@ public class ContasDELETE
             if (conta is null)
                 throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(conta));
 
+            // Regra para não permitir que o usuário exclua uma conta que possui transações
+            if (await context.Transacoes.AnyAsync(t => t.ContaId == contaId))
+                throw new InvalidOperationException(message: "Não é possível excluir uma conta que possui transações.");
+
             context.Contas.Remove(conta);
             await context.SaveChangesAsync();
 
