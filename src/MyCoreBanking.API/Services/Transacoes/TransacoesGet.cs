@@ -49,11 +49,11 @@ public static class TransacoesGet
                 query = query.Where(t => t.MeioDePagamento == meioDePagamentoEnum);
             }
 
-            // Filtro por enum "tipo de transação"
-            if (queryParameters.TryGetValue("tipoDeTransacao", out var tipoDeTransacao)
-                && Enum.TryParse<TransacaoTipo>(tipoDeTransacao, out var tipoDeTransacaoEnum))
+            // Filtro por enum "tipo de operação" (receita ou despesa)
+            if (queryParameters.TryGetValue("tipoDeOperacao", out var tipoDeOperacao)
+                && Enum.TryParse<OperacaoTipo>(tipoDeOperacao, out var tipoDeOperacaoEnum))
             {
-                query = query.Where(t => t.Tipo == tipoDeTransacaoEnum);
+                query = query.Where(t => t.TipoDeOperacao == tipoDeOperacaoEnum);
             }
 
             // Filtro por período de data

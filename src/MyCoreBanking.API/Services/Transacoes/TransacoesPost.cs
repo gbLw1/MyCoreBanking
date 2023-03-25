@@ -43,21 +43,6 @@ public static class TransacoesPost
 
             var transacaoEntity = new TransacaoEntity
             {
-                Descricao = args.Descricao,
-                Observacao = args.Observacao,
-                Tipo = args.Tipo,
-                Valor = args.Valor,
-                DataPagamento = args.DataPagamento,
-                MeioDePagamento = args.MeioPagamento,
-                Categoria = args.Categoria,
-                Recorrente = args.Recorrente,
-                DataVigenciaInicio = args.DataVigenciaInicio,
-                DataVigenciaFim = args.DataVigenciaFim,
-                DiaVencimento = args.DiaVencimento,
-                NumeroParcelas = args.NumeroParcelas,
-                ValorParcela = args.ValorParcela,
-                UsuarioId = userId,
-                ContaId = contaId
             };
 
             context.Transacoes.Add(transacaoEntity);

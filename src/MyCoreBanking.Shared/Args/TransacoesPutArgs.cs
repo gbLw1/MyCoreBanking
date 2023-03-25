@@ -14,7 +14,7 @@ public class TransacoesPutArgs
 
     public Guid MeioDePagamentoId { get; set; }
 
-    public TransacaoTipo Tipo { get; set; }
+    public OperacaoTipo Tipo { get; set; }
 
 
     public sealed class Validator : AbstractValidator<TransacoesPutArgs>

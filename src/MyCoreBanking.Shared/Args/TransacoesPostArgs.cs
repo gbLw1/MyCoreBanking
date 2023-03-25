@@ -6,7 +6,7 @@ public class TransacoesPostArgs
 {
     public string Descricao { get; set; } = default!;
     public string? Observacao { get; set; }
-    public TransacaoTipo Tipo { get; set; }
+    public OperacaoTipo Tipo { get; set; }
     public decimal Valor { get; set; }
     public DateTime? DataPagamento { get; set; }
     public MeioDePagamentoTipo MeioPagamento { get; set; }

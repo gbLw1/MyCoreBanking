@@ -16,7 +16,15 @@ internal class TransacaoEntity : BaseDataEntity
     /// </summary>
     public DateTime? DataPagamento { get; set; }
 
-    public TransacaoTipo Tipo { get; set; }
+    /// <summary>
+    /// <para>Indica o tipo de operação da transação: entrada ou saída</para>
+    /// </summary>
+    public OperacaoTipo TipoDeOperacao { get; set; }
+
+    /// <summary>
+    /// <para>Indica o tipo de transação: recorrente, parcelada ou única</para>
+    /// </summary>
+    public TransacaoTipo TipoDeTransacao { get; set; }
 
     public MeioDePagamentoTipo MeioDePagamento { get; set; }
 
@@ -24,11 +32,6 @@ internal class TransacaoEntity : BaseDataEntity
 
 
     /* ----------------- ↓ Transações Recorrentes e Parceladas ↓ ---------------- */
-
-    /// <summary>
-    /// <para>Obrigatório quando Recorrente</para>
-    /// </summary>
-    public bool Recorrente { get; set; }
 
     /// <summary>
     /// <para>Obrigatório quando Recorrente ou Parcelamento</para>
@@ -76,12 +79,12 @@ internal class TransacaoEntity : BaseDataEntity
         Id = Id,
         Descricao = Descricao,
         Observacao = Observacao,
-        Tipo = Tipo,
+        TipoDeOperacao = TipoDeOperacao,
+        TipoDeTransacao = TipoDeTransacao,
         Valor = Valor,
         DataPagamento = DataPagamento,
         MeioPagamento = MeioDePagamento,
         Categoria = Categoria,
-        Recorrente = Recorrente,
         DataVigenciaInicio = DataVigenciaInicio,
         DataVigenciaFim = DataVigenciaFim,
         DiaVencimento = DiaVencimento,

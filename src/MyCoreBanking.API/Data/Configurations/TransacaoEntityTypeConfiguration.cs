@@ -22,9 +22,15 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .IsRequired(false)
             .HasMaxLength(250);
 
-        // public TransacaoTipo Tipo { get; set; }
+        // public OperacaoTipo TipoDeOperacao { get; set; }
         builder
-            .Property(x => x.Tipo)
+            .Property(x => x.TipoDeOperacao)
+            .HasConversion<string>()
+            .IsRequired();
+
+        // public TransacaoTipo TipoDeTransacao { get; set; }
+        builder
+            .Property(x => x.TipoDeTransacao)
             .HasConversion<string>()
             .IsRequired();
 
@@ -49,11 +55,6 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
         builder
             .Property(x => x.Categoria)
             .HasConversion<string>()
-            .IsRequired();
-
-        // public bool Recorrente { get; set; }
-        builder
-            .Property(x => x.Recorrente)
             .IsRequired();
 
         // public DateTime? DataVigenciaInicio { get; set; }
