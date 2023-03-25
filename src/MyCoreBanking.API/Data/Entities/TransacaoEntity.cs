@@ -23,7 +23,7 @@ internal class TransacaoEntity : BaseDataEntity
     public Categoria Categoria { get; set; }
 
 
-    /* ------------------------ ↓ Transação recorrente ↓ ------------------------ */
+    /* ----------------- ↓ Transações Recorrentes e Parceladas ↓ ---------------- */
 
     /// <summary>
     /// <para>Obrigatório quando Recorrente</para>
