@@ -49,7 +49,7 @@ internal class TransacaoEntity : BaseDataEntity
     /// <para>Obrigatório quando Recorrente ou Parcelamento</para>
     /// <para>Dia limite para efetivar o pagamento, usado para identificar atrasos</para>
     /// </summary>
-    public int? DiaVencimento { get; set; }
+    public DateTime? DataVencimento { get; set; }
 
     /// <summary>
     /// <para>Obrigatório quando Parcelamento</para>

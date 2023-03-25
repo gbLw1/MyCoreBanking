@@ -39,13 +39,34 @@ public static class TransacoesPost
 
             // TODO: Se for transação recorrente, DataVigenciaInicio e DataVigenciaFim são obrigatórias
 
-            // TODO: Se for transação parcelada, DiaVencimento, NumeroParcelas e ValorParcela são obrigatórias
 
             var transacaoEntity = new TransacaoEntity
             {
             };
-
             context.Transacoes.Add(transacaoEntity);
+
+
+            // TODO: Se for transação parcelada, DiaVencimento, NumeroParcelas e ValorParcela são obrigatórias
+            for (int i = 0; i < args.NumeroParcelas!.Value; i++)
+            {
+                var transacaoParcela = new TransacaoEntity
+                {
+                    ContaId = contaId,
+                    Descricao = $"{args.Descricao} - Parcela {i + 1}/{args.NumeroParcelas}",
+                    Observacao = args.Observacao,
+                    TipoDeOperacao = args.Tipo,
+                    TipoDeTransacao = TransacaoTipo.Parcelada,
+                    Valor = args.ValorParcela!.Value,
+                    // DataPagamento = args.DataPagamento,
+                    // MeioPagamento = args.MeioPagamento,
+                    Categoria = args.Categoria,
+                    DataVencimento = args.InicioParcelamento!.Value.AddMonths(i),
+                    // DataVigenciaInicio = args.InicioParcelamento!.Value.AddMonths(i),
+                    // DataVigenciaFim = args.InicioParcelamento!.Value.AddMonths(i + 1),
+                };
+
+                context.Transacoes.Add(transacaoParcela);
+            }
 
             await context.SaveChangesAsync();
 

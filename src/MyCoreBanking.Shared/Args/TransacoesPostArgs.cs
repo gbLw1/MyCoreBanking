@@ -11,13 +11,9 @@ public class TransacoesPostArgs
     public DateTime? DataPagamento { get; set; }
     public MeioDePagamentoTipo MeioPagamento { get; set; }
     public Categoria Categoria { get; set; }
-    public bool Recorrente { get; set; }
-    public DateTime? DataVigenciaInicio { get; set; }
-    public DateTime? DataVigenciaFim { get; set; }
-    public int? DiaVencimento { get; set; }
+    public DateTime? InicioParcelamento { get; set; }
     public int? NumeroParcelas { get; set; }
     public decimal? ValorParcela { get; set; }
-
 
     public class Validator : AbstractValidator<TransacoesPostArgs>
     {
