@@ -118,7 +118,7 @@ public static class TransacoesPost
                 default: throw new IndexOutOfRangeException(message: "Tipo de transação não suportado");
             }
 
-            return httpRequest.CreateResult(new { transacaoEntity.Id });
+            return httpRequest.CreateResult();
         }
         catch (Exception ex)
         {
