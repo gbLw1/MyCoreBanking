@@ -67,9 +67,9 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .Property(x => x.DataVigenciaFim)
             .IsRequired(false);
 
-        // public int? DiaVencimento { get; set; }
+        // public DateTime? DataVencimento { get; set; }
         builder
-            .Property(x => x.DiaVencimento)
+            .Property(x => x.DataVencimento)
             .IsRequired(false);
 
         // public int? NumeroParcelas { get; set; }

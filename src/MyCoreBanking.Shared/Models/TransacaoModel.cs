@@ -9,12 +9,10 @@ public class TransacaoModel
     public DateTime? DataPagamento { get; set; }
     public OperacaoTipo TipoDeOperacao { get; set; }
     public TransacaoTipo TipoDeTransacao { get; set; }
-    public MeioDePagamentoTipo MeioPagamento { get; set; }
+    public MeioDePagamentoTipo MeioDePagamento { get; set; }
     public Categoria Categoria { get; set; }
-    public bool Recorrente { get; set; }
-    public DateTime? DataVigenciaInicio { get; set; }
-    public DateTime? DataVigenciaFim { get; set; }
-    public int? DiaVencimento { get; set; }
+    public DateTime? InicioParcelamento { get; set; }
+    public DateTime? DataVencimento { get; set; }
     public int? NumeroParcelas { get; set; }
     public decimal? ValorParcela { get; set; }
 }

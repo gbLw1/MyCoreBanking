@@ -17,9 +17,8 @@ public static class TransacoesPost
 {
     [FunctionName(nameof(TransacoesPost))]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "transacoes/{contaId:guid}")] HttpRequest httpRequest,
-        ILogger logger,
-        Guid contaId)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "transacoes")] HttpRequest httpRequest,
+        ILogger logger)
     {
         try
         {
@@ -27,45 +26,66 @@ public static class TransacoesPost
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var conta = await context.Contas
-                .FirstOrDefaultAsync(x => x.Id == contaId);
-
-            if (conta is null)
-                throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(contaId));
-
             var args = await httpRequest.ReadJsonBodyAsAsync<TransacoesPostArgs>();
 
             new TransacoesPostArgs.Validator().ValidateAndThrow(args);
 
-            // TODO: Se for transação recorrente, DataVigenciaInicio e DataVigenciaFim são obrigatórias
+            var conta = await context.Contas
+                .AsNoTrackingWithIdentityResolution()
+                .Where(c => c.UsuarioId == userId)
+                .Where(c => c.Id == args.ContaId)
+                .FirstOrDefaultAsync();
 
+            if (conta is null)
+                throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(args.ContaId));
 
-            var transacaoEntity = new TransacaoEntity
+            TransacaoEntity transacaoEntity = new();
+
+            switch (args.TipoDeTransacao)
             {
-            };
-            context.Transacoes.Add(transacaoEntity);
+                case TransacaoTipo.Unica:
+                    transacaoEntity = new()
+                    {
+                        UsuarioId = userId,
+                        ContaId = args.ContaId,
+                        Descricao = args.Descricao,
+                        Observacao = args.Observacao,
+                        Valor = args.Valor,
+                        TipoDeOperacao = args.TipoDeOperacao,
+                        MeioDePagamento = args.MeioDePagamento,
+                        Categoria = args.Categoria,
+                        DataPagamento = args.DataPagamento,
+                    };
 
+                    context.Transacoes.Add(transacaoEntity);
+                    break;
 
-            // TODO: Se for transação parcelada, DiaVencimento, NumeroParcelas e ValorParcela são obrigatórias
-            for (int i = 0; i < args.NumeroParcelas!.Value; i++)
-            {
-                var transacaoParcela = new TransacaoEntity
-                {
-                    ContaId = contaId,
-                    Descricao = $"{args.Descricao} - Parcela {i + 1}/{args.NumeroParcelas}",
-                    Observacao = args.Observacao,
-                    TipoDeOperacao = args.Tipo,
-                    TipoDeTransacao = TransacaoTipo.Parcelada,
-                    Valor = args.ValorParcela!.Value,
-                    // DataPagamento = args.DataPagamento,
-                    // MeioPagamento = args.MeioPagamento,
-                    Categoria = args.Categoria,
-                    DataVencimento = args.InicioParcelamento!.Value.AddMonths(i),
-                    // DataVigenciaInicio = args.InicioParcelamento!.Value.AddMonths(i),
-                    // DataVigenciaFim = args.InicioParcelamento!.Value.AddMonths(i + 1),
-                };
+                case TransacaoTipo.Parcelada:
+                    for (int i = 0; i < args.NumeroParcelas!.Value; i++)
+                    {
+                        transacaoEntity = new()
+                        {
+                            UsuarioId = userId,
+                            ContaId = args.ContaId,
+                            Descricao = $"{args.Descricao} - ({i + 1}/{args.NumeroParcelas.Value})",
+                            Observacao = args.Observacao,
+                            DataPagamento = null,
+                            Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
+                            TipoDeOperacao = args.TipoDeOperacao,
+                            TipoDeTransacao = TransacaoTipo.Parcelada,
+                            MeioDePagamento = args.MeioDePagamento,
+                            Categoria = args.Categoria,
+                            InicioParcelamento = args.InicioParcelamento,
+                            DataVencimento = args.DataVencimento,
+                            NumeroParcelas = args.NumeroParcelas,
+                            ValorParcela = args.ValorParcela,
+                        };
 
-                context.Transacoes.Add(transacaoParcela);
+                        context.Transacoes.Add(transacaoEntity);
+                    }
+                    break;
+
+                default: throw new IndexOutOfRangeException(message: "Tipo de transação não suportado");
             }
 
             await context.SaveChangesAsync();

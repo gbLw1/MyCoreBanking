@@ -31,22 +31,16 @@ internal class TransacaoEntity : BaseDataEntity
     public Categoria Categoria { get; set; }
 
 
-    /* ----------------- ↓ Transações Recorrentes e Parceladas ↓ ---------------- */
+    /* ----------------- ↓ Transações Parceladas ↓ ---------------- */
 
     /// <summary>
-    /// <para>Obrigatório quando Recorrente ou Parcelamento</para>
-    /// <para>Data de quando uma transação começa a ser recorrente ou inicia um parcelamento</para>
+    /// <para>Obrigatório quando Parcelamento</para>
+    /// <para>Data de quando inicia um parcelamento</para>
     /// </summary>
-    public DateTime? DataVigenciaInicio { get; set; }
+    public DateTime? InicioParcelamento { get; set; }
 
     /// <summary>
-    /// <para>Opcional para transação recorrente</para>
-    /// <para>Identifica o fim de uma transação recorrente, deixando de aparecer no extrato a partir desta data</para>
-    /// </summary>
-    public DateTime? DataVigenciaFim { get; set; }
-
-    /// <summary>
-    /// <para>Obrigatório quando Recorrente ou Parcelamento</para>
+    /// <para>Obrigatório quando Parcelamento</para>
     /// <para>Dia limite para efetivar o pagamento, usado para identificar atrasos</para>
     /// </summary>
     public DateTime? DataVencimento { get; set; }
@@ -79,16 +73,15 @@ internal class TransacaoEntity : BaseDataEntity
         Id = Id,
         Descricao = Descricao,
         Observacao = Observacao,
-        TipoDeOperacao = TipoDeOperacao,
-        TipoDeTransacao = TipoDeTransacao,
         Valor = Valor,
         DataPagamento = DataPagamento,
-        MeioPagamento = MeioDePagamento,
+        TipoDeOperacao = TipoDeOperacao,
+        TipoDeTransacao = TipoDeTransacao,
+        MeioDePagamento = MeioDePagamento,
         Categoria = Categoria,
-        DataVigenciaInicio = DataVigenciaInicio,
-        DataVigenciaFim = DataVigenciaFim,
-        DiaVencimento = DiaVencimento,
+        InicioParcelamento = InicioParcelamento,
+        DataVencimento = DataVencimento,
         NumeroParcelas = NumeroParcelas,
-        ValorParcela = ValorParcela
+        ValorParcela = ValorParcela,
     };
 }
