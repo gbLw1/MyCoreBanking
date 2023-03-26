@@ -6,7 +6,7 @@ public class TransacoesPostArgs
 {
     public string Descricao { get; set; } = string.Empty;
     public string? Observacao { get; set; }
-    public decimal Valor { get; set; }
+    public decimal? Valor { get; set; }
     public DateTime? DataPagamento { get; set; }
     public OperacaoTipo TipoDeOperacao { get; set; }
     public TransacaoTipo TipoDeTransacao { get; set; }
@@ -29,8 +29,11 @@ public class TransacoesPostArgs
                 .NotEmpty().WithMessage("A descrição da transação é obrigatória")
                 .MaximumLength(100).WithMessage("A descrição da transação deve ter no máximo 100 caracteres");
 
-            RuleFor(t => t.Valor)
-                .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
+            When(t => t.TipoDeTransacao == TransacaoTipo.Unica, () =>
+            {
+                RuleFor(t => t.Valor)
+                    .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
+            });
 
             RuleFor(t => t.TipoDeOperacao)
                 .IsInEnum().WithMessage("O tipo de operação da transação é inválido");
@@ -57,7 +60,8 @@ public class TransacoesPostArgs
 
                 RuleFor(t => t.NumeroParcelas)
                     .NotEmpty().WithMessage("O número de parcelas é obrigatório")
-                    .GreaterThan(0).WithMessage("O número de parcelas deve ser maior que zero");
+                    .GreaterThan(0).WithMessage("O número de parcelas deve ser maior que zero")
+                    .LessThanOrEqualTo(99).WithMessage("O número de parcelas deve ser menor ou igual a 99");
 
                 RuleFor(t => t.ValorParcela)
                     .NotEmpty().WithMessage("O valor da parcela é obrigatório")

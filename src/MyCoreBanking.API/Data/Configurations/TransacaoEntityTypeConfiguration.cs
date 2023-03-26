@@ -57,16 +57,6 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .HasConversion<string>()
             .IsRequired();
 
-        // public DateTime? DataVigenciaInicio { get; set; }
-        builder
-            .Property(x => x.DataVigenciaInicio)
-            .IsRequired(false);
-
-        // public DateTime? DataVigenciaFim { get; set; }
-        builder
-            .Property(x => x.DataVigenciaFim)
-            .IsRequired(false);
-
         // public DateTime? DataVencimento { get; set; }
         builder
             .Property(x => x.DataVencimento)

@@ -31,16 +31,8 @@ public static class TransacoesGet
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
-                // .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
                 .OrderByDescending(t => t.DataPagamento);
-
-            // // Filtro por "meioDePagamentoId"
-            // if (queryParameters.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
-            //     && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
-            // {
-            //     query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
-            // }
 
             // Filtro por enum "meio de pagamento"
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
@@ -54,6 +46,13 @@ public static class TransacoesGet
                 && Enum.TryParse<OperacaoTipo>(tipoDeOperacao, out var tipoDeOperacaoEnum))
             {
                 query = query.Where(t => t.TipoDeOperacao == tipoDeOperacaoEnum);
+            }
+
+            // Filtro por enum "tipo de transação" (parcelada ou única)
+            if (queryParameters.TryGetValue("tipoDeTransacao", out var tipoDeTransacao)
+                && Enum.TryParse<TransacaoTipo>(tipoDeTransacao, out var tipoDeTransacaoEnum))
+            {
+                query = query.Where(t => t.TipoDeTransacao == tipoDeTransacaoEnum);
             }
 
             // Filtro por período de data
@@ -87,7 +86,7 @@ public static class TransacoesGet
                 .Select(t => t.ToModel())
                 .ToListAsync();
 
-            var result = new List<TransacaoModel>(transacoes).AsReadOnly();
+            var result = transacoes.AsReadOnly();
 
             return httpRequest.CreateResult(result);
         }

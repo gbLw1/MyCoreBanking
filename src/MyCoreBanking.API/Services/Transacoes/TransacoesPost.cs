@@ -31,7 +31,6 @@ public static class TransacoesPost
             new TransacoesPostArgs.Validator().ValidateAndThrow(args);
 
             var conta = await context.Contas
-                .AsNoTrackingWithIdentityResolution()
                 .Where(c => c.UsuarioId == userId)
                 .Where(c => c.Id == args.ContaId)
                 .FirstOrDefaultAsync();
@@ -40,24 +39,53 @@ public static class TransacoesPost
                 throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(args.ContaId));
 
             TransacaoEntity transacaoEntity = new();
+            using var dbTransaction = await context.Database.BeginTransactionAsync();
 
             switch (args.TipoDeTransacao)
             {
                 case TransacaoTipo.Unica:
-                    transacaoEntity = new()
+                    try
                     {
-                        UsuarioId = userId,
-                        ContaId = args.ContaId,
-                        Descricao = args.Descricao,
-                        Observacao = args.Observacao,
-                        Valor = args.Valor,
-                        TipoDeOperacao = args.TipoDeOperacao,
-                        MeioDePagamento = args.MeioDePagamento,
-                        Categoria = args.Categoria,
-                        DataPagamento = args.DataPagamento,
-                    };
+                        transacaoEntity = new()
+                        {
+                            UsuarioId = userId,
+                            ContaId = args.ContaId,
+                            Descricao = args.Descricao,
+                            Observacao = args.Observacao,
+                            Valor = args.Valor!.Value,
+                            TipoDeOperacao = args.TipoDeOperacao,
+                            MeioDePagamento = args.MeioDePagamento,
+                            Categoria = args.Categoria,
+                            DataPagamento = args.DataPagamento,
+                        };
 
-                    context.Transacoes.Add(transacaoEntity);
+                        context.Transacoes.Add(transacaoEntity);
+                        await context.SaveChangesAsync();
+
+                        if (args.DataPagamento.HasValue)
+                        {
+                            if (args.TipoDeOperacao == OperacaoTipo.Despesa)
+                            {
+                                conta.Saldo -= args.Valor!.Value;
+                            }
+                            else
+                            {
+                                conta.Saldo += args.Valor!.Value;
+                            }
+
+                            conta.UltimaAtualizacaoEm = DateTime.Now;
+
+                            context.Contas.Update(conta);
+                            await context.SaveChangesAsync();
+                        }
+
+                        dbTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbTransaction.Rollback();
+                        throw;
+                    }
                     break;
 
                 case TransacaoTipo.Parcelada:
@@ -82,13 +110,13 @@ public static class TransacoesPost
                         };
 
                         context.Transacoes.Add(transacaoEntity);
+
+                        await context.SaveChangesAsync();
                     }
                     break;
 
                 default: throw new IndexOutOfRangeException(message: "Tipo de transação não suportado");
             }
-
-            await context.SaveChangesAsync();
 
             return httpRequest.CreateResult(new { transacaoEntity.Id });
         }

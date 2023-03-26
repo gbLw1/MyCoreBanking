@@ -12,7 +12,7 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230324185034_Initial")]
+    [Migration("20230326224511_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,10 +83,7 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<DateTime?>("DataPagamento")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataVigenciaFim")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataVigenciaInicio")
+                    b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
@@ -94,8 +91,8 @@ namespace MyCoreBanking.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("DiaVencimento")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("InicioParcelamento")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MeioDePagamento")
                         .IsRequired()
@@ -108,10 +105,11 @@ namespace MyCoreBanking.API.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<bool>("Recorrente")
-                        .HasColumnType("bit");
+                    b.Property<string>("TipoDeOperacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tipo")
+                    b.Property<string>("TipoDeTransacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
