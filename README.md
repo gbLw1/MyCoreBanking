@@ -1,12 +1,13 @@
 # MyCoreBanking
 
-## ToDO:
-
-- [ ] Criar algum endpoint com 402
-
 ## Sobre
 
 MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas correntes, cartões de crédito, transações, etc.
+
+## Versões
+
+- [x] v1.0: Funcionalidades básicas de cadastro de usuário, login, cadastro de contas e cadastro de transações únicas e parceladas.
+- [ ] v2.0: Funcionalidade adicional para cadastro de cartões de crédito.
 
 ## Tecnologias
 
@@ -56,16 +57,19 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ### Transações
 
-- [ ] Cadastro
-- [ ] Listagem
-  - [ ] Listagem por meio de pagamento (enum) -> (visualizar somente transações PIX, por exemplo)
-  - [ ] Listagem por tipo de transação (enum) -> (receita, despesa)
-  - [ ] Listagem por período -> (data inicial e/ou data final)
+- [x] Cadastro
+  - [x] Transação única
+  - [x] Parcelamentos
+- [x] Listagem
+  - [x] Listagem por meio de pagamento (enum) -> (visualizar somente transações PIX, por exemplo)
+  - [x] Listagem por tipo de operação (enum) -> (receita, despesa)
+  - [x] Listagem por tipo de transação (enum) -> (única, parcelada)
+  - [x] Listagem por período de pagamentos efetivados -> (data inicial e/ou data final)
 - [ ] Obter por Id
 - [ ] Alteração
 - [ ] Exclusão
 
-### Cartões de crédito
+### Cartões de crédito (v2)
 
 - [ ] Cadastro
 - [ ] Listagem
@@ -76,21 +80,19 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [ ] Alteração
 - [ ] Exclusão
 
-<!-- ## Arquitetura
-
-### API
-
-A API é uma Azure Function, que utiliza o padrões REST 
-
-A API é uma Azure Function, que utiliza o padrão de arquitetura de software DDD (Domain Driven Design). A API é responsável por receber as requisições do cliente, validar os dados e chamar os serviços de domínio. Os serviços de domínio são responsáveis por realizar as regras de negócio e persistir os dados no banco de dados.
-
-### Banco de dados
-
-O banco de dados é um SQL Server 2022, que utiliza o Entity Framework Core para mapear as entidades do domínio para tabelas do banco de dados.
+## Arquitetura
 
 ### Cliente
 
-O cliente é uma aplicação Blazor WebAssembly, que utiliza o padrão de arquitetura de software MVVM (Model-View-ViewModel). O cliente é responsável por exibir as informações para o usuário e enviar as requisições para a API. -->
+O cliente é uma aplicação Blazor WebAssembly, que utiliza o padrão de arquitetura de software MVVM (Model-View-ViewModel). O cliente é responsável por exibir as informações para o usuário e enviar as requisições para a API.
+
+### API
+
+A API é uma Azure Function, que utiliza o padrão REST para expor os endpoints. É responsável por receber as requisições do cliente, validar os dados e chamar os serviços de domínio. Os serviços de domínio são responsáveis por realizar as regras de negócio e persistir os dados no banco de dados.
+
+### Banco de dados
+
+O banco de dados é um SQL Server 2022, que utiliza o Entity Framework Core para mapear as entidades do domínio para tabelas do banco de dados. O banco de dados é responsável por armazenar os dados da aplicação.
 
 ## Diagrama de contexto
 
