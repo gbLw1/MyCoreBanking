@@ -59,7 +59,7 @@ public static class TransacoesPost
                             DataPagamento = args.DataPagamento,
                         };
 
-                        context.Transacoes.Add(transacaoEntity);
+                        await context.AddAsync(transacaoEntity);
                         await context.SaveChangesAsync();
 
                         if (args.DataPagamento.HasValue)
@@ -89,29 +89,39 @@ public static class TransacoesPost
                     break;
 
                 case TransacaoTipo.Parcelada:
-                    for (int i = 0; i < args.NumeroParcelas!.Value; i++)
+                    try
                     {
-                        transacaoEntity = new()
+                        for (int i = 0; i < args.NumeroParcelas!.Value; i++)
                         {
-                            UsuarioId = userId,
-                            ContaId = args.ContaId,
-                            Descricao = $"{args.Descricao} - ({i + 1}/{args.NumeroParcelas.Value})",
-                            Observacao = args.Observacao,
-                            DataPagamento = null,
-                            Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
-                            TipoDeOperacao = args.TipoDeOperacao,
-                            TipoDeTransacao = TransacaoTipo.Parcelada,
-                            MeioDePagamento = args.MeioDePagamento,
-                            Categoria = args.Categoria,
-                            InicioParcelamento = args.InicioParcelamento,
-                            DataVencimento = args.DataVencimento,
-                            NumeroParcelas = args.NumeroParcelas,
-                            ValorParcela = args.ValorParcela,
-                        };
+                            transacaoEntity = new()
+                            {
+                                UsuarioId = userId,
+                                ContaId = args.ContaId,
+                                Descricao = $"{args.Descricao} - ({i + 1}/{args.NumeroParcelas.Value})",
+                                Observacao = args.Observacao,
+                                DataPagamento = null,
+                                Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
+                                TipoDeOperacao = args.TipoDeOperacao,
+                                TipoDeTransacao = TransacaoTipo.Parcelada,
+                                MeioDePagamento = args.MeioDePagamento,
+                                Categoria = args.Categoria,
+                                InicioParcelamento = args.InicioParcelamento,
+                                DataVencimento = args.DataVencimento!.Value.AddMonths(i),
+                                NumeroParcelas = args.NumeroParcelas,
+                                ValorParcela = args.ValorParcela,
+                            };
 
-                        context.Transacoes.Add(transacaoEntity);
+                            context.Transacoes.Add(transacaoEntity);
 
-                        await context.SaveChangesAsync();
+                            await context.SaveChangesAsync();
+                        }
+
+                        dbTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbTransaction.Rollback();
+                        throw;
                     }
                     break;
 

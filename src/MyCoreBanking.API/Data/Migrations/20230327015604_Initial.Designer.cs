@@ -12,7 +12,7 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230326224511_Initial")]
+    [Migration("20230327015604_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

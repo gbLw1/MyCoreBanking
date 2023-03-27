@@ -12,7 +12,7 @@ internal class ContaEntity : BaseDataEntity
     public Guid UsuarioId { get; set; }
     public UsuarioEntity Usuario { get; set; } = null!;
 
-    public IReadOnlyCollection<TransacaoEntity> Transacoes { get; set; } = Array.Empty<TransacaoEntity>();
+    public ICollection<TransacaoEntity>? Transacoes { get; set; }
 
 
     public ContaModel ToModel() => new()

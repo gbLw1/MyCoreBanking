@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using MyCoreBanking;
 using MyCoreBanking.API.Data;
 using MyCoreBanking.API.Data.Entities;
-using MyCoreBanking.Models;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -55,7 +54,7 @@ public static class TransacoesGet
                 query = query.Where(t => t.TipoDeTransacao == tipoDeTransacaoEnum);
             }
 
-            // Filtro por período de data
+            // Filtro por período de data de pagamento
             string[] formatosDeData = { "dd-MM-yyyy", "dd/MM/yyyy" };
             CultureInfo ptBR = new("pt-BR");
             DateTime dataInicial = default;
