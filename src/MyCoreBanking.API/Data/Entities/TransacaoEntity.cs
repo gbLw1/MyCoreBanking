@@ -14,25 +14,25 @@ internal class TransacaoEntity : BaseDataEntity
     /// <para>Identifica a data de pagamento/recebimento de uma transação</para>
     /// <para>Quando não informado, é considerado como uma transação pendente</para>
     /// </summary>
-    public DateTime? DataDeEfetivacao { get; set; }
+    public DateTime? DataEfetivacao { get; set; }
 
     /// <summary>
     /// <para>Transação única: identificar quando ocorreu a transação</para>
     /// <para>Transação parcelada: identificar quando inicia um parcelamento</para>
     /// </summary>
-    public DateTime DataDaTransacao { get; set; }
+    public DateTime DataTransacao { get; set; }
 
     /// <summary>
     /// <para>Indica o tipo de operação da transação: entrada ou saída</para>
     /// </summary>
-    public OperacaoTipo TipoDeOperacao { get; set; }
+    public OperacaoTipo TipoOperacao { get; set; }
 
     /// <summary>
     /// <para>Indica o tipo de transação: recorrente, parcelada ou única</para>
     /// </summary>
-    public TransacaoTipo TipoDeTransacao { get; set; }
+    public TransacaoTipo TipoTransacao { get; set; }
 
-    public MeioDePagamentoTipo MeioDePagamento { get; set; }
+    public MeioDePagamentoTipo MeioPagamento { get; set; }
 
     public Categoria Categoria { get; set; }
 
@@ -80,11 +80,11 @@ internal class TransacaoEntity : BaseDataEntity
         Descricao = Descricao,
         Observacao = Observacao,
         Valor = Valor,
-        DataPagamento = DataDeEfetivacao,
-        DataTransacao = DataDaTransacao,
-        TipoDeOperacao = TipoDeOperacao,
-        TipoDeTransacao = TipoDeTransacao,
-        MeioDePagamento = MeioDePagamento,
+        DataPagamento = DataEfetivacao,
+        DataTransacao = DataTransacao,
+        TipoOperacao = TipoOperacao,
+        TipoTransacao = TipoTransacao,
+        MeioPagamento = MeioPagamento,
         Categoria = Categoria,
         DataVencimento = DataVencimento,
         NumeroParcelas = NumeroParcelas,

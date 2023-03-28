@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCoreBanking.API.Data;
 
@@ -11,9 +12,10 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    partial class MeuDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230328020125_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,10 +80,10 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataDaTransacao")
+                    b.Property<DateTime?>("DataEfetivacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataDeEfetivacao")
+                    b.Property<DateTime>("DataTransacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DataVencimento")
@@ -92,7 +94,7 @@ namespace MyCoreBanking.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("MeioDePagamento")
+                    b.Property<string>("MeioPagamento")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -106,11 +108,11 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<Guid?>("ReferenciaParcelaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TipoDeOperacao")
+                    b.Property<string>("TipoOperacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TipoDeTransacao")
+                    b.Property<string>("TipoTransacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

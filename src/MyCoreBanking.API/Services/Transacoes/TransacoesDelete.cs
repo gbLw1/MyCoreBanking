@@ -40,7 +40,7 @@ public static class TransacoesDelete
             var queryParameters = httpRequest.GetQueryParameterDictionary();
             var dbTransaction = await context.Database.BeginTransactionAsync();
 
-            switch (transacao.TipoDeTransacao)
+            switch (transacao.TipoTransacao)
             {
                 case TransacaoTipo.Unica:
                     try

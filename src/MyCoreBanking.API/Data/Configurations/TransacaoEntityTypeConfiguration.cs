@@ -22,32 +22,37 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .IsRequired(false)
             .HasMaxLength(250);
 
-        // public OperacaoTipo TipoDeOperacao { get; set; }
-        builder
-            .Property(x => x.TipoDeOperacao)
-            .HasConversion<string>()
-            .IsRequired();
-
-        // public TransacaoTipo TipoDeTransacao { get; set; }
-        builder
-            .Property(x => x.TipoDeTransacao)
-            .HasConversion<string>()
-            .IsRequired();
-
         // public decimal Valor { get; set; }
         builder
             .Property(x => x.Valor)
             .HasPrecision(18, 2)
             .IsRequired();
 
-        // public DateTime? DataPagamento { get; set; }
+        // public DateTime? DataEfetivacao { get; set; }
         builder
-            .Property(x => x.DataDeEfetivacao)
+            .Property(x => x.DataEfetivacao)
             .IsRequired(false);
+
+        // public DateTime DataTransacao { get; set; }
+        builder
+            .Property(x => x.DataTransacao)
+            .IsRequired();
+
+        // public OperacaoTipo TipoOperacao { get; set; }
+        builder
+            .Property(x => x.TipoOperacao)
+            .HasConversion<string>()
+            .IsRequired();
+
+        // public TransacaoTipo TipoTransacao { get; set; }
+        builder
+            .Property(x => x.TipoTransacao)
+            .HasConversion<string>()
+            .IsRequired();
 
         // public MeioDePagamentoTipo MeioPagamento { get; set; }
         builder
-            .Property(x => x.MeioDePagamento)
+            .Property(x => x.MeioPagamento)
             .HasConversion<string>()
             .IsRequired();
 
@@ -56,6 +61,11 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .Property(x => x.Categoria)
             .HasConversion<string>()
             .IsRequired();
+
+        // public Guid? ReferenciaParcelaId { get; set; }
+        builder
+            .Property(x => x.ReferenciaParcelaId)
+            .IsRequired(false);
 
         // public DateTime? DataVencimento { get; set; }
         builder

@@ -31,7 +31,7 @@ public static class TransacoesGet
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
                 .Where(t => t.UsuarioId == userId)
-                .OrderByDescending(t => t.DataDeEfetivacao);
+                .OrderByDescending(t => t.DataEfetivacao);
 
 
             // ↓ parâmetros obrigatórios para obter as transações ↓
@@ -59,12 +59,12 @@ public static class TransacoesGet
 
                 // busca todas as transações com a data de transação ou data de vencimento no mês e ano informados
                 query = query.Where(t =>
-                        (t.TipoDeTransacao == TransacaoTipo.Parcelada
+                        (t.TipoTransacao == TransacaoTipo.Parcelada
                         && t.DataVencimento!.Value.Month == mesInt
                         && t.DataVencimento.Value.Year == anoInt)
-                    || (t.TipoDeTransacao == TransacaoTipo.Unica
-                        && t.DataDaTransacao.Month == mesInt
-                        && t.DataDaTransacao.Year == anoInt));
+                    || (t.TipoTransacao == TransacaoTipo.Unica
+                        && t.DataTransacao.Month == mesInt
+                        && t.DataTransacao.Year == anoInt));
             }
 
             #region [Outros filtros de pesquisa por query params]
@@ -73,21 +73,21 @@ public static class TransacoesGet
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
                 && Enum.TryParse<MeioDePagamentoTipo>(meioDePagamento, out var meioDePagamentoEnum))
             {
-                query = query.Where(t => t.MeioDePagamento == meioDePagamentoEnum);
+                query = query.Where(t => t.MeioPagamento == meioDePagamentoEnum);
             }
 
             // Filtro por enum "tipo de operação" (receita ou despesa)
             if (queryParameters.TryGetValue("tipoDeOperacao", out var tipoDeOperacao)
                 && Enum.TryParse<OperacaoTipo>(tipoDeOperacao, out var tipoDeOperacaoEnum))
             {
-                query = query.Where(t => t.TipoDeOperacao == tipoDeOperacaoEnum);
+                query = query.Where(t => t.TipoOperacao == tipoDeOperacaoEnum);
             }
 
             // Filtro por enum "tipo de transação" (parcelada ou única)
             if (queryParameters.TryGetValue("tipoDeTransacao", out var tipoDeTransacao)
                 && Enum.TryParse<TransacaoTipo>(tipoDeTransacao, out var tipoDeTransacaoEnum))
             {
-                query = query.Where(t => t.TipoDeTransacao == tipoDeTransacaoEnum);
+                query = query.Where(t => t.TipoTransacao == tipoDeTransacaoEnum);
             }
 
             // Filtro por enum "categoria"
@@ -107,14 +107,14 @@ public static class TransacoesGet
             if (queryParameters.TryGetValue("dataInicial", out string? dataInicialString)
                 && DateTime.TryParseExact(dataInicialString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataInicial))
             {
-                query = query.Where(t => t.DataDeEfetivacao >= dataInicial);
+                query = query.Where(t => t.DataEfetivacao >= dataInicial);
             }
 
             // Filtro por "dataFinal"
             if (queryParameters.TryGetValue("dataFinal", out string? dataFinalString)
                 && DateTime.TryParseExact(dataFinalString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataFinal))
             {
-                query = query.Where(t => t.DataDeEfetivacao <= dataFinal);
+                query = query.Where(t => t.DataEfetivacao <= dataFinal);
             }
 
             // Validação de "dataInicial" e "dataFinal"

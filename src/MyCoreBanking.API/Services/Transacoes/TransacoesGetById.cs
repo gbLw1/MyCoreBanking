@@ -30,7 +30,7 @@ public static class TransacoesGetById
                 .AsNoTrackingWithIdentityResolution()
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.Id == transacaoId)
-                .OrderByDescending(t => t.DataDaTransacao);
+                .OrderByDescending(t => t.DataTransacao);
 
             var transacao = await query
                 .Select(t => t.ToModel())
