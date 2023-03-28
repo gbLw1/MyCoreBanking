@@ -1,6 +1,6 @@
 namespace MyCoreBanking;
 
-public enum MeioDePagamentoTipo
+public enum MeioPagamentoTipo
 {
     Credito,
     Debito,

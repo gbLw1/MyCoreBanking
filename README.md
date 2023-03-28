@@ -69,8 +69,14 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [x] Listagem por categoria (enum) -> (alimentação, transporte, etc)
   - [x] Listagem por período de pagamentos efetivados -> (data inicial e/ou data final)
 - [x] Obter por Id
-- [ ] Alteração
+- [x] Alteração
+  - [x] Alteração de transação única
+  - [x] Alteração de transação parcelada
+    - [x] Alteração de parcela única (por id)
+    - [x] Alteração de parcelas pendente de pagamento
+    - [x] Alteração de todas as parcelas
 - [x] Exclusão
+  - [x] Regra de negócio: Não é possível excluir uma transação que já foi paga
   - [x] Exclusão de transação única
   - [x] Exclusão de transação parcelada
     - [x] Excluir parcela única (por id)

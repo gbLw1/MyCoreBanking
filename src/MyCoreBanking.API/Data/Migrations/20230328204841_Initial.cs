@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyCoreBanking.API.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,14 +56,15 @@ namespace MyCoreBanking.API.Migrations
                     Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Observacao = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    DataDeEfetivacao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataDaTransacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TipoDeOperacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TipoDeTransacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MeioDePagamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataEfetivacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataTransacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TipoOperacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoTransacao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MeioPagamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReferenciaParcelaId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DataVencimento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ParcelaAtual = table.Column<int>(type: "int", nullable: true),
                     NumeroParcelas = table.Column<int>(type: "int", nullable: true),
                     ValorParcela = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),

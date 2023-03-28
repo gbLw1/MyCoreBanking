@@ -11,7 +11,7 @@ public class TransacoesPostArgs
     public DateTime? DataTransacao { get; set; }
     public OperacaoTipo TipoOperacao { get; set; }
     public TransacaoTipo TipoTransacao { get; set; }
-    public MeioDePagamentoTipo MeioPagamento { get; set; }
+    public MeioPagamentoTipo MeioPagamento { get; set; }
     public Categoria Categoria { get; set; }
     public Guid ContaId { get; set; }
 

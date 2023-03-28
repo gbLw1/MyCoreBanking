@@ -37,6 +37,9 @@ public static class TransacoesDelete
             if (transacao is null)
                 throw new NotFoundException(message: "Transação não encontrada", paramName: nameof(transacaoId));
 
+            if (transacao.DataEfetivacao.HasValue)
+                throw new InvalidOperationException(message: "Não é possível excluir uma transação já efetivada");
+
             var queryParameters = httpRequest.GetQueryParameterDictionary();
             var dbTransaction = await context.Database.BeginTransactionAsync();
 

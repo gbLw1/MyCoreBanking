@@ -12,7 +12,7 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230328020125_Initial")]
+    [Migration("20230328204841_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,9 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<string>("Observacao")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("ParcelaAtual")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("ReferenciaParcelaId")
                         .HasColumnType("uniqueidentifier");

@@ -71,7 +71,7 @@ public static class TransacoesGet
 
             // Filtro por enum "meio de pagamento"
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
-                && Enum.TryParse<MeioDePagamentoTipo>(meioDePagamento, out var meioDePagamentoEnum))
+                && Enum.TryParse<MeioPagamentoTipo>(meioDePagamento, out var meioDePagamentoEnum))
             {
                 query = query.Where(t => t.MeioPagamento == meioDePagamentoEnum);
             }

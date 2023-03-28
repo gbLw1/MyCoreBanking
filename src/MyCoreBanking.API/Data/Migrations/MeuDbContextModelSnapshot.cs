@@ -103,6 +103,9 @@ namespace MyCoreBanking.API.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int?>("ParcelaAtual")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("ReferenciaParcelaId")
                         .HasColumnType("uniqueidentifier");
 

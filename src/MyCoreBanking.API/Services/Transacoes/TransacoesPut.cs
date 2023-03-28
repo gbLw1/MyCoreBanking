@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyCoreBanking;
 using MyCoreBanking.API.Data;
-using MyCoreBanking.API.Data.Entities;
 using MyCoreBanking.Args;
 
 namespace FreedomHub.API.Services.Auth;
@@ -31,33 +30,236 @@ public static class TransacoesPut
 
             new TransacoesPutArgs.Validator().ValidateAndThrow(args);
 
-            // tenta obter a transação
+            // Tenta obter a transação
             var transacaoEntity = await context.Transacoes
+                .Include(t => t.Conta) // include na conta para atualizar o saldo
                 .Where(t => t.UsuarioId == userId)
                 .FirstOrDefaultAsync(t => t.Id == transacaoId);
 
             if (transacaoEntity is null)
                 throw new NotFoundException(message: "Transação não encontrada", paramName: nameof(transacaoId));
 
-            // // tenta obter o meio de pagamento
-            // var meioDePagamento = await context.MeiosDePagamento.FirstOrDefaultAsync(m => m.Id == args.MeioDePagamentoId);
+            var queryParameters = httpRequest.GetQueryParameterDictionary();
+            var dbTransaction = await context.Database.BeginTransactionAsync();
 
-            // if (meioDePagamento is null)
-            //     throw new NotFoundException(paramName: "Meio de pagamento");
+            switch (transacaoEntity.TipoTransacao)
+            {
+                case TransacaoTipo.Unica:
+                    try
+                    {
+                        if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao is null)
+                        {
+                            throw new InvalidOperationException(message: "Não é possível desfazer uma transação efetivada");
+                        }
 
-            // if (meioDePagamento.UsuarioId != userId)
-            //     throw new UnauthorizedAccessException("Meio de pagamento não pertence ao usuário logado.");
+                        // Atualizar o saldo da conta se a data de efetivação não for null
+                        if (transacaoEntity.DataEfetivacao.HasValue)
+                        {
+                            if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                            {
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo += args.Valor;
+                            }
+                            else
+                            {
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo -= args.Valor;
+                            }
+                        }
 
-            // if (args.Tipo == TransacaoTipo.Receita && meioDePagamento.Tipo != MeioDePagamentoTipo.ContaCorrente)
-            //     throw new InvalidOperationException("Tipo de transação inválida para o tipo de meio de pagamento selecionado.");
+                        transacaoEntity.Descricao = args.Descricao;
+                        transacaoEntity.Observacao = args.Observacao;
+                        transacaoEntity.Valor = args.Valor;
+                        transacaoEntity.DataEfetivacao = args.DataEfetivacao;
+                        transacaoEntity.DataTransacao = args.DataTransacao is null ? transacaoEntity.DataTransacao : args.DataTransacao.Value;
+                        transacaoEntity.MeioPagamento = args.MeioPagamento is null ? transacaoEntity.MeioPagamento : args.MeioPagamento.Value;
+                        transacaoEntity.Categoria = args.Categoria is null ? transacaoEntity.Categoria : args.Categoria.Value;
 
-            // // atualizar a transação
-            // transacaoEntity.Descricao = args.Descricao;
-            // transacaoEntity.Observacao = args.Observacao;
-            // transacaoEntity.Valor = args.Valor;
-            // transacaoEntity.DataPagamento = args.DataPagamento;
-            // transacaoEntity.MeioDePagamentoId = args.MeioDePagamentoId;
-            // transacaoEntity.Tipo = args.Tipo;
+                        context.Transacoes.Update(transacaoEntity);
+                        await context.SaveChangesAsync();
+                        await dbTransaction.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        await dbTransaction.RollbackAsync();
+                        throw;
+                    }
+                    break;
+
+                case TransacaoTipo.Parcelada:
+                    if (!queryParameters.TryGetValue("tipoUpdate", out var tipoUpdate))
+                    {
+                        throw new InvalidOperationException(message: "O parâmetro 'tipoUpdate' é obrigatório para transações parceladas");
+                    }
+
+                    switch (tipoUpdate.ToUpper())
+                    {
+                        case "UNICO":
+                            try
+                            {
+                                if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao is null)
+                                {
+                                    throw new InvalidOperationException(message: "Não é possível desfazer uma transação efetivada");
+                                }
+
+                                // Atualizar o saldo da conta se a data de efetivação não for null
+                                if (transacaoEntity.DataEfetivacao.HasValue)
+                                {
+                                    if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                    {
+                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo += args.Valor;
+                                    }
+                                    else
+                                    {
+                                        transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo -= args.Valor;
+                                    }
+                                }
+
+                                // Reajuste valor da transação
+                                transacaoEntity.Valor -= transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Valor += args.Valor;
+
+                                // Atualizar os dados da transação
+                                transacaoEntity.Descricao = args.Descricao;
+                                transacaoEntity.Observacao = args.Observacao;
+                                transacaoEntity.ValorParcela = args.Valor;
+                                transacaoEntity.DataEfetivacao = args.DataEfetivacao;
+
+                                // Atualizar o valor total do parcelamento nas outras parcelas
+                                var parcelas = await context.Transacoes
+                                    .Where(t => t.UsuarioId == userId)
+                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
+                                    .ToListAsync();
+
+                                foreach (var transacao in parcelas)
+                                {
+                                    transacao.Valor = transacaoEntity.Valor;
+                                }
+
+                                context.Transacoes.Update(transacaoEntity);
+                                await context.SaveChangesAsync();
+                                await dbTransaction.CommitAsync();
+                            }
+                            catch (Exception)
+                            {
+                                await dbTransaction.RollbackAsync();
+                                throw;
+                            }
+                            break;
+
+                        case "PAGAMENTO-PENDENTE":
+                            try
+                            {
+                                var query = context.Transacoes
+                                    .Include(t => t.Conta)
+                                    .Where(t => t.UsuarioId == userId);
+
+                                query = query.Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId);
+                                query = query.Where(t => t.DataEfetivacao == null);
+
+                                var transacoesPendentes = await query.ToListAsync();
+
+                                foreach (var transacao in transacoesPendentes)
+                                {
+                                    // Atualizar o saldo da conta se a data de efetivação não for null
+                                    if (transacaoEntity.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                            transacaoEntity.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                            transacaoEntity.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Reajuste valor da transação
+                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
+                                    transacao.Valor += args.Valor;
+
+                                    // Atualizar os dados da transação
+                                    transacao.Descricao = args.Descricao;
+                                    transacao.Observacao = args.Observacao;
+                                    transacao.ValorParcela = args.Valor;
+                                    transacao.DataEfetivacao = args.DataEfetivacao;
+
+                                    context.Transacoes.Update(transacao);
+                                    await context.SaveChangesAsync();
+                                }
+
+                                await dbTransaction.CommitAsync();
+                            }
+                            catch (Exception)
+                            {
+                                await dbTransaction.RollbackAsync();
+                                throw;
+                            }
+
+                            break;
+
+                        case "TODOS":
+                            try
+                            {
+                                var query = context.Transacoes
+                                    .Include(t => t.Conta)
+                                    .Where(t => t.UsuarioId == userId);
+
+                                query = query.Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId);
+
+                                var transacoes = await query.ToListAsync();
+
+                                foreach (var transacao in transacoes)
+                                {
+                                    // Atualizar o saldo da conta se a data de efetivação não for null
+                                    if (transacaoEntity.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                            transacaoEntity.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                            transacaoEntity.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Reajuste valor da transação
+                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
+                                    transacao.Valor += args.Valor;
+
+                                    // Atualizar os dados da transação
+                                    transacao.Descricao = args.Descricao;
+                                    transacao.Observacao = args.Observacao;
+                                    transacao.ValorParcela = args.Valor;
+                                    transacao.DataEfetivacao = args.DataEfetivacao;
+                                    transacao.Categoria = args.Categoria is null ? transacao.Categoria : args.Categoria.Value;
+
+                                    context.Transacoes.Update(transacao);
+                                    await context.SaveChangesAsync();
+                                }
+
+                                await dbTransaction.CommitAsync();
+                            }
+                            catch (Exception)
+                            {
+                                await dbTransaction.RollbackAsync();
+                                throw;
+                            }
+                            break;
+
+                        default: throw new IndexOutOfRangeException(message: "Tipo de delete inválido. valores aceitos: UNICO, PAGAMENTO-PENDENTE, TODOS");
+                    }
+                    break;
+
+                default: throw new IndexOutOfRangeException(message: "Tipo de transação desconhecida.");
+            }
 
             context.Transacoes.Update(transacaoEntity);
             await context.SaveChangesAsync();

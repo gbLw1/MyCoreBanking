@@ -32,7 +32,7 @@ internal class TransacaoEntity : BaseDataEntity
     /// </summary>
     public TransacaoTipo TipoTransacao { get; set; }
 
-    public MeioDePagamentoTipo MeioPagamento { get; set; }
+    public MeioPagamentoTipo MeioPagamento { get; set; }
 
     public Categoria Categoria { get; set; }
 
@@ -50,6 +50,8 @@ internal class TransacaoEntity : BaseDataEntity
     /// <para>Dia limite para efetivar o pagamento, usado para identificar atrasos</para>
     /// </summary>
     public DateTime? DataVencimento { get; set; }
+
+    public int? ParcelaAtual { get; set; }
 
     /// <summary>
     /// <para>Obrigatório quando Parcelamento</para>
@@ -80,13 +82,14 @@ internal class TransacaoEntity : BaseDataEntity
         Descricao = Descricao,
         Observacao = Observacao,
         Valor = Valor,
-        DataPagamento = DataEfetivacao,
+        DataEfetivacao = DataEfetivacao,
         DataTransacao = DataTransacao,
         TipoOperacao = TipoOperacao,
         TipoTransacao = TipoTransacao,
         MeioPagamento = MeioPagamento,
         Categoria = Categoria,
         DataVencimento = DataVencimento,
+        ParcelaAtual = ParcelaAtual,
         NumeroParcelas = NumeroParcelas,
         ValorParcela = ValorParcela,
         ReferenciaParcelaId = ReferenciaParcelaId,
