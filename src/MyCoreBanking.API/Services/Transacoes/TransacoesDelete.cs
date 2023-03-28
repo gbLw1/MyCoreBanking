@@ -81,13 +81,15 @@ public static class TransacoesDelete
                         case "TODOS":
                             try
                             {
-                                query.Where(t => t.ReferenciaParcelaId == transacao.ReferenciaParcelaId);
+                                query = query.Where(t => t.ReferenciaParcelaId == transacao.ReferenciaParcelaId);
 
                                 var todasTransacoesParceladas = await query.ToListAsync();
 
                                 context.Transacoes.RemoveRange(todasTransacoesParceladas);
                                 await context.SaveChangesAsync();
                                 await dbTransaction.CommitAsync();
+
+                                // TODO: Reordenar as parcelas para que não haja gaps
                             }
                             catch (Exception)
                             {

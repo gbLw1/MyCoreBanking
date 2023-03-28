@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using MyCoreBanking;
 using MyCoreBanking.API.Data;
 using MyCoreBanking.API.Data.Entities;
-using MyCoreBanking.Models;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -29,25 +28,18 @@ public static class TransacoesGetById
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
-                // .Include(t => t.MeioDePagamento)
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.Id == transacaoId)
-                .OrderByDescending(t => t.CriadoEm);
+                .OrderByDescending(t => t.DataDaTransacao);
 
-            // if (httpRequest.Query.TryGetValue("meioDePagamentoId", out var meioDePagamentoId)
-            //     && Guid.TryParse(meioDePagamentoId, out var meioDePagamentoIdGuid))
-            // {
-            //     query = query.Where(t => t.MeioDePagamentoId == meioDePagamentoIdGuid);
-            // }
-
-            var transacaoModel = await query
+            var transacao = await query
                 .Select(t => t.ToModel())
                 .FirstOrDefaultAsync();
 
-            if (transacaoModel is null)
+            if (transacao is null)
                 throw new NotFoundException(message: "Transação não encontrada", paramName: nameof(transacaoId));
 
-            return httpRequest.CreateResult(transacaoModel);
+            return httpRequest.CreateResult(transacao);
         }
         catch (Exception ex)
         {
