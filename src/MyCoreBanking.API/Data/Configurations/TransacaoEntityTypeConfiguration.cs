@@ -42,7 +42,7 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
 
         // public DateTime? DataPagamento { get; set; }
         builder
-            .Property(x => x.DataPagamento)
+            .Property(x => x.DataDeEfetivacao)
             .IsRequired(false);
 
         // public MeioDePagamentoTipo MeioPagamento { get; set; }

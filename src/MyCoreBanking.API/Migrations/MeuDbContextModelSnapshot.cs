@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCoreBanking.API.Data;
 
@@ -12,10 +11,9 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230327015604_Initial")]
-    partial class Initial
+    partial class MeuDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +78,10 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataPagamento")
+                    b.Property<DateTime>("DataDaTransacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataDeEfetivacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DataVencimento")
@@ -90,9 +91,6 @@ namespace MyCoreBanking.API.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("InicioParcelamento")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("MeioDePagamento")
                         .IsRequired()
@@ -104,6 +102,9 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<string>("Observacao")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<Guid?>("ReferenciaParcelaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TipoDeOperacao")
                         .IsRequired()

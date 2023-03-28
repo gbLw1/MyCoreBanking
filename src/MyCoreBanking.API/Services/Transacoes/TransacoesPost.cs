@@ -56,13 +56,14 @@ public static class TransacoesPost
                             TipoDeOperacao = args.TipoDeOperacao,
                             MeioDePagamento = args.MeioDePagamento,
                             Categoria = args.Categoria,
-                            DataPagamento = args.DataPagamento,
+                            DataDeEfetivacao = args.DataDeEfetivacao,
+                            DataDaTransacao = args.DataDaTransacao!.Value,
                         };
 
                         await context.AddAsync(transacaoEntity);
                         await context.SaveChangesAsync();
 
-                        if (args.DataPagamento.HasValue)
+                        if (args.DataDeEfetivacao.HasValue)
                         {
                             if (args.TipoDeOperacao == OperacaoTipo.Despesa)
                             {
@@ -91,21 +92,24 @@ public static class TransacoesPost
                 case TransacaoTipo.Parcelada:
                     try
                     {
+                        Guid parcelaId = Guid.NewGuid();
+
                         for (int i = 0; i < args.NumeroParcelas!.Value; i++)
                         {
                             transacaoEntity = new()
                             {
                                 UsuarioId = userId,
                                 ContaId = args.ContaId,
+                                ReferenciaParcelaId = parcelaId,
                                 Descricao = $"{args.Descricao} - ({i + 1}/{args.NumeroParcelas.Value})",
                                 Observacao = args.Observacao,
-                                DataPagamento = null,
+                                DataDeEfetivacao = null,
+                                DataDaTransacao = args.InicioParcelamento ?? DateTime.Now,
                                 Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
                                 TipoDeOperacao = args.TipoDeOperacao,
                                 TipoDeTransacao = TransacaoTipo.Parcelada,
                                 MeioDePagamento = args.MeioDePagamento,
                                 Categoria = args.Categoria,
-                                InicioParcelamento = args.InicioParcelamento,
                                 DataVencimento = args.DataVencimento!.Value.AddMonths(i),
                                 NumeroParcelas = args.NumeroParcelas,
                                 ValorParcela = args.ValorParcela,

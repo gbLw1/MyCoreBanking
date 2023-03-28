@@ -7,7 +7,8 @@ public class TransacoesPostArgs
     public string Descricao { get; set; } = string.Empty;
     public string? Observacao { get; set; }
     public decimal? Valor { get; set; }
-    public DateTime? DataPagamento { get; set; }
+    public DateTime? DataDeEfetivacao { get; set; }
+    public DateTime? DataDaTransacao { get; set; }
     public OperacaoTipo TipoDeOperacao { get; set; }
     public TransacaoTipo TipoDeTransacao { get; set; }
     public MeioDePagamentoTipo MeioDePagamento { get; set; }
@@ -29,12 +30,6 @@ public class TransacoesPostArgs
                 .NotEmpty().WithMessage("A descrição da transação é obrigatória")
                 .MaximumLength(100).WithMessage("A descrição da transação deve ter no máximo 100 caracteres");
 
-            When(t => t.TipoDeTransacao == TransacaoTipo.Unica, () =>
-            {
-                RuleFor(t => t.Valor)
-                    .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
-            });
-
             RuleFor(t => t.TipoDeOperacao)
                 .IsInEnum().WithMessage("O tipo de operação da transação é inválido");
 
@@ -49,6 +44,15 @@ public class TransacoesPostArgs
 
             RuleFor(t => t.ContaId)
                 .NotEmpty().WithMessage("A conta é obrigatória");
+
+            When(t => t.TipoDeTransacao == TransacaoTipo.Unica, () =>
+            {
+                RuleFor(t => t.Valor)
+                    .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
+
+                RuleFor(t => t.DataDaTransacao)
+                    .NotEmpty().WithMessage("A data da transação é obrigatória");
+            });
 
             When(t => t.TipoDeTransacao == TransacaoTipo.Parcelada, () =>
             {

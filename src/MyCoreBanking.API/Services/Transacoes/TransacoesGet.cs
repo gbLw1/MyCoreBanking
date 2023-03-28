@@ -31,7 +31,46 @@ public static class TransacoesGet
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
                 .Where(t => t.UsuarioId == userId)
-                .OrderByDescending(t => t.DataPagamento);
+                .OrderByDescending(t => t.DataDeEfetivacao);
+
+
+            // ↓ parâmetros obrigatórios para obter as transações ↓
+
+            if (!queryParameters.TryGetValue("mes", out var mes)
+                || !int.TryParse(mes, NumberStyles.Integer, CultureInfo.InvariantCulture, out var mesInt))
+            {
+                throw new InvalidOperationException(message: "O parâmetro 'mes' é obrigatório");
+            }
+
+            if (!queryParameters.TryGetValue("ano", out var ano)
+                || !int.TryParse(ano, NumberStyles.Integer, CultureInfo.InvariantCulture, out var anoInt))
+            {
+                throw new InvalidOperationException(message: "O parâmetro 'ano' é obrigatório");
+            }
+
+            // tenta converter o mes e o ano para um DateTime válido
+            if (!DateTime.TryParse($"{anoInt}-{mesInt}-1", out _))
+            {
+                throw new InvalidOperationException(message: "O parâmetro 'mes' ou 'ano' é inválido");
+            }
+
+            // busca todas as transações com a data de transação ou data de vencimento no mês e ano informados
+            query = query.Where(t =>
+                    (t.TipoDeTransacao == TransacaoTipo.Parcelada
+                    && t.DataVencimento!.Value.Month == mesInt
+                    && t.DataVencimento.Value.Year == anoInt)
+                || (t.TipoDeTransacao == TransacaoTipo.Unica
+                    && t.DataDaTransacao.Month == mesInt
+                    && t.DataDaTransacao.Year == anoInt));
+
+            #region [Outros filtros de pesquisa por query params]
+
+            // Filtro para obter todas as parcelas pelo id de referência
+            if (queryParameters.TryGetValue("parcelamentoId", out var parcelamentoId)
+                && Guid.TryParse(parcelamentoId, out var parcelamentoIdGuid))
+            {
+                query = query.Where(t => t.ReferenciaParcelaId == parcelamentoIdGuid);
+            }
 
             // Filtro por enum "meio de pagamento"
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
@@ -64,14 +103,14 @@ public static class TransacoesGet
             if (queryParameters.TryGetValue("dataInicial", out string? dataInicialString)
                 && DateTime.TryParseExact(dataInicialString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataInicial))
             {
-                query = query.Where(t => t.DataPagamento >= dataInicial);
+                query = query.Where(t => t.DataDeEfetivacao >= dataInicial);
             }
 
             // Filtro por "dataFinal"
             if (queryParameters.TryGetValue("dataFinal", out string? dataFinalString)
                 && DateTime.TryParseExact(dataFinalString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataFinal))
             {
-                query = query.Where(t => t.DataPagamento <= dataFinal);
+                query = query.Where(t => t.DataDeEfetivacao <= dataFinal);
             }
 
             // Validação de "dataInicial" e "dataFinal"
@@ -80,6 +119,8 @@ public static class TransacoesGet
             {
                 throw new ArgumentException("A data inicial não pode ser maior que a data final.");
             }
+
+            #endregion
 
             var transacoes = await query
                 .Select(t => t.ToModel())

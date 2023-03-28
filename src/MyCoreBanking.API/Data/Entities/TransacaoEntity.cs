@@ -11,10 +11,16 @@ internal class TransacaoEntity : BaseDataEntity
     public decimal Valor { get; set; }
 
     /// <summary>
-    /// <para>Identifica a data de pagamento da transação</para>
+    /// <para>Identifica a data de pagamento/recebimento de uma transação</para>
     /// <para>Quando não informado, é considerado como uma transação pendente</para>
     /// </summary>
-    public DateTime? DataPagamento { get; set; }
+    public DateTime? DataDeEfetivacao { get; set; }
+
+    /// <summary>
+    /// <para>Transação única: identificar quando ocorreu a transação</para>
+    /// <para>Transação parcelada: identificar quando inicia um parcelamento</para>
+    /// </summary>
+    public DateTime DataDaTransacao { get; set; }
 
     /// <summary>
     /// <para>Indica o tipo de operação da transação: entrada ou saída</para>
@@ -34,10 +40,10 @@ internal class TransacaoEntity : BaseDataEntity
     /* ----------------- ↓ Transações Parceladas ↓ ---------------- */
 
     /// <summary>
-    /// <para>Obrigatório quando Parcelamento</para>
-    /// <para>Data de quando inicia um parcelamento</para>
+    /// <para>Id referente a transação que foi parcelada</para>
+    /// <para>Usado para identificar todas as parcelas da transação original</para>
     /// </summary>
-    public DateTime? InicioParcelamento { get; set; }
+    public Guid? ReferenciaParcelaId { get; set; }
 
     /// <summary>
     /// <para>Obrigatório quando Parcelamento</para>
@@ -74,14 +80,15 @@ internal class TransacaoEntity : BaseDataEntity
         Descricao = Descricao,
         Observacao = Observacao,
         Valor = Valor,
-        DataPagamento = DataPagamento,
+        DataPagamento = DataDeEfetivacao,
+        DataTransacao = DataDaTransacao,
         TipoDeOperacao = TipoDeOperacao,
         TipoDeTransacao = TipoDeTransacao,
         MeioDePagamento = MeioDePagamento,
         Categoria = Categoria,
-        InicioParcelamento = InicioParcelamento,
         DataVencimento = DataVencimento,
         NumeroParcelas = NumeroParcelas,
         ValorParcela = ValorParcela,
+        ReferenciaParcelaId = ReferenciaParcelaId,
     };
 }
