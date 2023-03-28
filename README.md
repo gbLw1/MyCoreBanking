@@ -61,13 +61,21 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [x] Transação única
   - [x] Parcelamentos
 - [x] Listagem
+  - [x] Listagem por mês e ano
+  - [x] Listagem por parcelamentoId -> (visualizar todas as parcelas de uma transação parcelada)
   - [x] Listagem por meio de pagamento (enum) -> (visualizar somente transações PIX, por exemplo)
   - [x] Listagem por tipo de operação (enum) -> (receita, despesa)
   - [x] Listagem por tipo de transação (enum) -> (única, parcelada)
+  - [x] Listagem por categoria (enum) -> (alimentação, transporte, etc)
   - [x] Listagem por período de pagamentos efetivados -> (data inicial e/ou data final)
 - [ ] Obter por Id
 - [ ] Alteração
-- [ ] Exclusão
+- [x] Exclusão
+  - [x] Exclusão de transação única
+  - [x] Exclusão de transação parcelada
+    - [x] Excluir parcela única (por id)
+    - [x] Excluir todas as parcelas
+
 
 ### Cartões de crédito (v2)
 

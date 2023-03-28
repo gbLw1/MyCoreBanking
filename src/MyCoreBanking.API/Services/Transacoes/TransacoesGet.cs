@@ -36,41 +36,38 @@ public static class TransacoesGet
 
             // ↓ parâmetros obrigatórios para obter as transações ↓
 
-            if (!queryParameters.TryGetValue("mes", out var mes)
-                || !int.TryParse(mes, NumberStyles.Integer, CultureInfo.InvariantCulture, out var mesInt))
+            if (queryParameters.TryGetValue("parcelamentoId", out var parcelamentoIdStr)
+                && Guid.TryParse(parcelamentoIdStr, out var parcelamentoId))
             {
-                throw new InvalidOperationException(message: "O parâmetro 'mes' é obrigatório");
+                query = query.Where(t => t.ReferenciaParcelaId == parcelamentoId);
             }
-
-            if (!queryParameters.TryGetValue("ano", out var ano)
-                || !int.TryParse(ano, NumberStyles.Integer, CultureInfo.InvariantCulture, out var anoInt))
+            else
             {
-                throw new InvalidOperationException(message: "O parâmetro 'ano' é obrigatório");
-            }
+                if (!queryParameters.TryGetValue("mes", out var mes)
+                    || !int.TryParse(mes, NumberStyles.Integer, CultureInfo.InvariantCulture, out var mesInt)
+                    || mesInt < 1 || mesInt > 12)
+                {
+                    throw new InvalidOperationException(message: "O parâmetro 'mes' é obrigatório e deve ser um número entre 1 e 12");
+                }
 
-            // tenta converter o mes e o ano para um DateTime válido
-            if (!DateTime.TryParse($"{anoInt}-{mesInt}-1", out _))
-            {
-                throw new InvalidOperationException(message: "O parâmetro 'mes' ou 'ano' é inválido");
-            }
+                if (!queryParameters.TryGetValue("ano", out var ano)
+                    || !int.TryParse(ano, NumberStyles.Integer, CultureInfo.InvariantCulture, out var anoInt)
+                    || anoInt < 2000 || anoInt > 2100)
+                {
+                    throw new InvalidOperationException(message: "O parâmetro 'ano' é obrigatório e deve ser um número entre 2000 e 2100");
+                }
 
-            // busca todas as transações com a data de transação ou data de vencimento no mês e ano informados
-            query = query.Where(t =>
-                    (t.TipoDeTransacao == TransacaoTipo.Parcelada
-                    && t.DataVencimento!.Value.Month == mesInt
-                    && t.DataVencimento.Value.Year == anoInt)
-                || (t.TipoDeTransacao == TransacaoTipo.Unica
-                    && t.DataDaTransacao.Month == mesInt
-                    && t.DataDaTransacao.Year == anoInt));
+                // busca todas as transações com a data de transação ou data de vencimento no mês e ano informados
+                query = query.Where(t =>
+                        (t.TipoDeTransacao == TransacaoTipo.Parcelada
+                        && t.DataVencimento!.Value.Month == mesInt
+                        && t.DataVencimento.Value.Year == anoInt)
+                    || (t.TipoDeTransacao == TransacaoTipo.Unica
+                        && t.DataDaTransacao.Month == mesInt
+                        && t.DataDaTransacao.Year == anoInt));
+            }
 
             #region [Outros filtros de pesquisa por query params]
-
-            // Filtro para obter todas as parcelas pelo id de referência
-            if (queryParameters.TryGetValue("parcelamentoId", out var parcelamentoId)
-                && Guid.TryParse(parcelamentoId, out var parcelamentoIdGuid))
-            {
-                query = query.Where(t => t.ReferenciaParcelaId == parcelamentoIdGuid);
-            }
 
             // Filtro por enum "meio de pagamento"
             if (queryParameters.TryGetValue("meioDePagamento", out var meioDePagamento)
@@ -91,6 +88,13 @@ public static class TransacoesGet
                 && Enum.TryParse<TransacaoTipo>(tipoDeTransacao, out var tipoDeTransacaoEnum))
             {
                 query = query.Where(t => t.TipoDeTransacao == tipoDeTransacaoEnum);
+            }
+
+            // Filtro por enum "categoria"
+            if (queryParameters.TryGetValue("categoria", out var categoria)
+                && Enum.TryParse<Categoria>(categoria, out var categoriaEnum))
+            {
+                query = query.Where(t => t.Categoria == categoriaEnum);
             }
 
             // Filtro por período de data de pagamento
