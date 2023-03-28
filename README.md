@@ -53,7 +53,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Alteração
 - [x] Exclusão
   - [x] Regra de negócio: Limite mínimo de 01 conta por usuário
-  - [x] Regra de negócio: Não é possível excluir uma conta que transações associadas
+  - [x] Regra de negócio: Não é possível excluir uma conta que possui transações associadas
 
 ### Transações
 
