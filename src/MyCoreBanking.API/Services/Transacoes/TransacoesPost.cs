@@ -41,7 +41,7 @@ public static class TransacoesPost
             TransacaoEntity transacaoEntity = new();
             using var dbTransaction = await context.Database.BeginTransactionAsync();
 
-            switch (args.TipoDeTransacao)
+            switch (args.TipoTransacao)
             {
                 case TransacaoTipo.Unica:
                     try
@@ -53,19 +53,19 @@ public static class TransacoesPost
                             Descricao = args.Descricao,
                             Observacao = args.Observacao,
                             Valor = args.Valor!.Value,
-                            TipoOperacao = args.TipoDeOperacao,
-                            MeioPagamento = args.MeioDePagamento,
+                            TipoOperacao = args.TipoOperacao,
+                            MeioPagamento = args.MeioPagamento,
                             Categoria = args.Categoria,
-                            DataEfetivacao = args.DataDeEfetivacao,
-                            DataTransacao = args.DataDaTransacao!.Value,
+                            DataEfetivacao = args.DataEfetivacao,
+                            DataTransacao = args.DataTransacao!.Value,
                         };
 
                         await context.AddAsync(transacaoEntity);
                         await context.SaveChangesAsync();
 
-                        if (args.DataDeEfetivacao.HasValue)
+                        if (args.DataEfetivacao.HasValue)
                         {
-                            if (args.TipoDeOperacao == OperacaoTipo.Despesa)
+                            if (args.TipoOperacao == OperacaoTipo.Despesa)
                             {
                                 conta.Saldo -= args.Valor!.Value;
                             }
@@ -106,9 +106,9 @@ public static class TransacoesPost
                                 DataEfetivacao = null,
                                 DataTransacao = args.InicioParcelamento ?? DateTime.Now,
                                 Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
-                                TipoOperacao = args.TipoDeOperacao,
+                                TipoOperacao = args.TipoOperacao,
                                 TipoTransacao = TransacaoTipo.Parcelada,
-                                MeioPagamento = args.MeioDePagamento,
+                                MeioPagamento = args.MeioPagamento,
                                 Categoria = args.Categoria,
                                 DataVencimento = args.DataVencimento!.Value.AddMonths(i),
                                 NumeroParcelas = args.NumeroParcelas,

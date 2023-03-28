@@ -40,7 +40,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 - [x] Cadastro
 - [x] Login
-- [x] Obter por Id
+- [x] Ver perfil
 - [x] Alteração
 - [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 

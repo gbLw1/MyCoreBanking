@@ -7,11 +7,11 @@ public class TransacoesPostArgs
     public string Descricao { get; set; } = string.Empty;
     public string? Observacao { get; set; }
     public decimal? Valor { get; set; }
-    public DateTime? DataDeEfetivacao { get; set; }
-    public DateTime? DataDaTransacao { get; set; }
-    public OperacaoTipo TipoDeOperacao { get; set; }
-    public TransacaoTipo TipoDeTransacao { get; set; }
-    public MeioDePagamentoTipo MeioDePagamento { get; set; }
+    public DateTime? DataEfetivacao { get; set; }
+    public DateTime? DataTransacao { get; set; }
+    public OperacaoTipo TipoOperacao { get; set; }
+    public TransacaoTipo TipoTransacao { get; set; }
+    public MeioDePagamentoTipo MeioPagamento { get; set; }
     public Categoria Categoria { get; set; }
     public Guid ContaId { get; set; }
 
@@ -30,13 +30,13 @@ public class TransacoesPostArgs
                 .NotEmpty().WithMessage("A descrição da transação é obrigatória")
                 .MaximumLength(100).WithMessage("A descrição da transação deve ter no máximo 100 caracteres");
 
-            RuleFor(t => t.TipoDeOperacao)
+            RuleFor(t => t.TipoOperacao)
                 .IsInEnum().WithMessage("O tipo de operação da transação é inválido");
 
-            RuleFor(t => t.TipoDeTransacao)
+            RuleFor(t => t.TipoTransacao)
                 .IsInEnum().WithMessage("O tipo de transação é inválido");
 
-            RuleFor(t => t.MeioDePagamento)
+            RuleFor(t => t.MeioPagamento)
                 .IsInEnum().WithMessage("O meio de pagamento é inválido");
 
             RuleFor(t => t.Categoria)
@@ -45,16 +45,16 @@ public class TransacoesPostArgs
             RuleFor(t => t.ContaId)
                 .NotEmpty().WithMessage("A conta é obrigatória");
 
-            When(t => t.TipoDeTransacao == TransacaoTipo.Unica, () =>
+            When(t => t.TipoTransacao == TransacaoTipo.Unica, () =>
             {
                 RuleFor(t => t.Valor)
                     .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
 
-                RuleFor(t => t.DataDaTransacao)
+                RuleFor(t => t.DataTransacao)
                     .NotEmpty().WithMessage("A data da transação é obrigatória");
             });
 
-            When(t => t.TipoDeTransacao == TransacaoTipo.Parcelada, () =>
+            When(t => t.TipoTransacao == TransacaoTipo.Parcelada, () =>
             {
                 RuleFor(t => t.InicioParcelamento)
                     .NotEmpty().WithMessage("A data de início do parcelamento é obrigatória");

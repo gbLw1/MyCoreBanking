@@ -25,9 +25,11 @@ public class UsuariosGet
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            // verificar se o usuário que está acessando o endpoint é o adm
-            // adm = 894437e0-77ca-ed11-995b-60dd8e7609d4
-            if (userId != Guid.Parse("894437e0-77ca-ed11-995b-60dd8e7609d4"))
+            var usuario = await context.Usuarios
+                .FirstOrDefaultAsync(u => u.Id == userId)
+                ?? throw new InvalidOperationException("Usuário não encontrado");
+
+            if (usuario.Email != "gb@gb.com")
                 throw new UnauthorizedAccessException("Usuário não autorizado");
 
             var usuarios = await context.Usuarios
