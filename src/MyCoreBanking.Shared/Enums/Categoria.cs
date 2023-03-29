@@ -12,5 +12,6 @@ public enum Categoria
     Supermercado,
     Vestuario,
     Viagem,
+    Servico,
     Outros,
 }
