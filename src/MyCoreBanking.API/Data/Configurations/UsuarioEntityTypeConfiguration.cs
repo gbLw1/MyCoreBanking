@@ -24,7 +24,7 @@ internal sealed class UsuarioEntityTypeConfiguration : BaseEntityTypeConfigurati
             .IsRequired()
             .HasMaxLength(250);
 
-        // Constraint: Email �nico
+        // Constraint: Email único
         builder.HasIndex(u => u.Email)
             .IsUnique();
     }

@@ -21,8 +21,9 @@ public static class Exemplo
         string name = req.Query["name"];
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        dynamic data = JsonConvert.DeserializeObject(requestBody);
-        name = name ?? data?.name;
+        dynamic data = JsonConvert.DeserializeObject(requestBody)
+            ?? new { name = "Stranger" };
+        name = name ?? data?.name ?? "Stranger";
 
         string responseMessage = string.IsNullOrEmpty(name)
             ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."

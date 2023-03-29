@@ -9,11 +9,11 @@ using MyCoreBanking.API.Data;
 
 namespace MyCoreBanking.API.Services.Usuarios;
 
-public class ContasGet
+public class UsuariosPerfilGet
 {
-    [FunctionName(nameof(ContasGet))]
+    [FunctionName(nameof(UsuariosPerfilGet))]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "contas")] HttpRequest httpRequest,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "usuarios/perfil")] HttpRequest httpRequest,
         ILogger logger)
     {
         try
@@ -22,12 +22,15 @@ public class ContasGet
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var contas = await context.Contas
-                .Where(c => c.UsuarioId == userId)
-                .Select(c => c.ToModel())
-                .ToListAsync();
+            var usuario = await context.Usuarios
+                .Where(u => u.Id == userId)
+                .Select(u => u.ToModel())
+                .FirstOrDefaultAsync();
 
-            return httpRequest.CreateResult(contas);
+            if (usuario is null)
+                throw new NotFoundException(message: "Usuário não encontrado", paramName: nameof(userId));
+
+            return httpRequest.CreateResult(usuario);
         }
         catch (Exception ex)
         {

@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MyCoreBanking;
 using MyCoreBanking.API.Data;
 using MyCoreBanking.API.Data.Entities;
 using MyCoreBanking.Args;
 
-namespace FreedomHub.API.Services.Auth;
+namespace MyCoreBanking.API.Services.Usuarios;
 
-public static class ContasPost
+public class ContasPOST
 {
-    [FunctionName(nameof(ContasPost))]
+    [FunctionName(nameof(ContasPOST))]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "POST", Route = "contas")] HttpRequest httpRequest,
         ILogger logger)
@@ -25,29 +25,31 @@ public static class ContasPost
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var args = await httpRequest.ReadJsonBodyAsAsync<ContaCorrentePostArgs>();
+            var args = await httpRequest.ReadJsonBodyAsAsync<ContasPostArgs>();
 
-            new ContaCorrentePostArgs.Validator().ValidateAndThrow(args);
+            new ContasPostArgs.Validator().ValidateAndThrow(args);
 
-            var contaCorrenteEntity = new ContaCorrenteEntity
+            // Regra para o usuario não poder cadastrar mais de 5 contas
+            var contas = await context.Contas
+                .Where(c => c.UsuarioId == userId)
+                .CountAsync();
+
+            if (contas >= 5)
+                throw new InvalidOperationException(message: "Limite de contas cadastradas excedido! Máximo de 05 contas por usuário.");
+
+            var conta = new ContaEntity
             {
-                Conta = args.Conta,
+                Saldo = args.Saldo,
                 Banco = args.Banco,
-                Agencia = args.Agencia,
-                MeioDePagamento = new MeioDePagamentoEntity
-                {
-                    Apelido = args.FormaDePagamento,
-                    Observacao = $"{args.Banco} - {args.Conta}",
-                    Tipo = MeioDePagamentoTipo.ContaCorrente,
-                    UsuarioId = userId,
-                },
+                Descricao = args.Descricao,
+                Tipo = args.Tipo,
+                UsuarioId = userId,
             };
 
-            context.ContasCorrente.Add(contaCorrenteEntity);
-
+            context.Contas.Add(conta);
             await context.SaveChangesAsync();
 
-            return httpRequest.CreateResult(new { contaCorrenteEntity.Id });
+            return httpRequest.CreateResult(new { conta.Id });
         }
         catch (Exception ex)
         {

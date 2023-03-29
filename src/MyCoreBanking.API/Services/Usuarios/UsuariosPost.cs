@@ -30,16 +30,40 @@ public class UsuariosPost
             if (await context.Usuarios.AnyAsync(x => x.Email == args.Email))
                 throw new InvalidOperationException("Email já cadastrado");
 
-            var usuarioEntity = new UsuarioEntity
+            // o usuário deve iniciar com uma conta pré cadastrada
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
             {
-                Nome = args.Nome,
-                Email = args.Email,
-            };
+                var usuarioEntity = new UsuarioEntity
+                {
+                    Nome = args.Nome,
+                    Email = args.Email,
+                };
 
-            usuarioEntity.HashSenha(args.Senha);
+                usuarioEntity.HashSenha(args.Senha);
 
-            context.Usuarios.Add(usuarioEntity);
-            await context.SaveChangesAsync();
+                await context.Usuarios.AddAsync(usuarioEntity);
+                await context.SaveChangesAsync();
+
+                var contaEntity = new ContaEntity
+                {
+                    Saldo = 0,
+                    Banco = Banco.Outro,
+                    Descricao = "Carteira",
+                    Tipo = ContaTipo.Carteira,
+                    UsuarioId = usuarioEntity.Id,
+                };
+
+                await context.Contas.AddAsync(contaEntity);
+                await context.SaveChangesAsync();
+
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
 
             return httpRequest.CreateResult();
         }

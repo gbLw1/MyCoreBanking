@@ -16,6 +16,9 @@ public class Startup : FunctionsStartup
         {
             options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection")
                 ?? throw new ArgumentException("ConnectionStrings:DefaultConnection"));
+
+            options.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
+            options.EnableDetailedErrors().LogTo(Console.WriteLine);
         });
 
         var appSettings = new AppSettings

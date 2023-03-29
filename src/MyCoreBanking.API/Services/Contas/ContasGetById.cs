@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -6,18 +5,17 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MyCoreBanking;
 using MyCoreBanking.API.Data;
 
-namespace FreedomHub.API.Services.Auth;
+namespace MyCoreBanking.API.Services.Usuarios;
 
-public static class CartoesGetById
+public class ContasGetById
 {
-    [FunctionName(nameof(CartoesGetById))]
+    [FunctionName(nameof(ContasGetById))]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "cartoes/{cartaoId:guid}")] HttpRequest httpRequest,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "contas/{contaId:guid}")] HttpRequest httpRequest,
         ILogger logger,
-        Guid cartaoId)
+        Guid contaId)
     {
         try
         {
@@ -25,17 +23,16 @@ public static class CartoesGetById
 
             var context = httpRequest.HttpContext.RequestServices.GetRequiredService<MeuDbContext>();
 
-            var cartao = await context.CartoesDeCredito
-                .Include(c => c.MeioDePagamento)
-                .Where(c => c.MeioDePagamento.UsuarioId == userId)
-                .Where(c => c.Id == cartaoId)
+            var conta = await context.Contas
+                .Where(c => c.UsuarioId == userId)
+                .Where(c => c.Id == contaId)
                 .Select(c => c.ToModel())
                 .FirstOrDefaultAsync();
 
-            if (cartao is null)
-                throw new NotFoundException(message: "Cartão não encontrado", paramName: nameof(cartaoId));
+            if (conta is null)
+                throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(contaId));
 
-            return httpRequest.CreateResult(cartao);
+            return httpRequest.CreateResult(conta);
         }
         catch (Exception ex)
         {

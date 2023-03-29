@@ -12,8 +12,8 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230319034457_Add_TransacaoTipo")]
-    partial class Add_TransacaoTipo
+    [Migration("20230328204841_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace MyCoreBanking.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.CartaoDeCreditoEntity", b =>
+            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,75 +34,17 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<string>("Banco")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Bandeira")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumerosFinais")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<Guid?>("UsuarioEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioEntityId");
-
-                    b.ToTable("CartaoDeCreditoEntity", (string)null);
-                });
-
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaCorrenteEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<string>("Agencia")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<string>("Banco")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Conta")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<Guid?>("UsuarioEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioEntityId");
-
-                    b.ToTable("ContaCorrenteEntity", (string)null);
-                });
-
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<string>("Apelido")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Observacao")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Saldo")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
@@ -118,7 +60,7 @@ namespace MyCoreBanking.API.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("MeioDePagamentoEntity", (string)null);
+                    b.ToTable("ContaEntity", (string)null);
                 });
 
             modelBuilder.Entity("MyCoreBanking.API.Data.Entities.TransacaoEntity", b =>
@@ -128,25 +70,52 @@ namespace MyCoreBanking.API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ContaId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataPagamento")
+                    b.Property<DateTime?>("DataEfetivacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataTransacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("MeioDePagamentoId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("MeioPagamento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumeroParcelas")
+                        .HasColumnType("int");
 
                     b.Property<string>("Observacao")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("Tipo")
+                    b.Property<int?>("ParcelaAtual")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ReferenciaParcelaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TipoOperacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoTransacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -157,11 +126,16 @@ namespace MyCoreBanking.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Valor")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ValorParcela")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeioDePagamentoId");
+                    b.HasIndex("ContaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -204,40 +178,10 @@ namespace MyCoreBanking.API.Migrations
                     b.ToTable("UsuarioEntity", (string)null);
                 });
 
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.CartaoDeCreditoEntity", b =>
-                {
-                    b.HasOne("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", "MeioDePagamento")
-                        .WithOne("CartaoDeCredito")
-                        .HasForeignKey("MyCoreBanking.API.Data.Entities.CartaoDeCreditoEntity", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("MyCoreBanking.API.Data.Entities.UsuarioEntity", null)
-                        .WithMany("CartoesDeCredito")
-                        .HasForeignKey("UsuarioEntityId");
-
-                    b.Navigation("MeioDePagamento");
-                });
-
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaCorrenteEntity", b =>
-                {
-                    b.HasOne("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", "MeioDePagamento")
-                        .WithOne("ContaCorrente")
-                        .HasForeignKey("MyCoreBanking.API.Data.Entities.ContaCorrenteEntity", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("MyCoreBanking.API.Data.Entities.UsuarioEntity", null)
-                        .WithMany("ContasCorrente")
-                        .HasForeignKey("UsuarioEntityId");
-
-                    b.Navigation("MeioDePagamento");
-                });
-
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", b =>
+            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaEntity", b =>
                 {
                     b.HasOne("MyCoreBanking.API.Data.Entities.UsuarioEntity", "Usuario")
-                        .WithMany("MeiosDePagamento")
+                        .WithMany("Contas")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -247,9 +191,9 @@ namespace MyCoreBanking.API.Migrations
 
             modelBuilder.Entity("MyCoreBanking.API.Data.Entities.TransacaoEntity", b =>
                 {
-                    b.HasOne("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", "MeioDePagamento")
+                    b.HasOne("MyCoreBanking.API.Data.Entities.ContaEntity", "Conta")
                         .WithMany("Transacoes")
-                        .HasForeignKey("MeioDePagamentoId")
+                        .HasForeignKey("ContaId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -259,27 +203,19 @@ namespace MyCoreBanking.API.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("MeioDePagamento");
+                    b.Navigation("Conta");
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.MeioDePagamentoEntity", b =>
+            modelBuilder.Entity("MyCoreBanking.API.Data.Entities.ContaEntity", b =>
                 {
-                    b.Navigation("CartaoDeCredito");
-
-                    b.Navigation("ContaCorrente");
-
                     b.Navigation("Transacoes");
                 });
 
             modelBuilder.Entity("MyCoreBanking.API.Data.Entities.UsuarioEntity", b =>
                 {
-                    b.Navigation("CartoesDeCredito");
-
-                    b.Navigation("ContasCorrente");
-
-                    b.Navigation("MeiosDePagamento");
+                    b.Navigation("Contas");
 
                     b.Navigation("Transacoes");
                 });

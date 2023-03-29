@@ -1,4 +1,6 @@
-﻿namespace MyCoreBanking.API.Data.Entities;
+﻿using MyCoreBanking.Models;
+
+namespace MyCoreBanking.API.Data.Entities;
 
 internal sealed class UsuarioEntity : BaseDataEntity
 {
@@ -9,10 +11,11 @@ internal sealed class UsuarioEntity : BaseDataEntity
     public string SenhaHash { get; set; } = default!;
 
     public ICollection<TransacaoEntity>? Transacoes { get; set; }
-    public ICollection<MeioDePagamentoEntity>? MeiosDePagamento { get; set; }
 
-    public ICollection<ContaCorrenteEntity>? ContasCorrente { get; set; }
-    public ICollection<CartaoDeCreditoEntity>? CartoesDeCredito { get; set; }
+    public ICollection<ContaEntity>? Contas { get; set; }
+
+    // public ICollection<CartaoDeCreditoEntity>? CartoesDeCredito { get; set; }
+
 
     public bool SenhaValida(string senha)
     {
@@ -23,4 +26,11 @@ internal sealed class UsuarioEntity : BaseDataEntity
     {
         SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha);
     }
+
+    public UsuarioModel ToModel() => new()
+    {
+        Id = Id,
+        Nome = Nome,
+        Email = Email,
+    };
 }

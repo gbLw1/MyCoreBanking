@@ -47,17 +47,13 @@ public static class AuthTokenPost
                 .AsNoTracking()
                 .FirstOrDefaultAsync(lbda => lbda.Email == args.Email);
 
-            if (usuarioEntity is null)
+            // if (usuarioEntity?.SenhaValida(args.Senha) is null or false)
+            if (usuarioEntity is null || !usuarioEntity.SenhaValida(args.Senha))
                 throw new UnauthorizedAccessException("Usuário ou senha incorretos");
-
-            if (!usuarioEntity.SenhaValida(args.Senha))
-            {
-                throw new UnauthorizedAccessException("Usuário ou senha incorretos");
-            }
 
             var appSettings = httpRequest.HttpContext.RequestServices.GetRequiredService<AppSettings>();
 
-            // LMAO
+            // LMAO -> Token expira em 30 dias
             var expiracaoEmMinutos = 60 * 24 * 30;
 
             return httpRequest.CreateResult(

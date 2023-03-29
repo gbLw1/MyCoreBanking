@@ -26,6 +26,8 @@ internal static class HttpRequestExtensions
             or
             ArgumentNullException
             or
+            IndexOutOfRangeException
+            or
             InvalidOperationException => new ContentResult()
             {
                 Content = exception.Message,
