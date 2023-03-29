@@ -1,0 +1,13 @@
+﻿<p class="text-danger">@((MarkupString)Message)</p>
+
+@*<div class="d-flex justify-content-end">
+    <button class="btn btn-warning" @onclick="Close">Ok</button>
+</div>*@
+
+@code {
+    [Parameter] public string Message { get; set; } = default!;
+
+    [CascadingParameter] BlazoredModalInstance Modal { get; set; } = default!;
+
+    private async Task Close() => await Modal.CloseAsync();
+}

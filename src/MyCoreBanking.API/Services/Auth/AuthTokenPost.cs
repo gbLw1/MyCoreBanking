@@ -42,8 +42,7 @@ public static class AuthTokenPost
 
             new AuthTokenPostArgs.Validator().ValidateAndThrow(args);
 
-            var usuarioEntity = await context
-                .Usuarios
+            var usuarioEntity = await context.Usuarios
                 .AsNoTracking()
                 .FirstOrDefaultAsync(lbda => lbda.Email == args.Email);
 

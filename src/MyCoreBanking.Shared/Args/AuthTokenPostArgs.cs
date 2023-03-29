@@ -14,11 +14,10 @@ public class AuthTokenPostArgs
         public Validator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage("Email é obrigatório");
+                .NotEmpty().WithMessage("Email é obrigatório");
+
             RuleFor(x => x.Senha)
-                .NotEmpty()
-                .WithMessage("Senha é obrigatória");
+                .NotEmpty().WithMessage("Senha é obrigatória");
         }
     }
 }

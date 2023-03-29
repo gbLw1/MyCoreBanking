@@ -5,3 +5,13 @@
         @Body
     </div>
 </div>
+
+@code {
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (await MyCoreBankingApp.IsAuthorized())
+            Navigation.NavigateTo("");
+    }
+
+}

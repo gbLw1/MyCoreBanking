@@ -1,0 +1,8 @@
+﻿<div class="spinner-border" role="status" style="width: @(Size ?? "50px") ; height: @(Size ?? "50px")">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string? Size { get; set; }
+}

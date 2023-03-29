@@ -189,5 +189,20 @@
         </div>
     </div>
 </div>
-Footer
-© 2023 GitHub, Inc.
+
+
+@code {
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await MyCoreBankingApp.Initialize();
+        }
+        catch (Exception)
+        {
+            return;
+        }
+    }
+
+}

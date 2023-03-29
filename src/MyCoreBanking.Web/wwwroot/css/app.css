@@ -189,3 +189,14 @@ a, .btn-link {
         margin-right: 50px;
     }
 }
+
+.modal-full-screen {
+    z-index: 100;
+    width: 100% !important;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

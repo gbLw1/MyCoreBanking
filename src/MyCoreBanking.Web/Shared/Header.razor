@@ -103,7 +103,7 @@
                             &nbsp;Meu Perfil
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item cursor-pointer" @onclick="Desconectar">
+                        <a class="dropdown-item cursor-pointer" @onclick="async () => await MyCoreBankingApp.Logout()">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
                             &nbsp;Logout
                         </a>
@@ -117,11 +117,4 @@
 
 @code {
 
-    async Task Desconectar()
-    {
-        // TODO : Implementar método Logout (Application)
-        // ↓ temp ↓
-        await Task.Delay(1000);
-        Navigation.NavigateTo("/login");
-    }
 }
