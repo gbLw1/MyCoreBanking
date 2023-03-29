@@ -17,11 +17,7 @@ partial class MyCoreBankingApp
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
 
-            var jwt = await AuthorizationToken()
-                ?? throw new UnauthorizedAccessException("Você deve estar logado para acessar este recurso.");
-
             httpRequestMessage.Headers.Add("Access-Control-Allow-Origin", "*");
-            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
 
             httpRequestMessage.Content = JsonContent.Create(args);
 
