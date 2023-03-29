@@ -4,9 +4,12 @@ namespace MyCoreBanking.Models;
 
 public class UsuarioModel
 {
+    [JsonPropertyName("id")]
     public Guid Id { get; set; }
+
     [JsonPropertyName("nome")]
     public string Nome { get; set; } = string.Empty;
+
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 }
