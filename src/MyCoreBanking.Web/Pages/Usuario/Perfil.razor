@@ -7,8 +7,15 @@
         <div class="col-lg-4">
             <div class="card" style="height: 100%">
                 <div class="d-flex justify-content-center align-items-center flex-column card-body shadow">
+                    <!--
                     <img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
-                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Alterar foto</button></div>
+                    -->
+                    <div class="d-flex align-items-center justify-content-center" style="border-radius: 50%;border: 2px solid #4e73df;width: 160px;height: 160px;margin-bottom: 20px;">
+                        <p class="m-0 text-center text-primary fw-bold" style="font-size: 4rem;">
+                            @(model?.Nome == "Desconhecido" || string.IsNullOrWhiteSpace(model?.Nome) ? "?" : model?.Nome[0].ToString().ToUpper())
+                        </p>
+                    </div>
+                    <div class="mb-3"><button disabled class="btn btn-primary disabled btn-sm" type="button">Alterar foto</button></div>
                 </div>
             </div>
         </div>
@@ -18,121 +25,123 @@
                     <p class="text-primary m-0 fw-bold">Dados pessoais</p>
                 </div>
                 <div class="card-body">
-                    <form>
-                        <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label class="form-label" for="nome_completo"><strong>Nome completo</strong></label>
-                                    <input class="form-control" type="text" id="nome_completo" placeholder="Joseph Giuseppe" name="nome_completo" disabled>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label class="form-label" for="email"><strong>Email</strong></label>
-                                    <input class="form-control" type="email" id="email" placeholder="user@example.com" name="email" disabled>
-                                </div>
-                            </div>
+                    @if (model is null)
+                    {
+                        <div class="d-flex align-items-center justify-content-center">
+                            <Spinner Size="40px" />
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label class="form-label" for="telefone"><strong>Telefone</strong></label>
-                                    <input class="form-control" type="text" id="telefone" placeholder="(11) 99999-9999" name="telefone" disabled>
+                    }
+                    else
+                    {
+                        <EditForm Model="model" OnValidSubmit="OnValidSubmit">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="nome_completo"><strong>Nome completo</strong></label>
+                                        <input class="form-control" type="text" id="nome_completo" placeholder="Joseph Giuseppe" name="nome_completo" @bind-value="model.Nome" @bind-value:event="oninput">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="email"><strong>Email</strong></label>
+                                        <input class="form-control" type="email" id="email" placeholder="user@example.com" name="email" disabled @bind-value="model.Email">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label class="form-label" for="documento"><strong>CPF</strong></label>
-                                    <input class="form-control" type="text" id="documento" placeholder="000.000.000-00" name="documento" disabled>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="telefone"><strong>Telefone</strong></label>
+                                        <input class="form-control" type="text" id="telefone" placeholder="(00) 00000-0000" name="telefone" disabled>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="documento"><strong>CPF</strong></label>
+                                        <input class="form-control" type="text" id="documento" placeholder="000.000.000-00" name="documento" disabled>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!--
-                        <div class="mb-3 d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm" type="submit">Salvar alterações</button>
-                        </div>
-                        -->
-                    </form>
+
+                            <div class="mb-3 d-flex justify-content-end">
+                                @if (string.IsNullOrWhiteSpace(model!.Nome))
+                                {
+                                    <button disabled class="btn btn-primary disabled btn-sm" type="button">Salvar alterações</button>
+                                }
+                                else
+                                {
+                                    if (loading)
+                                    {
+                                        <button type="button" disabled class="btn btn-primary disabled btn-sm" style="width: 125.53px; height: 31px">
+                                            <Spinner Size="20px" />
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary btn-sm" type="submit">Salvar alterações</button>
+                                    }
+                                }
+                            </div>
+                        </EditForm>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Bancos Cadastrados no Perfil -->
-  <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Almeida Pay</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                </div>
-            </div>
-         </div>
-                        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Bradesco</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Nubank</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
- </div>
-
-<div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Inter</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Siccob</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card" style="margin-bottom: 10px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Itau</h5>
-                                    <p>Conta: 09256-9</p>
-                                    <p>Agência: 0001</p>
-                                    <div class="col d-flex flex-fill justify-content-end"><button class="btn btn-primary flex-fill" type="button">DETALHES</button></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-</div>
-
-
-
 
 @code {
+    UsuarioModel? model;
+    bool loading = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await MyCoreBankingApp.Initialize();
+        }
+        catch (Exception)
+        {
+            return;
+        }
+
+        var result = await MyCoreBankingApp.ObterPerfil();
+
+        if (result is null)
+        {
+            model = new()
+                {
+                    Nome = "Desconhecido",
+                    Email = "unknown@email.com",
+                };
+
+            return;
+        }
+
+        model = result;
+    }
+
+    async Task OnValidSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(model!.Nome))
+        {
+            return;
+        }
+
+        loading = true;
+
+        // pelo menos pra mostrar que tem algum request...
+        await Task.Delay(500);
+
+        var args = new UsuariosPutArgs
+            {
+                Nome = model.Nome,
+            };
+
+        await MyCoreBankingApp.AtualizarPerfil(args);
+
+        loading = false;
+    }
 
 }

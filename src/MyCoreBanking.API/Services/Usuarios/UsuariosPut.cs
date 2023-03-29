@@ -15,9 +15,8 @@ public class UsuariosPUT
 {
     [FunctionName(nameof(UsuariosPUT))]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "PUT", Route = "usuarios/{id:guid}")] HttpRequest httpRequest,
-        ILogger logger,
-        Guid id)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "PUT", Route = "usuarios")] HttpRequest httpRequest,
+        ILogger logger)
     {
         try
         {
@@ -30,11 +29,11 @@ public class UsuariosPUT
             new UsuariosPutArgs.Validator().ValidateAndThrow(args);
 
             var usuarioEntity = await context.Usuarios
-                .Where(u => u.Id == id)
+                .Where(u => u.Id == userId)
                 .FirstOrDefaultAsync();
 
             if (usuarioEntity is null)
-                throw new NotFoundException(message: "Usuário não encontrado", paramName: nameof(id));
+                throw new NotFoundException(message: "Usuário não encontrado", paramName: nameof(userId));
 
             usuarioEntity.Nome = args.Nome;
 
