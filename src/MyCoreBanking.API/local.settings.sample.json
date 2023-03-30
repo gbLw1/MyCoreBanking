@@ -5,5 +5,9 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "JwtSecret": "1234567890123456",
     "ConnectionStrings:DefaultConnection": "Data Source=(localdb)\\mssqllocaldb; Initial Catalog=MyCoreBanking; Trusted_Connection=True; TrustServerCertificate=True"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
   }
 }

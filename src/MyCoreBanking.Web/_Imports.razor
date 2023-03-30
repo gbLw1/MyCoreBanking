@@ -8,7 +8,19 @@
 @using Microsoft.JSInterop
 @using MyCoreBanking.Web
 @using MyCoreBanking.Web.Shared
+@using MyCoreBanking.Web.Shared.Components
+@using MyCoreBanking.Args;
+@using MyCoreBanking.Models;
+
+@inject MyCoreBankingApp MyCoreBankingApp
 
 @inject NavigationManager Navigation
 
 @inject IJSRuntime JS
+
+@using Blazored.Modal
+@using Blazored.Modal.Services
+
+@inject IModalService BlazoredModal
+
+@using Blazored.FluentValidation

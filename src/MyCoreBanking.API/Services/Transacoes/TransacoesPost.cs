@@ -105,7 +105,7 @@ public static class TransacoesPost
                                 ParcelaAtual = i + 1,
                                 Observacao = args.Observacao,
                                 DataEfetivacao = null,
-                                DataTransacao = args.InicioParcelamento ?? DateTime.Now,
+                                DataTransacao = args.InicioParcelamento!.Value.AddMonths(i),
                                 Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
                                 TipoOperacao = args.TipoOperacao,
                                 TipoTransacao = TransacaoTipo.Parcelada,

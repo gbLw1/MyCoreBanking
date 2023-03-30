@@ -1,14 +1,20 @@
 ﻿@page "/transacoes"
 @using System.Globalization;
 
-<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4" style="font-family:Nunito;">
     <h3 class="text-dark">Minhas Transações</h3>
-    <a href="/transacoes/cadastrar"
-       title="cadastrar nova transação"
-       class="text-primary text-center fw-bold border border-primary rounded m-0 py-1 px-2"
-       style="text-decoration: none;">
-        Cadastrar nova Transação
-    </a>
+<div class="dropdown">
+  <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Nova Transação
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/cadastroTransacaoPaga">Já Paga</a></li>
+    <li><a class="dropdown-item" href="/cadastroTransacaoPagar">A Pagar</a></li>
+    <li><a class="dropdown-item" href="/cadastroTransacaoRecorrente">Recorrente</a></li>
+    <li><a class="dropdown-item" href="/cadastroTransacaoParcelada">Parcelamento</a></li>
+
+  </ul>
+</div>
 </div>
 
 

@@ -27,7 +27,9 @@ public class ContasGet
                 .Select(c => c.ToModel())
                 .ToListAsync();
 
-            return httpRequest.CreateResult(contas);
+            var result = contas.AsReadOnly();
+
+            return httpRequest.CreateResult(result);
         }
         catch (Exception ex)
         {

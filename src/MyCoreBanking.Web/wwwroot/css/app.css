@@ -62,3 +62,146 @@ a, .btn-link {
 .cursor-pointer {
     cursor: pointer;
 }
+
+
+.containerCartao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 500px;
+    height: 300px;
+    border: 2px rgba(255,255,255.5);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerCartaoNubank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 500px;
+    height: 300px;
+    border: 2px rgba(255,255,255.5);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8A05BE;
+}
+
+.logoNubank {
+    position: relative;
+    top: 90px;
+    right: 130px;
+    width: 50px;
+    height: 50px;
+}
+
+.nomeCartao{
+    position: relative;
+    top: 115px;
+    right: 100px;
+    width: 200px;
+    height: 50px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.logoMasterCard {
+    position: relative;
+    left: 350px;
+    bottom: 80px;
+    width: 80px;
+    height: 50px;
+}
+
+.chip {
+    position: relative;
+    top: -10px;
+    right: 50px;
+    width: 50px;
+    height: 50px;
+}
+
+.numeroCartao {
+    margin-top: 200px;
+    font-size: 18px;
+    width: 300px;
+}
+
+@media (max-width: 640.98px) {
+    .containerCartao {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 350px;
+        height: 200px;
+        border: 2px rgba(255,255,255.5);
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0, .5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logoNubank {
+        position: relative;
+        top: 50px;
+        right: 100px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .nomeCartao {
+        position: relative;
+        top: 55px;
+        right: 100px;
+        height: 50px;
+        font-family: 'Noto Sans', sans-serif;
+    }
+
+    .logoMasterCard {
+        position: relative;
+        left: 170px;
+        bottom: 50px;
+        width: 80px;
+        height: 50px;
+    }
+
+    .chip {
+        position: relative;
+        top: -15px;
+        right: 50px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .numeroCartao {
+        margin-top: 100px;
+        font-size: 18px;
+        width: 100px;
+        margin-right: 50px;
+    }
+}
+
+.modal-full-screen {
+    z-index: 100;
+    width: 100% !important;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-overlay {
+    position: fixed !important;
+    z-index: 9999 !important;
+}

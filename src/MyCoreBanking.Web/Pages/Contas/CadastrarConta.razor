@@ -1,0 +1,88 @@
+@page "/contas/cadastrar"
+
+<!-- Título -->
+<div class="mb-4 d-flex justify-content-start align-items-center">
+    <p class="m-0 h2 text-dark">Cadastro de conta</p>
+</div>
+
+<!-- Área do formulario -->
+<div class="row my-5 justify-content-center">
+    <div class="col-md-9 col-xl-6">
+        <div class="card shadow-lg o-hidden border-0">
+
+            <div class="p-5">
+                <!-- Formulario -->
+                <EditForm Model="args" OnValidSubmit="OnValidSubmit">
+                    <FluentValidationValidator />
+                    <ValidationSummary />
+
+                    <div class="row mb-3">
+                        <!-- Tipo de conta -->
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <p class="m-0 text-dark">Tipo de conta</p>
+                            <InputSelect @bind-Value="args.Tipo" class="form-select">
+                                @foreach (ContaTipo tipoConta in Enum.GetValues<ContaTipo>())
+                                {
+                                    <option value="@tipoConta">@MyCoreBankingApp.ConverterEnumTipoContaParaString(tipoConta)</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <!-- Banco -->
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <p class="m-0 text-dark">Banco</p>
+                            @if (args.Tipo == ContaTipo.Carteira)
+                            {
+                                <select class="form-select" disabled>
+                                    <option value="0">Outro (carteira pessoal)</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <InputSelect @bind-Value="args.Banco" class="form-select">
+                                    @foreach (Banco banco in Enum.GetValues<Banco>())
+                                    {
+                                        <option value="@banco">@MyCoreBankingApp.ConverterEnumBancoParaString(banco)</option>
+                                    }
+                                </InputSelect>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="mb-3">
+                        <p class="m-0 text-dark">Descrição</p>
+                        <InputText @bind-Value="args.Descricao" class="form-control" placeholder="Descrição" />
+                    </div>
+
+                    <!-- Saldo -->
+                    <div class="mb-3">
+                        <p class="m-0 text-dark">Saldo</p>
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 me-2 h5 text-dark">R$ </p>
+                            <InputNumber @bind-Value="args.Saldo" class="form-control" placeholder="Saldo" />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary d-block w-100 py-2 mt-5" type="submit">Cadastrar</button>
+
+                </EditForm>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@code {
+    ContasPostArgs args = new();
+
+    async Task OnValidSubmit()
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        await MyCoreBankingApp.CadastrarConta(args);
+
+        modalLoading.Close();
+    }
+}
