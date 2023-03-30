@@ -1,0 +1,41 @@
+﻿<div class="d-flex justify-content-between align-items-center">
+        <h1 class="h3 text-dark">@(Title)</h1>
+    <i @onclick="Cancelar"
+       style="font-size: 1.4rem;"
+       class="fa-solid fa-xmark float-end cursor-pointer p-1 mb-2"></i>
+</div>
+<div class="d-flex flex-column">
+    <p class="m-0 regular-16 mt-3 mb-4">
+        @(Message)
+    </p>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <button type="button" @onclick="Cancelar"
+                class="me-3 rounded-pill float-end btn btn-secondary">
+            CANCELAR
+        </button>
+
+        <button type="button" @onclick="ConfirmarExclusao"
+                class="rounded-pill float-end btn btn-danger">
+            @(BtnText.ToUpper())
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = default!;
+    [Parameter, EditorRequired] public string Message { get; set; } = default!;
+    [Parameter, EditorRequired] public string BtnText { get; set; } = default!;
+
+    [CascadingParameter] BlazoredModalInstance modal { get; set; } = default!;
+
+    async Task Cancelar()
+    {
+        await modal.CancelAsync();
+    }
+
+    async Task ConfirmarExclusao()
+    {
+        await modal.CloseAsync();
+    }
+}

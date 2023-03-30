@@ -38,6 +38,39 @@ partial class MyCoreBankingApp
         }
     }
 
+    #region [+ Modals]
+
+    public IModalReference ShowModal<T>(
+        IEnumerable<KeyValuePair<string, object>>? parametros = null)
+        where T : IComponent
+    {
+        var options = new ModalOptions()
+        {
+            OverlayCustomClass = "no-overlay",
+            HideHeader = true,
+            HideCloseButton = true,
+            AnimationType = ModalAnimationType.None,
+            Size = ModalSize.Medium,
+            Position = ModalPosition.Middle,
+        };
+
+        if (parametros is not null)
+        {
+            var parameters = new ModalParameters();
+
+            foreach (var p in parametros)
+            {
+                parameters.Add(p.Key, p.Value);
+            }
+
+            return _ModalService.Show<T>(string.Empty, parameters, options);
+        }
+        else
+        {
+            return _ModalService.Show<T>(string.Empty, options);
+        }
+    }
+
     public IModalReference ShowLoading()
     {
         var options = new ModalOptions()
@@ -45,7 +78,7 @@ partial class MyCoreBankingApp
             HideHeader = true,
             HideCloseButton = true,
             DisableBackgroundCancel = true,
-            AnimationType = ModalAnimationType.FadeInOut,
+            AnimationType = ModalAnimationType.None,
             Size = ModalSize.Small,
             Position = ModalPosition.Middle,
             Class = "modal-full-screen",
@@ -63,11 +96,14 @@ partial class MyCoreBankingApp
         {
             //HideHeader = true,
             //HideCloseButton = true,
-            AnimationType = ModalAnimationType.FadeInOut,
+            AnimationType = ModalAnimationType.None,
             Size = ModalSize.Medium,
             Position = ModalPosition.TopCenter,
         };
 
         return _ModalService.Show<ErrorModal>("Oops! Algo deu errado...", parameters, options);
     }
+
+    #endregion
+
 }

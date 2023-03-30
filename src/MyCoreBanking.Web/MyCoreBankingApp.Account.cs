@@ -44,16 +44,6 @@ partial class MyCoreBankingApp
             ShowError(responseContent);
             return null;
         }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return null;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return null;
-        }
         catch (Exception ex)
         {
             ShowError(ex.Message);
@@ -143,16 +133,8 @@ partial class MyCoreBankingApp
                 ShowError(responseContent);
                 return;
             }
-        }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return;
+
+            _Navigation.NavigateTo("/contas");
         }
         catch (Exception ex)
         {
@@ -191,16 +173,8 @@ partial class MyCoreBankingApp
                 ShowError(responseContent);
                 return;
             }
-        }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return;
+
+            _Navigation.NavigateTo("/contas");
         }
         catch (Exception ex)
         {
@@ -209,7 +183,7 @@ partial class MyCoreBankingApp
         }
     }
 
-    public async Task ExcluirConta(Guid contaId)
+    public async Task<bool> ExcluirConta(Guid contaId)
     {
         try
         {
@@ -235,23 +209,15 @@ partial class MyCoreBankingApp
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 ShowError(responseContent);
-                return;
+                return false;
             }
-        }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return;
+
+            return true;
         }
         catch (Exception ex)
         {
             ShowError(ex.Message);
-            return;
+            return false;
         }
     }
 }

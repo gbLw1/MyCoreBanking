@@ -200,3 +200,8 @@ a, .btn-link {
     justify-content: center;
     align-items: center;
 }
+
+.no-overlay {
+    position: fixed !important;
+    z-index: 9999 !important;
+}
