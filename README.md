@@ -20,7 +20,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - Saldos por conta (soma de todas as transações efetivadas da conta)
   - Saldo geral (soma de todos os saldos das contas)
 
-- v2 (furute):
+- v2 (futuro):
   - Cadastro de cartões de crédito
   - Cadastro de faturas
   - Efetivação de faturas
