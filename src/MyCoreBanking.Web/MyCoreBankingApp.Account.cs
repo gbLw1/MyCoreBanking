@@ -75,26 +75,17 @@ partial class MyCoreBankingApp
 
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
-            if (httpResponseMessage.IsSuccessStatusCode)
+            if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                var result = JsonSerializer.Deserialize<ContaModel?>(responseContent)
-                    ?? throw new InvalidOperationException(responseContent);
-
-                return result;
+                _Navigation.NavigateTo("/contas");
+                ShowError(responseContent);
+                return null;
             }
 
-            ShowError(responseContent);
-            return null;
-        }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return null;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return null;
+            var result = JsonSerializer.Deserialize<ContaModel?>(responseContent)
+                    ?? throw new InvalidOperationException(responseContent);
+
+            return result;
         }
         catch (Exception ex)
         {
