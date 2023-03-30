@@ -6,8 +6,27 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ## Versões
 
-- [x] v1.0: Funcionalidades básicas de cadastro de usuário, login, cadastro de contas e cadastro de transações únicas e parceladas.
-- [ ] v2.0: Funcionalidade adicional para cadastro de cartões de crédito.
+- v1:
+  - Cadastro de usuários
+  - Login
+  - Cadastro de contas
+  - Cadastro de transações
+    - Únicas
+    - Parcelamentos
+  - Gráficos de gastos e receitas
+  - Gráficos de gastos e receitas por categoria
+  - Gráficos de gastos e receitas por conta
+  - Gráficos de gastos e receitas por mês
+  - Saldos por conta (soma de todas as transações efetivadas da conta)
+  - Saldo geral (soma de todos os saldos das contas)
+
+- v2 (furute):
+  - Cadastro de cartões de crédito
+  - Cadastro de faturas
+  - Efetivação de faturas
+  - Cadastro de transferências
+  - Cadastro de investimentos
+  - Cadastro de empréstimos
 
 ## Tecnologias
 
