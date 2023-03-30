@@ -40,7 +40,7 @@ public class ContasPOST
             var conta = new ContaEntity
             {
                 Saldo = args.Saldo,
-                Banco = args.Banco,
+                Banco = args.Tipo == ContaTipo.Carteira ? Banco.Outro : args.Banco,
                 Descricao = args.Descricao,
                 Tipo = args.Tipo,
                 UsuarioId = userId,
