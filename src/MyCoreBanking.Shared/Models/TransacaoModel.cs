@@ -20,7 +20,7 @@ public class TransacaoModel
     public DateTime? DataEfetivacao { get; set; }
 
     [JsonPropertyName("dataTransacao")]
-    public DateTime? DataTransacao { get; set; }
+    public DateTime DataTransacao { get; set; }
 
     [JsonPropertyName("tipoOperacao")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -52,4 +52,7 @@ public class TransacaoModel
 
     [JsonPropertyName("referenciaParcelaId")]
     public Guid? ReferenciaParcelaId { get; set; }
+
+    [JsonPropertyName("conta")]
+    public string Conta { get; set; } = string.Empty;
 }

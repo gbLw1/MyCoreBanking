@@ -1,4 +1,3 @@
-using System.Globalization;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using MyCoreBanking;
 using MyCoreBanking.API.Data;
 using MyCoreBanking.API.Data.Entities;
+using System.Globalization;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -30,6 +30,7 @@ public static class TransacoesGet
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
+                .Include(t => t.Conta)
                 .Where(t => t.UsuarioId == userId)
                 .OrderByDescending(t => t.DataEfetivacao);
 

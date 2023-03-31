@@ -24,4 +24,21 @@ partial class MyCoreBankingApp
         ContaTipo.Carteira => "Carteira pessoal",
         _ => "Desconhecido",
     };
+
+    public static string ConverterEnumCategoriaParaString(Categoria categoria) => categoria switch
+    {
+        Categoria.Casa => "Casa",
+        Categoria.Educacao => "Educação",
+        Categoria.Eletronicos => "Eletrônicos",
+        Categoria.Lazer => "Lazer",
+        Categoria.Alimentacao => "Alimentação",
+        Categoria.Transporte => "Transporte",
+        Categoria.Saude => "Saúde",
+        Categoria.Supermercado => "Supermercado",
+        Categoria.Vestuario => "Vestuário",
+        Categoria.Viagem => "Viagem",
+        Categoria.Servico => "Serviço",
+        Categoria.Outros => "Outros",
+        _ => "Desconhecido",
+    };
 }

@@ -93,5 +93,6 @@ internal class TransacaoEntity : BaseDataEntity
         NumeroParcelas = NumeroParcelas,
         ValorParcela = ValorParcela,
         ReferenciaParcelaId = ReferenciaParcelaId,
+        Conta = Conta?.Descricao ?? "-----",
     };
 }

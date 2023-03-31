@@ -6,7 +6,7 @@
 
     <a href="/contas/cadastrar"
        class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
-       style="font-size: 1.1rem">
+       style="font-size: 1.2rem">
         Nova Conta
     </a>
 </div>
@@ -97,7 +97,6 @@
             {nameof(DeleteModal.Title),"Exclusão de conta" },
             {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a conta?"},
             {nameof(DeleteModal.BtnText), "Confirmar" }
-
         };
 
         var modalResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
