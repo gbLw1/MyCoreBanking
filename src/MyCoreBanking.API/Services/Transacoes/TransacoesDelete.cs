@@ -27,6 +27,7 @@ public static class TransacoesDelete
 
             // Verifica se a transação pertence ao usuário e é recorrente
             var query = context.Transacoes
+                .Include(t => t.Conta)
                 .Where(t => t.UsuarioId == userId);
 
             // tenta obter a transacao pelo id informado
@@ -37,9 +38,6 @@ public static class TransacoesDelete
             if (transacao is null)
                 throw new NotFoundException(message: "Transação não encontrada", paramName: nameof(transacaoId));
 
-            if (transacao.DataEfetivacao.HasValue)
-                throw new InvalidOperationException(message: "Não é possível excluir uma transação já efetivada");
-
             var queryParameters = httpRequest.GetQueryParameterDictionary();
             var dbTransaction = await context.Database.BeginTransactionAsync();
 
@@ -48,6 +46,18 @@ public static class TransacoesDelete
                 case TransacaoTipo.Unica:
                     try
                     {
+                        if (transacao.DataEfetivacao.HasValue)
+                        {
+                            if (transacao.TipoOperacao == OperacaoTipo.Despesa)
+                            {
+                                transacao.Conta!.Saldo += transacao.Valor;
+                            }
+                            else
+                            {
+                                transacao.Conta!.Saldo -= transacao.Valor;
+                            }
+                        }
+
                         context.Transacoes.Remove(transacao);
                         await context.SaveChangesAsync();
                         await dbTransaction.CommitAsync();
@@ -70,6 +80,18 @@ public static class TransacoesDelete
                         case "UNICO":
                             try
                             {
+                                if (transacao.DataEfetivacao.HasValue)
+                                {
+                                    if (transacao.TipoOperacao == OperacaoTipo.Despesa)
+                                    {
+                                        transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                    }
+                                    else
+                                    {
+                                        transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                    }
+                                }
+
                                 context.Transacoes.Remove(transacao);
                                 await context.SaveChangesAsync();
                                 await dbTransaction.CommitAsync();
@@ -87,6 +109,21 @@ public static class TransacoesDelete
                                 query = query.Where(t => t.ReferenciaParcelaId == transacao.ReferenciaParcelaId);
 
                                 var todasTransacoesParceladas = await query.ToListAsync();
+
+                                foreach (var transacaoParcelada in todasTransacoesParceladas)
+                                {
+                                    if (transacaoParcelada.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacaoParcelada.TipoOperacao == OperacaoTipo.Despesa)
+                                        {
+                                            transacaoParcelada.Conta!.Saldo += transacaoParcelada.ValorParcela!.Value;
+                                        }
+                                        else
+                                        {
+                                            transacaoParcelada.Conta!.Saldo -= transacaoParcelada.ValorParcela!.Value;
+                                        }
+                                    }
+                                }
 
                                 context.Transacoes.RemoveRange(todasTransacoesParceladas);
                                 await context.SaveChangesAsync();

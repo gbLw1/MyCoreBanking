@@ -95,7 +95,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - [x] Alteração de parcelas pendente de pagamento
     - [x] Alteração de todas as parcelas
 - [x] Exclusão
-  - [x] Regra de negócio: Não é possível excluir uma transação que já foi paga
   - [x] Exclusão de transação única
   - [x] Exclusão de transação parcelada
     - [x] Excluir parcela única (por id)

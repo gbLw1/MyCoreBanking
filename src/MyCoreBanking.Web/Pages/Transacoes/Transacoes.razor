@@ -119,7 +119,22 @@
 
                                     <!-- Data -->
                                     <td class="align-middle">
-                                        @(transacao.DataTransacao.ToShortDateString())
+                                        @if (transacao.DataVencimento is null)
+                                        {
+                                            @transacao.DataTransacao.ToShortDateString()
+                                        }
+                                        else
+                                        {
+                                            @if (transacao.DataVencimento.Value < DateTime.Now && transacao.DataEfetivacao is null)
+                                            {
+                                                <p class="m-0 text-warning">@(transacao.DataVencimento.Value.ToShortDateString())</p>
+                                                <p class="m-0 text-warning">(Em atraso)</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="m-0">@(transacao.DataVencimento.Value.ToShortDateString())</p>
+                                            }
+                                        }
                                     </td>
 
                                     <!-- Conta -->

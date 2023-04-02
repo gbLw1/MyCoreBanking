@@ -178,7 +178,8 @@ partial class MyCoreBankingApp
     {
         try
         {
-            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}";
+            // TEMP query string ↓
+            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}?tipoDelete=UNICO";
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 
