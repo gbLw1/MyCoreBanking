@@ -16,6 +16,9 @@ public class TransacaoModel
     [JsonPropertyName("valor")]
     public decimal Valor { get; set; }
 
+    [JsonPropertyName("efetivada")]
+    public bool Efetivada => DataEfetivacao.HasValue;
+
     [JsonPropertyName("dataEfetivacao")]
     public DateTime? DataEfetivacao { get; set; }
 
@@ -37,9 +40,6 @@ public class TransacaoModel
     [JsonPropertyName("categoria")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public Categoria Categoria { get; set; }
-
-    [JsonPropertyName("dataVencimento")]
-    public DateTime? DataVencimento { get; set; }
 
     [JsonPropertyName("parcelaAtual")]
     public int? ParcelaAtual { get; set; }

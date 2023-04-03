@@ -47,10 +47,8 @@ internal class TransacaoEntity : BaseDataEntity
 
     /// <summary>
     /// <para>Obrigatório quando Parcelamento</para>
-    /// <para>Dia limite para efetivar o pagamento, usado para identificar atrasos</para>
+    /// <para>Número referente a parcela da transação</para>
     /// </summary>
-    public DateTime? DataVencimento { get; set; }
-
     public int? ParcelaAtual { get; set; }
 
     /// <summary>
@@ -88,7 +86,6 @@ internal class TransacaoEntity : BaseDataEntity
         TipoTransacao = TipoTransacao,
         MeioPagamento = MeioPagamento,
         Categoria = Categoria,
-        DataVencimento = DataVencimento,
         ParcelaAtual = ParcelaAtual,
         NumeroParcelas = NumeroParcelas,
         ValorParcela = ValorParcela,

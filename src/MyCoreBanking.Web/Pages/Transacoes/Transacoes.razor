@@ -94,13 +94,13 @@
                                 <tr>
                                     <!-- Status -->
                                     <td class="align-middle">
-                                        @if (transacao.DataEfetivacao is null)
+                                        @if (transacao.Efetivada)
                                         {
-                                            <i class="fa-solid fa-circle-exclamation text-warning" style="font-size: 1.4rem"></i>
+                                            <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
                                         }
                                         else
                                         {
-                                            <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
+                                            <i class="fa-solid fa-circle-exclamation text-warning" style="font-size: 1.4rem"></i>
                                         }
                                     </td>
 
@@ -118,21 +118,14 @@
 
                                     <!-- Data -->
                                     <td class="align-middle">
-                                        @if (transacao.DataVencimento is null)
+                                        @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
                                         {
-                                            @transacao.DataTransacao.ToShortDateString()
+                                            <p class="m-0 text-warning">@(transacao.DataTransacao.ToShortDateString())</p>
+                                            <p class="m-0 text-warning">(Em atraso)</p>
                                         }
                                         else
                                         {
-                                            @if (transacao.DataVencimento.Value < DateTime.Now && transacao.DataEfetivacao is null)
-                                            {
-                                                <p class="m-0 text-warning">@(transacao.DataVencimento.Value.ToShortDateString())</p>
-                                                <p class="m-0 text-warning">(Em atraso)</p>
-                                            }
-                                            else
-                                            {
-                                                <p class="m-0">@(transacao.DataVencimento.Value.ToShortDateString())</p>
-                                            }
+                                            <p class="m-0">@(transacao.DataTransacao.ToShortDateString())</p>
                                         }
                                     </td>
 
@@ -143,27 +136,17 @@
 
                                     <!-- Valor -->
                                     <td class="align-middle">
-                                        @if (transacao.TipoOperacao == OperacaoTipo.Despesa)
-                                        {
-                                            <p class="m-0 text-danger">
-                                                - @(transacao.TipoTransacao == TransacaoTipo.Unica
-                                                  ? transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))
-                                                  : transacao.ValorParcela!.Value.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
-                                            </p>
-                                        }
-                                        else
-                                        {
-                                            <p class="m-0 text-success">
-                                                + @(transacao.TipoTransacao == TransacaoTipo.Unica
-                                                  ? transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))
-                                                  : transacao.ValorParcela!.Value.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
-                                            </p>
-                                        }
+                                        <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
+                                            @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
+                                            @(transacao.TipoTransacao == TransacaoTipo.Unica
+                                                ? transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))
+                                                : transacao.ValorParcela!.Value.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                        </p>
                                     </td>
 
                                     <!-- Ação: Efetivar -->
                                     <td class="align-middle text-center">
-                                        @if (transacao.DataEfetivacao is null)
+                                        @if (!transacao.Efetivada)
                                         {
                                             <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" title="Efetivar" class="cursor-pointer">
                                                 <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
