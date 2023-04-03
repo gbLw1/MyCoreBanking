@@ -214,12 +214,12 @@ partial class MyCoreBankingApp
         }
     }
 
-    public async Task<bool> ExcluirTransacao(Guid transacaoId)
+    public async Task<bool> ExcluirTransacao(Guid transacaoId, string? tipoDelete = null)
     {
         try
         {
             // TEMP query string ↓
-            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}?tipoDelete=UNICO";
+            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}?tipoDelete={tipoDelete}";
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 

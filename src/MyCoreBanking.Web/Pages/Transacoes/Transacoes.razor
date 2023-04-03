@@ -180,7 +180,7 @@
 
                                     <!-- Ação: Excluir -->
                                     <td class="align-middle text-center">
-                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id)" title="Excluir" class="cursor-pointer">
+                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id, transacao.TipoTransacao)" title="Excluir" class="cursor-pointer">
                                             <i class="fa-solid fa-trash text-danger" style="font-size: 1.4rem"></i>
                                         </a>
                                     </td>
@@ -280,9 +280,9 @@
         }
 
         var args = new TransacoesEfetivacaoPutArgs
-        {
-            DataEfetivacao = (DateTime)modalResult.Data
-        };
+            {
+                DataEfetivacao = (DateTime)modalResult.Data!
+            };
 
         await EfetivarTransacao(transacaoId, args);
     }
@@ -305,30 +305,50 @@
 
     #region [+ Excluir Transação]
 
-    async Task AbrirModalExcluirTransacao(Guid transacaoId)
+    async Task AbrirModalExcluirTransacao(Guid transacaoId, TransacaoTipo tipo)
     {
-        Dictionary<string, object> parameters = new()
+        switch (tipo)
         {
-            {nameof(DeleteModal.Title),"Exclusão de transação" },
-            {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
-            {nameof(DeleteModal.BtnText), "Confirmar" }
-        };
+            case TransacaoTipo.Unica:
+                Dictionary<string, object> parameters = new()
+            {
+                {nameof(DeleteModal.Title),"Exclusão de transação" },
+                {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
+                {nameof(DeleteModal.BtnText), "Confirmar" }
+            };
 
-        var modalResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
+                var modalDeleteUnicoResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
 
-        if (modalResult.Cancelled)
-        {
-            return;
+                if (modalDeleteUnicoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId);
+                break;
+
+            case TransacaoTipo.Parcelada:
+                var modalDeleteParcelamentoResult = await MyCoreBankingApp.ShowModal<DeleteParcelamentoModal>().Result;
+
+                if (modalDeleteParcelamentoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId, modalDeleteParcelamentoResult.Data!.ToString());
+                break;
+
+            default:
+                MyCoreBankingApp.ShowError("Não foi possível reconhecer o tipo da transação");
+                break;
         }
-
-        await ExcluirTransacao(transacaoId);
     }
 
-    async Task ExcluirTransacao(Guid transacaoId)
+    async Task ExcluirTransacao(Guid transacaoId, string? tipoDelete = null)
     {
         var modalLoading = MyCoreBankingApp.ShowLoading();
 
-        var result = await MyCoreBankingApp.ExcluirTransacao(transacaoId);
+        var result = await MyCoreBankingApp.ExcluirTransacao(transacaoId, tipoDelete);
 
         if (result)
         {
