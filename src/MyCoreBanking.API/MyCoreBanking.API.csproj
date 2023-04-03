@@ -48,4 +48,8 @@
 		<Using Include="MyCoreBanking.API.Extensions" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\Estatisticas\" />
+	</ItemGroup>
+
 </Project>

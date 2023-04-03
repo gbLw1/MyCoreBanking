@@ -174,6 +174,46 @@ partial class MyCoreBankingApp
         }
     }
 
+    public async Task<bool> EfetivarTransacao(Guid transacaoId, TransacoesEfetivacaoPutArgs args)
+    {
+        try
+        {
+            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}/efetivar";
+
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, requestUri);
+
+            var jwt = await AuthorizationToken()
+                ?? throw new UnauthorizedAccessException("Você deve estar logado para acessar este recurso.");
+
+            httpRequestMessage.Headers.Add("Access-Control-Allow-Origin", "*");
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            httpRequestMessage.Content = JsonContent.Create(args);
+
+            using var httpResponseMessage = await _HttpClientService.SendAsync(httpRequestMessage);
+
+            if (httpResponseMessage.StatusCode is HttpStatusCode.InternalServerError)
+            {
+                ShowError("Sistema temporariamente indisponível");
+            }
+
+            var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                ShowError(responseContent);
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
+            return false;
+        }
+    }
+
     public async Task<bool> ExcluirTransacao(Guid transacaoId)
     {
         try

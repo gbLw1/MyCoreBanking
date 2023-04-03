@@ -70,7 +70,6 @@
                     </div>
                 </div>
             -->
-
             <!-- Tabela -->
             @if (model.Any())
             {
@@ -166,7 +165,7 @@
                                     <td class="align-middle text-center">
                                         @if (transacao.DataEfetivacao is null)
                                         {
-                                            <a @onclick="AbrirModalEfetivacao" title="Efetivar" class="cursor-pointer">
+                                            <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" title="Efetivar" class="cursor-pointer">
                                                 <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
                                             </a>
                                         }
@@ -271,9 +270,35 @@
 
     #region [+ Efetivar Transação]
 
-    void AbrirModalEfetivacao()
+    async Task AbrirModalEfetivacao(Guid transacaoId)
     {
+        var modalResult = await MyCoreBankingApp.ShowModal<EfetivacaoTransacaoModal>().Result;
 
+        if (modalResult.Cancelled)
+        {
+            return;
+        }
+
+        var args = new TransacoesEfetivacaoPutArgs
+        {
+            DataEfetivacao = (DateTime)modalResult.Data
+        };
+
+        await EfetivarTransacao(transacaoId, args);
+    }
+
+    async Task EfetivarTransacao(Guid transacaoId, TransacoesEfetivacaoPutArgs args)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.EfetivarTransacao(transacaoId, args);
+
+        if (result)
+        {
+            await CarregarTransacoes();
+        }
+
+        modalLoading.Close();
     }
 
     #endregion

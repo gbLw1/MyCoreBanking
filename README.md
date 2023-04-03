@@ -100,19 +100,15 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [x] Exclusão de transação parcelada
     - [x] Excluir parcela única (por id)
     - [x] Excluir todas as parcelas
-- [ ] Efetivação de transações
-  - [ ] Efeitar transação única
-  - [ ] Efeitar transação parcelada
-    - [ ] Efeitar parcela única (por id)
-    - [ ] Efeitar todas as parcelas pendentes de pagamento
+- [x] Efetivação de transações
 - [ ] Estatísticas financeiras
   - [ ] Saldo total (contas: corrente e carteira)
   - [ ] Total investido (contas: investimento, poupança)
   - [ ] Número de transações pendentes (mês atual)
   - [ ] Balanço mensal (todas as contas)
-  - [ ] Despesas por categoria (mês atual)
-  - [ ] Receitas por categoria (mês atual)
-  - [ ] Visão geral de receitas (ano atual)
+  - [ ] Total Despesas por categoria (mês atual)
+  - [ ] Total Receitas por categoria (mês atual)
+  - [ ] Visão geral de receitas -> obter valor total de receitas por mês (últimos 12 meses)
 
 ## Arquitetura
 
