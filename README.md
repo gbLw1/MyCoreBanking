@@ -7,6 +7,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 ## Versões
 
 - v1:
+
   - Cadastro de usuários
   - Login
   - Cadastro de contas
@@ -99,17 +100,19 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [x] Exclusão de transação parcelada
     - [x] Excluir parcela única (por id)
     - [x] Excluir todas as parcelas
-
-### Cartões de crédito (v2)
-
-- [ ] Cadastro
-- [ ] Listagem
-  - [ ] Listagem por período
-  - [ ] Listagem por bandeira
-  - [ ] Listagem por banco
-- [ ] Obter por Id
-- [ ] Alteração
-- [ ] Exclusão
+- [ ] Efetivação de transações
+  - [ ] Efeitar transação única
+  - [ ] Efeitar transação parcelada
+    - [ ] Efeitar parcela única (por id)
+    - [ ] Efeitar todas as parcelas pendentes de pagamento
+- [ ] Estatísticas financeiras
+  - [ ] Saldo total (contas: corrente e carteira)
+  - [ ] Total investido (contas: investimento, poupança)
+  - [ ] Número de transações pendentes (mês atual)
+  - [ ] Balanço mensal (todas as contas)
+  - [ ] Despesas por categoria (mês atual)
+  - [ ] Receitas por categoria (mês atual)
+  - [ ] Visão geral de receitas (ano atual)
 
 ## Arquitetura
 
@@ -315,7 +318,7 @@ Transacao{
     datetime2 DataPagamento
     nvarchar(max) Tipo "enum TransacaoTipo"
     uniqueidentifier UsuarioId FK
-    uniqueidentifier MeioDePagamentoId FK    
+    uniqueidentifier MeioDePagamentoId FK
 }
 
 Usuario ||--|{ MeioDePagamento : possui
