@@ -8,187 +8,188 @@
 
 <hr />
 
-
 @if (pageReady)
 {
     <div class="d-flex justify-content-center">
-    <!-- Área do Formulário -->
-    <div class="col-lg-8 col-xl-6 mb-4">
-        <div class="card shadow-lg o-hidden border-0">
-            <div class="pt-5 px-5">
-                <EditForm Model="args" OnValidSubmit="OnValidSubmit">
-                    <FluentValidationValidator />
-                    <ValidationSummary />
+        <!-- Área do Formulário -->
+        <div class="col-12 col-lg-9 col-xl-7 mb-4">
+            <div class="card shadow-lg o-hidden border-0">
+                <div class="pt-5 px-5">
+                @*<div class="pt-5 px-5" style="border-radius: 5px; @(args.TipoOperacao == OperacaoTipo.Receita ? "border: 5px solid #1cc88a;background-color: #1cc88a14;" : "border: 5px solid #e74a3b;background-color: #c81c1c14;")">*@
+                    <EditForm Model="args" OnValidSubmit="OnValidSubmit">
+                        <FluentValidationValidator />
+                        <ValidationSummary />
 
-                    <div class="row mb-3">
-                        <!-- Tipo de operação -->
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <p class="m-0 text-dark">Tipo de operação</p>
-                            <InputSelect @bind-Value="args.TipoOperacao" class="form-select">
-                                @foreach (OperacaoTipo tipoOperacao in Enum.GetValues<OperacaoTipo>())
-                                {
-                                    <option value="@tipoOperacao">@tipoOperacao</option>
-                                }
-                            </InputSelect>
+                        <div class="row mb-3">
+                            <!-- Tipo de operação -->
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <p class="m-0 text-dark">Tipo de operação</p>
+                                <InputSelect @bind-Value="args.TipoOperacao" class="form-select">
+                                    @foreach (OperacaoTipo tipoOperacao in Enum.GetValues<OperacaoTipo>())
+                                    {
+                                        <option value="@tipoOperacao">@tipoOperacao</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <!-- Tipo de transação -->
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <p class="m-0 text-dark">Tipo de transação</p>
+                                <InputSelect @bind-Value="args.TipoTransacao" class="form-select">
+                                    @foreach (TransacaoTipo tipoTransacao in Enum.GetValues<TransacaoTipo>())
+                                    {
+                                        <option value="@tipoTransacao">@MyCoreBankingApp.ConverterEnumTipoTransacaoParaString(tipoTransacao)</option>
+                                    }
+                                </InputSelect>
+                            </div>
                         </div>
-                        <!-- Tipo de transação -->
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <p class="m-0 text-dark">Tipo de transação</p>
-                            <InputSelect @bind-Value="args.TipoTransacao" class="form-select">
-                                @foreach (TransacaoTipo tipoTransacao in Enum.GetValues<TransacaoTipo>())
-                                {
-                                    <option value="@tipoTransacao">@MyCoreBankingApp.ConverterEnumTipoTransacaoParaString(tipoTransacao)</option>
-                                }
-                            </InputSelect>
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <!-- Categoria -->
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <p class="m-0 text-dark">Categoria</p>
-                            <InputSelect @bind-Value="args.Categoria" class="form-select">
-                                @foreach (Categoria categoria in Enum.GetValues<Categoria>())
-                                {
-                                    <option value="@categoria">@MyCoreBankingApp.ConverterEnumCategoriaParaString(categoria)</option>
-                                }
-                            </InputSelect>
+                        <div class="row mb-3">
+                            <!-- Categoria -->
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <p class="m-0 text-dark">Categoria</p>
+                                <InputSelect @bind-Value="args.Categoria" class="form-select">
+                                    @foreach (Categoria categoria in Enum.GetValues<Categoria>())
+                                    {
+                                        <option value="@categoria">@MyCoreBankingApp.ConverterEnumCategoriaParaString(categoria)</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <!-- Meio de pagamento -->
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <p class="m-0 text-dark">Meio de pagamento</p>
+                                <InputSelect @bind-Value="args.MeioPagamento" class="form-select">
+                                    @foreach (MeioPagamentoTipo meioPagamento in Enum.GetValues<MeioPagamentoTipo>())
+                                    {
+                                        <option value="@meioPagamento">@MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(meioPagamento)</option>
+                                    }
+                                </InputSelect>
+                            </div>
                         </div>
-                        <!-- Meio de pagamento -->
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <p class="m-0 text-dark">Meio de pagamento</p>
-                            <InputSelect @bind-Value="args.MeioPagamento" class="form-select">
-                                @foreach (MeioPagamentoTipo meioPagamento in Enum.GetValues<MeioPagamentoTipo>())
-                                {
-                                    <option value="@meioPagamento">@MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(meioPagamento)</option>
-                                }
-                            </InputSelect>
-                        </div>
-                    </div>
 
-                    <!-- Conta -->
-                    <div class="mb-3">
-                        <p class="m-0 text-dark">Conta</p>
-                        <InputSelect @bind-Value="args.ContaId" class="form-select">
-                            @foreach (var conta in contas!)
+                        <!-- Conta -->
+                        <div class="mb-3">
+                            <p class="m-0 text-dark">Conta</p>
+                            <InputSelect @bind-Value="args.ContaId" class="form-select">
+                                @foreach (var conta in contas!)
+                                {
+                                    <option value="@conta.Id">
+                                        @if (conta.Tipo == ContaTipo.Carteira)
+                                        {
+                                            @($"{conta.Descricao} ({MyCoreBankingApp.ConverterEnumTipoContaParaString(conta.Tipo)}) - Saldo: {conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}")
+                                        }
+                                        else
+                                        {
+                                            @($"{conta.Descricao} ({MyCoreBankingApp.ConverterEnumBancoParaString(conta.Banco)} - {MyCoreBankingApp.ConverterEnumTipoContaParaString(conta.Tipo)}) - Saldo: {conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}")
+                                        }
+                                    </option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <!-- Descrição -->
+                        <div class="mb-3">
+                            <p class="m-0 text-dark">Descrição</p>
+                            <InputText @bind-Value="args.Descricao" class="form-control" placeholder="Descrição" />
+                        </div>
+
+                        <!-- Observação -->
+                        <div class="mb-3">
+                            <p class="m-0 text-dark">Observação</p>
+                            <InputText @bind-Value="args.Observacao" class="form-control" placeholder="Observação" />
+                        </div>
+
+                        <!-- Data da transação -->
+                        <div class="mb-3">
+                            @if (args.TipoTransacao == TransacaoTipo.Unica)
                             {
-                                <option value="@conta.Id">
-                                    @if (conta.Tipo == ContaTipo.Carteira)
-                                    {
-                                        @($"{conta.Descricao} ({MyCoreBankingApp.ConverterEnumTipoContaParaString(conta.Tipo)}) - Saldo: {conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}")
-                                    }
-                                    else
-                                    {
-                                        @($"{conta.Descricao} ({MyCoreBankingApp.ConverterEnumBancoParaString(conta.Banco)} - {MyCoreBankingApp.ConverterEnumTipoContaParaString(conta.Tipo)}) - Saldo: {conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}")
-                                    }
-                                </option>
+                                <p class="m-0 text-dark">Data da transação</p>
+                                <InputDate @bind-Value="args.DataTransacao" class="form-control" placeholder="Data da transação" />
                             }
-                        </InputSelect>
-                    </div>
+                            @if (args.TipoTransacao == TransacaoTipo.Parcelada)
+                            {
+                                <p class="m-0 text-dark">Data de vencimento</p>
+                                <InputDate @bind-Value="args.DataVencimento" class="form-control" placeholder="Data de vencimento" />
+                            }
+                        </div>
 
-                    <!-- Descrição -->
-                    <div class="mb-3">
-                        <p class="m-0 text-dark">Descrição</p>
-                        <InputText @bind-Value="args.Descricao" class="form-control" placeholder="Descrição" />
-                    </div>
-
-                    <!-- Observação -->
-                    <div class="mb-3">
-                        <p class="m-0 text-dark">Observação</p>
-                        <InputText @bind-Value="args.Observacao" class="form-control" placeholder="Observação" />
-                    </div>
-
-                    <!-- Data da transação -->
-                    <div class="mb-3">
+                        <!-- Valor: Unica -->
                         @if (args.TipoTransacao == TransacaoTipo.Unica)
                         {
-                            <p class="m-0 text-dark">Data da transação</p>
-                            <InputDate @bind-Value="args.DataTransacao" class="form-control" placeholder="Data da transação" />
-                        }
-                        @if (args.TipoTransacao == TransacaoTipo.Parcelada)
-                        {
-                            <p class="m-0 text-dark">Data de vencimento</p>
-                            <InputDate @bind-Value="args.DataVencimento" class="form-control" placeholder="Data de vencimento" />
-                        }
-                    </div>
-
-                    <!-- Valor: Unica -->
-                    @if (args.TipoTransacao == TransacaoTipo.Unica)
-                    {
-                        <div class="mb-3">
-                            <p class="m-0 text-dark">Valor</p>
-                            <div class="d-flex align-items-center">
-                                <p class="m-0 me-2 h5 text-dark">R$ </p>
-                                <InputNumber @bind-Value="args.Valor" class="form-control" placeholder="Valor da transação" />
-                            </div>
-                        </div>
-                    }
-
-                    <!-- Valor: Parcelada -->
-                    @if (args.TipoTransacao == TransacaoTipo.Parcelada)
-                    {
-                        <div class="row mb-3">
-                            <!-- Valor da parcela -->
-                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                <p class="m-0 text-dark">Valor da parcela</p>
+                            <div class="mb-3">
+                                <p class="m-0 text-dark">Valor</p>
                                 <div class="d-flex align-items-center">
                                     <p class="m-0 me-2 h5 text-dark">R$ </p>
-                                    <InputNumber @bind-Value="args.ValorParcela" class="form-control" placeholder="Valor da parcela" />
+                                    <InputNumber @bind-Value="args.Valor" class="form-control" placeholder="Valor da transação" />
                                 </div>
                             </div>
-                            <!-- Número de parcelas -->
-                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                <p class="m-0 text-dark">Número de parcelas</p>
-                                <InputNumber min="0" @bind-Value="args.NumeroParcelas" class="form-control" placeholder="Número de parcelas" />
-                            </div>
-                        </div>
+                        }
 
-                        <!-- Extra: valor total-->
-                        <div class="mb-3">
-                            <p class="m-0 text-dark">Valor total</p>
-                            <div class="d-flex align-items-center">
-                                <p class="m-0 me-2 h5">@(args.ValorParcela.HasValue && args.NumeroParcelas.HasValue ? (args.ValorParcela.Value * args.NumeroParcelas.Value).ToString("C") : 0.ToString("C"))</p>
-                            </div>
-                        </div>
-                    }
-
-                    @if (args.TipoTransacao == TransacaoTipo.Unica)
-                    {
-                        <div class="row mt-4">
-                            <!-- Switch: Efetivada -->
-                                <div class="col-sm-6 mb-3 mb-sm-0 d-flex justify-content-center flex-column">
-                                <div class="form-check form-switch cursor-pointer p-0 d-flex align-items-center" style="font-size: 1.2rem">
-                                    <input @bind-value="Efetivada" type="checkbox"
-                                           role="switch" id="transacaoEfetivada"
-                                           class="form-check-input cursor-pointer m-0 me-2"
-                                           style="width: 60px;height: 30px;">
-                                    <label class="form-check-label" for="transacaoEfetivada">Foi @(args.TipoOperacao == OperacaoTipo.Despesa ? "paga" : "recebida")</label>
-                                </div>
-                            </div>
-                            <!-- Data efetivação -->
-                            @if (Efetivada)
-                            {
+                        <!-- Valor: Parcelada -->
+                        @if (args.TipoTransacao == TransacaoTipo.Parcelada)
+                        {
+                            <div class="row mb-3">
+                                <!-- Valor da parcela -->
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <p class="m-0 text-dark">Data do @(args.TipoOperacao == OperacaoTipo.Despesa ? "pagamento" : "recebimento")</p>
-                                    <InputDate min="0" @bind-Value="args.DataEfetivacao" class="form-control" placeholder="Data da efetivação" />
+                                    <p class="m-0 text-dark">Valor da parcela</p>
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0 me-2 h5 text-dark">R$ </p>
+                                        <InputNumber @bind-Value="args.ValorParcela" class="form-control" placeholder="Valor da parcela" />
+                                    </div>
                                 </div>
-                            }
-                        </div>
-                    }
+                                <!-- Número de parcelas -->
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <p class="m-0 text-dark">Número de parcelas</p>
+                                    <InputNumber min="0" @bind-Value="args.NumeroParcelas" class="form-control" placeholder="Número de parcelas" />
+                                </div>
+                            </div>
 
+                            <!-- Extra: valor total-->
+                            <div class="mb-3">
+                                <p class="m-0 text-dark">Valor total</p>
+                                <div class="d-flex align-items-center">
+                                    <p class="m-0 me-2 h5">@(args.ValorParcela.HasValue && args.NumeroParcelas.HasValue ? (args.ValorParcela.Value * args.NumeroParcelas.Value).ToString("C") : 0.ToString("C"))</p>
+                                </div>
+                            </div>
+                        }
 
-                    <button class="btn btn-primary d-block w-100 py-2 mt-4" type="submit">Cadastrar</button>
+                        @if (args.TipoTransacao == TransacaoTipo.Unica)
+                        {
+                            <div class="row mt-4">
+                                <!-- Switch: Efetivada -->
+                                <div class="col-sm-6 mb-3 mb-sm-0 d-flex justify-content-center flex-column">
+                                    <div class="form-check form-switch cursor-pointer p-0 d-flex align-items-center" style="font-size: 1.2rem">
+                                        <input @bind-value="Efetivada" type="checkbox"
+                                               role="switch" id="transacaoEfetivada"
+                                               class="form-check-input cursor-pointer m-0 me-2"
+                                               style="width: 60px;height: 30px;">
+                                        <label class="form-check-label" for="transacaoEfetivada">Foi @(args.TipoOperacao == OperacaoTipo.Despesa ? "paga" : "recebida")</label>
+                                    </div>
+                                </div>
+                                <!-- Data efetivação -->
+                                @if (Efetivada)
+                                {
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <p class="m-0 text-dark">Data do @(args.TipoOperacao == OperacaoTipo.Despesa ? "pagamento" : "recebimento")</p>
+                                        <InputDate min="0" @bind-Value="args.DataEfetivacao" class="form-control" placeholder="Data da efetivação" />
+                                    </div>
+                                }
+                            </div>
+                        }
 
-                    <hr>
-                </EditForm>
+                        <FormButtons CancelRedirect="/transacoes" SubmitText="Cadastrar" />
+
+                        <hr>
+                    </EditForm>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 }
 else
 {
-    <Spinner Size="50px" />
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+        <Spinner Size="50px" />
+    </div>
 }
 
 @code {
@@ -204,8 +205,6 @@ else
 
     async Task CarregarContas()
     {
-        var modalLoading = MyCoreBankingApp.ShowLoading();
-
         var result = await MyCoreBankingApp.ObterContas();
 
         if (result is not null)
@@ -213,8 +212,6 @@ else
             contas = result;
             args.ContaId = contas.First().Id;
         }
-
-        modalLoading.Close();
     }
 
     async Task OnValidSubmit()

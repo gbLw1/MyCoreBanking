@@ -1,0 +1,22 @@
+﻿<div class="d-flex flex-column flex-md-row align-items-center justify-content-center mt-4">
+    <a href="@(CancelRedirect)"
+       class="btn btn-secondary rounded-pill d-block w-100 py-2 m-0 mb-2 mb-md-0 me-md-2">
+        @(CancelText)
+    </a>
+    <button type="submit"
+            class="btn btn-primary rounded-pill d-block w-100 py-2 m-0 ms-md-2">
+        @(SubmitText)
+    </button>
+</div>
+
+@code {
+
+    [Parameter]
+    public string CancelText { get; set; } = "Voltar";
+
+    [Parameter, EditorRequired]
+    public string CancelRedirect { get; set; } = "/";
+
+    [Parameter, EditorRequired]
+    public string SubmitText { get; set; } = "Salvar";
+}

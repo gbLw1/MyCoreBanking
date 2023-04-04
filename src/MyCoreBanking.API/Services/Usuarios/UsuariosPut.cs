@@ -36,6 +36,7 @@ public class UsuariosPUT
                 throw new NotFoundException(message: "Usuário não encontrado", paramName: nameof(userId));
 
             usuarioEntity.Nome = args.Nome;
+            usuarioEntity.UltimaAtualizacaoEm = DateTime.Now;
 
             context.Usuarios.Update(usuarioEntity);
             await context.SaveChangesAsync();

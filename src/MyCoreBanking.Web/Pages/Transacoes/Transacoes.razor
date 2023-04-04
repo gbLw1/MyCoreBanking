@@ -88,10 +88,10 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-group-divider">
                             @foreach (var transacao in model)
                             {
-                                <tr>
+                                <tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">
                                     <!-- Status -->
                                     <td class="align-middle">
                                         @if (transacao.Efetivada)
@@ -105,7 +105,7 @@
                                     </td>
 
                                     <!-- Descrição -->
-                                    <td class="align-middle">
+                                    <td class="align-middle fw-semibold">
                                         @(transacao.TipoTransacao == TransacaoTipo.Unica
                                             ? transacao.Descricao
                                             : $"{transacao.Descricao} - ({transacao.ParcelaAtual}/{transacao.NumeroParcelas})")
@@ -120,8 +120,8 @@
                                     <td class="align-middle">
                                         @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
                                         {
-                                            <p class="m-0 text-warning">@(transacao.DataTransacao.ToShortDateString())</p>
-                                            <p class="m-0 text-warning">(Em atraso)</p>
+                                            <p class="m-0 text-warning fw-semibold">@(transacao.DataTransacao.ToShortDateString())</p>
+                                            <p class="m-0 text-warning fw-semibold">(Em atraso)</p>
                                         }
                                         else
                                         {

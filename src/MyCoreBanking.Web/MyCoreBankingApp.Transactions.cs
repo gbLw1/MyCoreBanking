@@ -51,11 +51,11 @@ partial class MyCoreBankingApp
         }
     }
 
-    public async Task<ContaModel?> ObterTransacaoPorId(Guid contaId)
+    public async Task<TransacaoModel?> ObterTransacaoPorId(Guid transacaoId)
     {
         try
         {
-            var requestUri = $"{BaseAddress}/contas/{contaId}";
+            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}";
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
@@ -77,12 +77,12 @@ partial class MyCoreBankingApp
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                _Navigation.NavigateTo("/contas");
+                _Navigation.NavigateTo("/transacoes");
                 ShowError(responseContent);
                 return null;
             }
 
-            var result = JsonSerializer.Deserialize<ContaModel?>(responseContent)
+            var result = JsonSerializer.Deserialize<TransacaoModel?>(responseContent)
                     ?? throw new InvalidOperationException(responseContent);
 
             return result;
@@ -134,11 +134,11 @@ partial class MyCoreBankingApp
         }
     }
 
-    public async Task AlterarTransacao(Guid contaId, ContasPutArgs args)
+    public async Task AlterarTransacao(Guid transacaoId, TransacoesPutArgs args, string? tipoUpdate = null)
     {
         try
         {
-            var requestUri = $"{BaseAddress}/contas/{contaId}";
+            var requestUri = $"{BaseAddress}/transacoes/{transacaoId}?tipoUpdate={tipoUpdate}";
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, requestUri);
 
@@ -165,7 +165,7 @@ partial class MyCoreBankingApp
                 return;
             }
 
-            _Navigation.NavigateTo("/contas");
+            _Navigation.NavigateTo("/transacoes");
         }
         catch (Exception ex)
         {

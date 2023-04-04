@@ -42,6 +42,8 @@ public class ContasPUT
             conta.Descricao = args.Descricao;
             conta.Tipo = args.Tipo;
 
+            conta.UltimaAtualizacaoEm = DateTime.Now;
+
             context.Contas.Update(conta);
             await context.SaveChangesAsync();
 
