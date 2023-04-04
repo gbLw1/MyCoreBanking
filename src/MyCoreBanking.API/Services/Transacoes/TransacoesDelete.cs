@@ -92,8 +92,25 @@ public static class TransacoesDelete
                                     }
                                 }
 
+                                var refParcelaId = transacao.ReferenciaParcelaId;
+
                                 context.Transacoes.Remove(transacao);
                                 await context.SaveChangesAsync();
+
+                                // Reajustar o valor total do parcelamento
+                                query = query.Where(t => t.ReferenciaParcelaId == refParcelaId);
+
+                                var todasTransacoesParceladas = await query.ToListAsync();
+
+                                foreach (var transacaoParcelada in todasTransacoesParceladas)
+                                {
+                                    transacaoParcelada.NumeroParcelas = todasTransacoesParceladas.Count;
+                                    transacaoParcelada.Valor = transacaoParcelada.ValorParcela!.Value * transacaoParcelada.NumeroParcelas!.Value;
+                                }
+
+                                context.Transacoes.UpdateRange(todasTransacoesParceladas);
+                                await context.SaveChangesAsync();
+
                                 await dbTransaction.CommitAsync();
                             }
                             catch (Exception)

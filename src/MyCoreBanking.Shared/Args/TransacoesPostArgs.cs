@@ -7,7 +7,7 @@ public class TransacoesPostArgs
     public string Descricao { get; set; } = string.Empty;
     public string? Observacao { get; set; }
     public decimal? Valor { get; set; }
-    public DateTime? DataEfetivacao { get; set; }
+    public DateTime? DataEfetivacao { get; set; } = DateTime.Now;
     public DateTime? DataTransacao { get; set; }
     public OperacaoTipo TipoOperacao { get; set; }
     public TransacaoTipo TipoTransacao { get; set; }
@@ -47,6 +47,7 @@ public class TransacoesPostArgs
             When(t => t.TipoTransacao == TransacaoTipo.Unica, () =>
             {
                 RuleFor(t => t.Valor)
+                    .NotEmpty().WithMessage("O valor da transação é obrigatório")
                     .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
 
                 RuleFor(t => t.DataTransacao)

@@ -94,11 +94,11 @@ partial class MyCoreBankingApp
         }
     }
 
-    public async Task CadastrarTransacao(ContasPostArgs args)
+    public async Task CadastrarTransacao(TransacoesPostArgs args)
     {
         try
         {
-            var requestUri = $"{BaseAddress}/contas";
+            var requestUri = $"{BaseAddress}/transacoes";
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
 
@@ -125,7 +125,7 @@ partial class MyCoreBankingApp
                 return;
             }
 
-            _Navigation.NavigateTo("/contas");
+            _Navigation.NavigateTo("/transacoes");
         }
         catch (Exception ex)
         {

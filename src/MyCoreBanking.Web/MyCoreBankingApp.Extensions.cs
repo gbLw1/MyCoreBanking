@@ -41,4 +41,25 @@ partial class MyCoreBankingApp
         Categoria.Outros => "Outros",
         _ => "Desconhecido",
     };
+
+    public static string ConverterEnumTipoTransacaoParaString(TransacaoTipo tipo) => tipo switch
+    {
+        TransacaoTipo.Unica => "Única",
+        TransacaoTipo.Parcelada => "Parcelada",
+        _ => "Desconhecido",
+    };
+
+    public static string ConverterEnumMeioPagamentoParaString(MeioPagamentoTipo tipo) => tipo switch
+    {
+
+        MeioPagamentoTipo.Credito => "Crédito",
+        MeioPagamentoTipo.Debito => "Débito",
+        MeioPagamentoTipo.Pix => "PIX",
+        MeioPagamentoTipo.Dinheiro => "Dinheiro",
+        MeioPagamentoTipo.Cheque => "Cheque",
+        MeioPagamentoTipo.Boleto => "Boleto",
+        MeioPagamentoTipo.Transferencia => "Transferência",
+        MeioPagamentoTipo.Outros => "Outros",
+        _ => "Desconhecido",
+    };
 }
