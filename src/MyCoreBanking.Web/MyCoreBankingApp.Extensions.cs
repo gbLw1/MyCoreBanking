@@ -38,6 +38,9 @@ partial class MyCoreBankingApp
         Categoria.Vestuario => "Vestuário",
         Categoria.Viagem => "Viagem",
         Categoria.Servico => "Serviço",
+        Categoria.Investimentos => "Investimentos",
+        Categoria.Presente => "Presente",
+        Categoria.Salario => "Salário",
         Categoria.Outros => "Outros",
         _ => "Desconhecido",
     };

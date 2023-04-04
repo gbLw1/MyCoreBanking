@@ -13,5 +13,8 @@ public enum Categoria
     Vestuario,
     Viagem,
     Servico,
+    Investimentos,
+    Presente,
+    Salario,
     Outros,
 }

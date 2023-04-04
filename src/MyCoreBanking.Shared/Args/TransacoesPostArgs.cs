@@ -8,7 +8,7 @@ public class TransacoesPostArgs
     public string? Observacao { get; set; }
     public decimal? Valor { get; set; }
     public DateTime? DataEfetivacao { get; set; } = DateTime.Now;
-    public DateTime? DataTransacao { get; set; }
+    public DateTime? DataTransacao { get; set; } = DateTime.Now;
     public OperacaoTipo TipoOperacao { get; set; }
     public TransacaoTipo TipoTransacao { get; set; }
     public MeioPagamentoTipo MeioPagamento { get; set; }
