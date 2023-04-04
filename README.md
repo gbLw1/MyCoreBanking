@@ -26,8 +26,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - Cadastro de faturas
   - Efetivação de faturas
   - Cadastro de transferências
-  - Cadastro de investimentos
-  - Cadastro de empréstimos
 
 ## Tecnologias
 
@@ -62,7 +60,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Login
 - [x] Ver perfil
 - [x] Alteração
-- [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 
 ### Contas
 
@@ -101,14 +98,16 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - [x] Excluir parcela única (por id)
     - [x] Excluir todas as parcelas
 - [x] Efetivação de transações
-- [ ] Estatísticas financeiras
-  - [ ] Saldo total (contas: corrente e carteira)
-  - [ ] Total investido (contas: investimento, poupança)
-  - [ ] Número de transações pendentes (mês atual)
-  - [ ] Balanço mensal (todas as contas)
-  - [ ] Total Despesas por categoria (mês atual)
-  - [ ] Total Receitas por categoria (mês atual)
-  - [ ] Visão geral de receitas -> obter valor total de receitas por mês (últimos 12 meses)
+
+### Estatísticas financeiras
+
+- [ ] Saldo total (soma do saldo das contas: corrente e carteira)
+- [ ] Total investido (soma do saldo das contas: investimento, poupança)
+- [ ] Número de transações pendentes (mês atual)
+- [ ] Balanço mensal (todas as contas)
+- [ ] Total Despesas por categoria (mês atual)
+- [ ] Total Receitas por categoria (mês atual)
+- [ ] Visão geral de receitas -> obter valor total de receitas por mês (últimos 12 meses)
 
 ## Arquitetura
 
