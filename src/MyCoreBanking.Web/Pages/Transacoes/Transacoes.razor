@@ -2,11 +2,11 @@
 @using System.Globalization;
 
 <!-- Título -->
-<div class="d-flex justify-content-between align-items-center">
-    <p class="m-0 h2 text-dark">Minhas Transações</p>
+<div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
+    <p class="mb-3 m-sm-0 h2 text-dark">Minhas Transações</p>
 
     <a href="/transacoes/cadastrar"
-       class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
+       class="btn text-primary fw-bolder btn-sm border border-primary rounded"
        style="font-size: 1.2rem">
         Nova Transação
     </a>
@@ -79,9 +79,9 @@
                             <tr>
                                 <th style="width: 40px"></th>
                                 <th>Descrição</th>
-                                <th>Categoria</th>
+                                <th class="d-none d-lg-table-cell">Categoria</th>
                                 <th>Data</th>
-                                <th>Conta</th>
+                                <th class="d-none d-lg-table-cell">Conta</th>
                                 <th>Valor</th>
                                 <th></th>
                                 <th></th>
@@ -91,7 +91,7 @@
                         <tbody class="table-group-divider">
                             @foreach (var transacao in model)
                             {
-                                <tr style="border-bottom: 1px solid #cccccc;">
+                                <tr style="border-bottom: 1px solid #cccccc;height: 65px">
                                 @*<tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">*@
                                     <!-- Status -->
                                     <td class="align-middle">
@@ -117,7 +117,7 @@
                                     </td>
 
                                     <!-- Categoria -->
-                                    <td class="align-middle">
+                                    <td class="d-none d-lg-table-cell align-middle">
                                         @(MyCoreBankingApp.ConverterEnumCategoriaParaString(transacao.Categoria))
                                     </td>
 
@@ -135,7 +135,7 @@
                                     </td>
 
                                     <!-- Conta -->
-                                    <td class="align-middle">
+                                    <td class="d-none d-lg-table-cell align-middle">
                                         @(transacao.Conta)
                                     </td>
 
