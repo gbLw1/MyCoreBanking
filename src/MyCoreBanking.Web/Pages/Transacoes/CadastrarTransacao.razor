@@ -107,7 +107,7 @@
                             }
                             @if (args.TipoTransacao == TransacaoTipo.Parcelada)
                             {
-                                <p class="m-0 text-dark">Data de vencimento</p>
+                                <p class="m-0 text-dark">Data de vencimento (O parcelamento iniciará a partir desta data)</p>
                                 <InputDate @bind-Value="args.DataVencimento" class="form-control" placeholder="Data de vencimento" />
                             }
                         </div>

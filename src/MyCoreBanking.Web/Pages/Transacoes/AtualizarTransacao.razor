@@ -103,7 +103,7 @@
                             @if (model.TipoTransacao == TransacaoTipo.Parcelada)
                             {
                                 <p class="m-0 text-dark">Data de vencimento</p>
-                                <input type="date" disabled @bind-value="args.DataTransacao" class="form-control disabled" placeholder="Data de vencimento" />
+                                <InputDate @bind-Value="args.DataTransacao" class="form-control" placeholder="Data de vencimento" />
                             }
                         </div>
 
@@ -205,7 +205,6 @@ else
 
     async Task OnValidSubmit()
     {
-        // TODO: Abrir modal tipo de update
         switch (model.TipoTransacao)
         {
             case TransacaoTipo.Unica:
@@ -213,6 +212,13 @@ else
                 break;
 
             case TransacaoTipo.Parcelada:
+                if (args.DataTransacao.Month != model.DataTransacao.Month
+                    || args.DataTransacao.Year != model.DataTransacao.Year)
+                {
+                    MyCoreBankingApp.ShowError("Você só pode alterar o dia da data de vencimento");
+                    return;
+                }
+
                 var modalUpdateParcelamentoResult = await MyCoreBankingApp.ShowModal<UpdateParcelamentoModal>().Result;
 
                 if (modalUpdateParcelamentoResult.Cancelled)
@@ -220,7 +226,15 @@ else
                     return;
                 }
 
-                await AlterarTransacao(modalUpdateParcelamentoResult.Data!.ToString());
+                string? tipoUpdate = modalUpdateParcelamentoResult.Data!.ToString();
+
+                if (args.DataTransacao.Day > 28 && tipoUpdate != "UNICO")
+                {
+                    MyCoreBankingApp.ShowError("Nem todos os meses suportam mais que 28 dias, informe o dia de vencimento entre 1 e 28");
+                    return;
+                }
+
+                await AlterarTransacao(tipoUpdate);
                 break;
 
             default:

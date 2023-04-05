@@ -52,25 +52,38 @@ public static class TransacoesPut
                         {
                             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                             {
-                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
                             }
                             else
                             {
-                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
                             }
                         }
 
-                        // Atualizar o saldo da conta com o novo valor se já estava efetivada
+                        // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
                         if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
                         {
                             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                             {
-                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
                                 transacaoEntity.Conta!.Saldo += args.Valor;
                             }
                             else
                             {
-                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Conta!.Saldo -= args.Valor;
+                            }
+                        }
+
+                        // Se a transação NÃO estava efetivada e está efetivando, atualiza o saldo da conta e efetiva a transação
+                        if (transacaoEntity.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                        {
+                            if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                            {
+                                transacaoEntity.Conta!.Saldo += args.Valor;
+                            }
+                            else
+                            {
                                 transacaoEntity.Conta!.Saldo -= args.Valor;
                             }
                         }
@@ -157,6 +170,7 @@ public static class TransacoesPut
                                 transacaoEntity.Observacao = args.Observacao;
                                 transacaoEntity.ValorParcela = args.Valor;
                                 transacaoEntity.DataEfetivacao = args.DataEfetivacao;
+                                transacaoEntity.DataTransacao = new DateTime(transacaoEntity.DataTransacao.Year, transacaoEntity.DataTransacao.Month, args.DataTransacao.Day);
 
                                 transacaoEntity.UltimaAtualizacaoEm = DateTime.Now;
 
@@ -257,6 +271,7 @@ public static class TransacoesPut
                                     transacao.Observacao = args.Observacao;
                                     transacao.ValorParcela = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
+                                    transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
 
                                     transacao.UltimaAtualizacaoEm = DateTime.Now;
 
@@ -352,6 +367,7 @@ public static class TransacoesPut
                                     transacao.Observacao = args.Observacao;
                                     transacao.ValorParcela = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
+                                    transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
 
                                     transacao.UltimaAtualizacaoEm = DateTime.Now;
 
