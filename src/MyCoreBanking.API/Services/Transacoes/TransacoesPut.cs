@@ -52,11 +52,11 @@ public static class TransacoesPut
                         {
                             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                             {
-                                transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
                             }
                             else
                             {
-                                transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
                             }
                         }
 
@@ -65,12 +65,12 @@ public static class TransacoesPut
                         {
                             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                             {
-                                transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
                                 transacaoEntity.Conta!.Saldo += args.Valor;
                             }
                             else
                             {
-                                transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
                                 transacaoEntity.Conta!.Saldo -= args.Valor;
                             }
                         }
