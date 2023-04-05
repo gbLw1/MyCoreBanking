@@ -73,7 +73,7 @@
             <!-- Tabela -->
             @if (model.Any())
             {
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <div class="table-responsive table mt-2 px-5" id="dataTable" role="grid" aria-describedby="dataTable_info">
                     <table class="table my-0" id="dataTable">
                         <thead>
                             <tr>
@@ -91,16 +91,21 @@
                         <tbody class="table-group-divider">
                             @foreach (var transacao in model)
                             {
-                                <tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">
+                                <tr style="border-bottom: 1px solid #cccccc;">
+                                @*<tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">*@
                                     <!-- Status -->
                                     <td class="align-middle">
                                         @if (transacao.Efetivada)
                                         {
-                                            <i class="fa-solid fa-circle-check text-success" title="Efetivada" style="font-size: 1.4rem"></i>
+                                            <ToolTip Text="Efetivada">
+                                                <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
                                         }
                                         else
                                         {
-                                            <i class="fa-solid fa-circle-exclamation text-warning" title="Pendente" style="font-size: 1.4rem"></i>
+                                            <ToolTip Text="Pendente">
+                                                <i class="fa-solid fa-circle-exclamation text-warning" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
                                         }
                                     </td>
 
@@ -148,33 +153,41 @@
                                     <td class="align-middle text-center">
                                         @if (!transacao.Efetivada)
                                         {
-                                            <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" title="Efetivar" class="cursor-pointer">
-                                                <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
+                                            <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" class="cursor-pointer">
+                                                <ToolTip Text="Efetivar">
+                                                    <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
+                                                </ToolTip>
                                             </a>
                                         }
                                     </td>
 
-                                    <!-- Ação: Efetivar -->
+                                    <!-- Ação: Parcelamento -->
                                     <td class="align-middle text-center">
                                         @if (transacao.TipoTransacao == TransacaoTipo.Parcelada)
                                         {
-                                            <a @onclick="async () => await AbrirModalParcelamento(transacao.ReferenciaParcelaId!.Value)" title="Ver parcelamento" class="cursor-pointer">
-                                                <i class="fa-solid fa-eye" style="font-size: 1.4rem;color: #0ae10a;"></i>
+                                            <a @onclick="async () => await AbrirModalParcelamento(transacao.ReferenciaParcelaId!.Value)" class="cursor-pointer">
+                                                <ToolTip Text="Parcelamento">
+                                                    <i class="fa-solid fa-eye" style="font-size: 1.4rem;color: #0ae10a;"></i>
+                                                </ToolTip>
                                             </a>
                                         }
                                     </td>
 
                                     <!-- Ação: Editar -->
                                     <td class="align-middle text-center">
-                                        <a href="/transacoes/@(transacao.Id)" title="Editar">
-                                            <i class="fa-solid fa-pen-to-square text-info" style="font-size: 1.4rem"></i>
+                                        <a href="/transacoes/@(transacao.Id)">
+                                            <ToolTip Text="Editar">
+                                                <i class="fa-solid fa-pen-to-square text-info" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
                                         </a>
                                     </td>
 
                                     <!-- Ação: Excluir -->
                                     <td class="align-middle text-center">
-                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id, transacao.TipoTransacao)" title="Excluir" class="cursor-pointer">
-                                            <i class="fa-solid fa-trash text-danger" style="font-size: 1.4rem"></i>
+                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id, transacao.TipoTransacao)" class="cursor-pointer">
+                                            <ToolTip Text="Excluir">
+                                                <i class="fa-solid fa-trash text-danger" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
                                         </a>
                                     </td>
                                 </tr>
