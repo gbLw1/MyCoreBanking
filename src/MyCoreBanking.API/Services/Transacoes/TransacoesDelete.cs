@@ -98,14 +98,16 @@ public static class TransacoesDelete
                                 await context.SaveChangesAsync();
 
                                 // Reajustar o valor total do parcelamento
-                                query = query.Where(t => t.ReferenciaParcelaId == refParcelaId);
+                                query = query.Where(t => t.ReferenciaParcelaId == refParcelaId).OrderBy(t => t.DataTransacao);
 
                                 var todasTransacoesParceladas = await query.ToListAsync();
 
-                                foreach (var transacaoParcelada in todasTransacoesParceladas)
+                                // Reordenar as parcelas
+                                for (int i = 0; i < todasTransacoesParceladas.Count; i++)
                                 {
-                                    transacaoParcelada.NumeroParcelas = todasTransacoesParceladas.Count;
-                                    transacaoParcelada.Valor = transacaoParcelada.ValorParcela!.Value * transacaoParcelada.NumeroParcelas!.Value;
+                                    todasTransacoesParceladas[i].ParcelaAtual = i + 1;
+                                    todasTransacoesParceladas[i].NumeroParcelas = todasTransacoesParceladas.Count;
+                                    todasTransacoesParceladas[i].Valor = todasTransacoesParceladas[i].ValorParcela!.Value * todasTransacoesParceladas[i].NumeroParcelas!.Value;
                                 }
 
                                 context.Transacoes.UpdateRange(todasTransacoesParceladas);

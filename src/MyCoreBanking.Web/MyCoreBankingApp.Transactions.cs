@@ -94,6 +94,48 @@ partial class MyCoreBankingApp
         }
     }
 
+    public async Task<IReadOnlyCollection<TransacaoModel>?> ObterParcelamentos(Guid parcelamentoId)
+    {
+        try
+        {
+            var requestUri = $"{BaseAddress}/transacoes?parcelamentoId={parcelamentoId}";
+
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            var jwt = await AuthorizationToken()
+                ?? throw new UnauthorizedAccessException("Você deve estar logado para acessar este recurso.");
+
+            httpRequestMessage.Headers.Add("Access-Control-Allow-Origin", "*");
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using var httpResponseMessage = await _HttpClientService.SendAsync(httpRequestMessage);
+
+            if (httpResponseMessage.StatusCode is HttpStatusCode.InternalServerError)
+            {
+                ShowError("Sistema temporariamente indisponível");
+                return null;
+            }
+
+            var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                ShowError(responseContent);
+                return null;
+            }
+
+            var result = JsonSerializer.Deserialize<IReadOnlyCollection<TransacaoModel>?>(responseContent)
+                    ?? throw new InvalidOperationException(responseContent);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
+            return null;
+        }
+    }
+
     public async Task CadastrarTransacao(TransacoesPostArgs args)
     {
         try

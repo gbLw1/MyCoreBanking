@@ -206,18 +206,43 @@ else
     async Task OnValidSubmit()
     {
         // TODO: Abrir modal tipo de update
+        switch (model.TipoTransacao)
+        {
+            case TransacaoTipo.Unica:
+                await AlterarTransacao();
+                break;
 
-        await AlterarTransacao("Teste");
+            case TransacaoTipo.Parcelada:
+                var modalUpdateParcelamentoResult = await MyCoreBankingApp.ShowModal<UpdateParcelamentoModal>().Result;
+
+                if (modalUpdateParcelamentoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await AlterarTransacao(modalUpdateParcelamentoResult.Data!.ToString());
+                break;
+
+            default:
+                MyCoreBankingApp.ShowError("Não foi possível reconhecer o tipo da transação");
+                break;
+        }
     }
 
     async Task AlterarTransacao(string? tipoUpdate = null)
     {
-        var modalLoading = MyCoreBankingApp.ShowLoading();
+        if (Efetivada && !args.DataEfetivacao.HasValue)
+        {
+            MyCoreBankingApp.ShowError("A data de efetivação é obrigatória");
+            return;
+        }
 
         if (!Efetivada)
         {
             args.DataEfetivacao = null;
         }
+
+        var modalLoading = MyCoreBankingApp.ShowLoading();
 
         await MyCoreBankingApp.AlterarTransacao(transacaoId: Id, args: args, tipoUpdate: tipoUpdate);
 

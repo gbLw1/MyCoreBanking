@@ -154,6 +154,16 @@
                                         }
                                     </td>
 
+                                    <!-- Ação: Efetivar -->
+                                    <td class="align-middle text-center">
+                                        @if (transacao.TipoTransacao == TransacaoTipo.Parcelada)
+                                        {
+                                            <a @onclick="async () => await AbrirModalParcelamento(transacao.ReferenciaParcelaId!.Value)" title="Ver parcelamento" class="cursor-pointer">
+                                                <i class="fa-solid fa-eye" style="font-size: 1.4rem;color: #0ae10a;"></i>
+                                            </a>
+                                        }
+                                    </td>
+
                                     <!-- Ação: Editar -->
                                     <td class="align-middle text-center">
                                         <a href="/transacoes/@(transacao.Id)" title="Editar">
@@ -286,6 +296,29 @@
 
     #endregion
 
+    #region [+ Modal Parcelamento]
+
+    async Task AbrirModalParcelamento(Guid parcelamentoId)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ObterParcelamentos(parcelamentoId);
+
+        if (result is not null)
+        {
+            Dictionary<string, object> parameters = new()
+            {
+                {nameof(ParcelamentosModal.Model), result },
+            };
+
+            MyCoreBankingApp.ShowModal<ParcelamentosModal>(parameters);
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+
     #region [+ Excluir Transação]
 
     async Task AbrirModalExcluirTransacao(Guid transacaoId, TransacaoTipo tipo)
@@ -294,11 +327,11 @@
         {
             case TransacaoTipo.Unica:
                 Dictionary<string, object> parameters = new()
-            {
-                {nameof(DeleteModal.Title),"Exclusão de transação" },
-                {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
-                {nameof(DeleteModal.BtnText), "Confirmar" }
-            };
+                {
+                    {nameof(DeleteModal.Title),"Exclusão de transação" },
+                    {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
+                    {nameof(DeleteModal.BtnText), "Confirmar" }
+                };
 
                 var modalDeleteUnicoResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
 

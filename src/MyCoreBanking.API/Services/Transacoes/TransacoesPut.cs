@@ -120,7 +120,7 @@ public static class TransacoesPut
                                     }
                                 }
 
-                                // Atualizar o saldo da conta com o novo valor se já estava efetivada
+                                // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
                                 if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
                                 {
                                     if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
@@ -135,6 +135,19 @@ public static class TransacoesPut
                                     }
                                 }
 
+                                // Se a transação NÃO estava efetivada e está efetivando, atualiza o saldo da conta e efetiva a transação
+                                if (transacaoEntity.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                {
+                                    if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                    {
+                                        transacaoEntity.Conta!.Saldo += args.Valor;
+                                    }
+                                    else
+                                    {
+                                        transacaoEntity.Conta!.Saldo -= args.Valor;
+                                    }
+                                }
+
                                 // Reajuste valor da transação
                                 transacaoEntity.Valor -= transacaoEntity.ValorParcela!.Value;
                                 transacaoEntity.Valor += args.Valor;
@@ -145,7 +158,13 @@ public static class TransacoesPut
                                 transacaoEntity.ValorParcela = args.Valor;
                                 transacaoEntity.DataEfetivacao = args.DataEfetivacao;
 
-                                // Atualizar o valor total do parcelamento nas outras parcelas
+                                transacaoEntity.UltimaAtualizacaoEm = DateTime.Now;
+
+                                context.Transacoes.Update(transacaoEntity);
+                                await context.SaveChangesAsync();
+
+
+                                // ↓ Atualiza o valor total do parcelamento nas outras parcelas ↓
                                 var parcelas = await context.Transacoes
                                     .Where(t => t.UsuarioId == userId)
                                     .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
@@ -157,8 +176,9 @@ public static class TransacoesPut
                                     transacao.UltimaAtualizacaoEm = DateTime.Now;
                                 }
 
-                                context.Transacoes.Update(transacaoEntity);
+                                context.Transacoes.UpdateRange(parcelas);
                                 await context.SaveChangesAsync();
+
                                 await dbTransaction.CommitAsync();
                             }
                             catch (Exception)
@@ -172,19 +192,36 @@ public static class TransacoesPut
                             try
                             {
                                 var query = context.Transacoes
-                                    .AsNoTrackingWithIdentityResolution()
                                     .Include(t => t.Conta)
-                                    .Where(t => t.UsuarioId == userId);
-
-                                query = query.Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId);
-                                query = query.Where(t => t.DataEfetivacao == null);
+                                    .Where(t => t.UsuarioId == userId)
+                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
+                                    .Where(t => t.DataEfetivacao == null);
 
                                 var transacoesPendentes = await query.ToListAsync();
 
+                                // Verifica se a transação selecionada pelo Id já está na lista de transações pendentes e inclui se não estiver
+                                if (!transacoesPendentes.Any(t => t.Id == transacaoEntity.Id))
+                                {
+                                    transacoesPendentes.Add(transacaoEntity);
+                                }
+
                                 foreach (var transacao in transacoesPendentes)
                                 {
-                                    // Atualiza o saldo da conta se está efetivando todas as parcelas pendentes
-                                    if (args.DataEfetivacao.HasValue)
+                                    // Se a transação já estava efetivada e está desfazendo, estorna o saldo da conta
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao is null)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                        }
+                                        else
+                                        {
+                                            transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                        }
+                                    }
+
+                                    // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
@@ -194,6 +231,19 @@ public static class TransacoesPut
                                         else
                                         {
                                             transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Se a transação NÃO estava efetivada e está efetivando todas as parcelas pendentes, atualiza o saldo da conta e efetiva a transação
+                                    if (transacao.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
                                             transacao.Conta!.Saldo -= args.Valor;
                                         }
                                     }
@@ -213,6 +263,21 @@ public static class TransacoesPut
                                     context.Transacoes.Update(transacao);
                                     await context.SaveChangesAsync();
                                 }
+
+                                // ↓ Atualiza o valor total do parcelamento em TODAS as outras parcelas ↓
+                                var parcelas = await context.Transacoes
+                                    .Where(t => t.UsuarioId == userId)
+                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
+                                    .ToListAsync();
+
+                                foreach (var parcela in parcelas)
+                                {
+                                    parcela.Valor = parcela.ValorParcela!.Value * parcela.NumeroParcelas!.Value;
+                                    parcela.UltimaAtualizacaoEm = DateTime.Now;
+                                }
+
+                                context.Transacoes.UpdateRange(parcelas);
+                                await context.SaveChangesAsync();
 
                                 await dbTransaction.CommitAsync();
                             }
@@ -250,7 +315,7 @@ public static class TransacoesPut
                                         }
                                     }
 
-                                    // Atualizar o saldo da conta com o novo valor se já estava efetivada
+                                    // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
                                     if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
@@ -261,6 +326,19 @@ public static class TransacoesPut
                                         else
                                         {
                                             transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Se a transação NÃO estava efetivada e está efetivando todas as parcelas pendentes, atualiza o saldo da conta e efetiva a transação
+                                    if (transacao.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
                                             transacao.Conta!.Saldo -= args.Valor;
                                         }
                                     }

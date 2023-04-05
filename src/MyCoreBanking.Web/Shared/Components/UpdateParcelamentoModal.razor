@@ -1,0 +1,61 @@
+﻿<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 text-dark">Atualização de transação</h1>
+    <i @onclick="Cancelar"
+       style="font-size: 1.4rem;"
+       class="fa-solid fa-xmark float-end cursor-pointer p-1 mb-2"></i>
+</div>
+<div class="d-flex flex-column">
+    <div class="my-3">
+        <p class="m-0 mb-2 regular-16 text-warning fw-bold">
+            Atenção! Para alterar um parcelamento você deve selecionar o tipo de alteração.
+        </p>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="unico" name="tipoUpdate" @onchange="@(() => TipoUpdate = "UNICO")" checked="@(TipoUpdate == "UNICO")">
+            <label class="form-check-label" for="unico">
+                Alterar somente essa transação
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="parcial" name="tipoUpdate" @onchange="@(() => TipoUpdate = "PAGAMENTO-PENDENTE")" checked="@(TipoUpdate == "PAGAMENTO-PENDENTE")">
+            <label class="form-check-label" for="parcial">
+                Alterar somente essa e as outras parcelas pendentes
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="todos" name="tipoUpdate" @onchange="@(() => TipoUpdate = "TODOS")" checked="@(TipoUpdate == "TODOS")">
+            <label class="form-check-label" for="todos">
+                Alterar todas as parcelas
+            </label>
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <button type="button" @onclick="Cancelar"
+                class="me-3 rounded-pill float-end btn btn-secondary">
+            CANCELAR
+        </button>
+
+        <button type="button" @onclick="ConfirmarExclusao"
+                class="rounded-pill float-end btn text-white btn-info">
+            CONFIRMAR
+        </button>
+    </div>
+</div>
+
+@code {
+    public string TipoUpdate { get; set; } = "UNICO";
+
+    [CascadingParameter] BlazoredModalInstance modal { get; set; } = default!;
+
+    async Task Cancelar()
+    {
+        await modal.CancelAsync();
+    }
+
+    async Task ConfirmarExclusao()
+    {
+        await modal.CloseAsync(ModalResult.Ok(TipoUpdate));
+    }
+}
