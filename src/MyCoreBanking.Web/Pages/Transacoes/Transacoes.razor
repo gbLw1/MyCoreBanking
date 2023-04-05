@@ -242,7 +242,7 @@
     {
         var modalLoading = MyCoreBankingApp.ShowLoading();
 
-        await Task.Delay(200);
+        await Task.Delay(100);
 
         var result = await MyCoreBankingApp.ObterTransacoes(mes: DataBusca.Month, ano: DataBusca.Year);
 
