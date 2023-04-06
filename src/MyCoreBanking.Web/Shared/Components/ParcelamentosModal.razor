@@ -15,7 +15,7 @@
         {
             @if (Model.Any())
             {
-                <!-- Tipo de Operação e transação -->
+                <!-- Tipo de Operação e Conta -->
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <p class="mb-2 me-2 text-dark fw-semibold">Tipo de operação: </p>
@@ -23,31 +23,48 @@
                     </div>
 
                     <div class="d-flex align-items-center">
-                        <p class="mb-2 me-2 text-dark fw-semibold">Número de parcelas: </p>
-                        <p class="mb-2 text-dark">@(Model.First().NumeroParcelas)</p>
-                    </div>
-                </div>
-
-                <!-- Conta e categoria -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
                         <p class="mb-2 me-2 text-dark fw-semibold">Conta: </p>
                         <p class="mb-2 text-dark">@(Model.First().Conta)</p>
                     </div>
+                </div>
+
+                <!-- Total do parcelamento + Total restante -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Total: </p>
+                        <p class="mb-2 text-dark">@(Model.Sum(p => p.ValorParcela!.Value).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</p>
+                    </div>
 
                     <div class="d-flex align-items-center">
-                        <p class="mb-2 me-2 text-dark fw-semibold">Categoria: </p>
-                        <p class="mb-2 text-dark">@(MyCoreBankingApp.ConverterEnumCategoriaParaString(Model.First().Categoria))</p>
+                        <p class="mb-2 me-2 text-dark fw-semibold">Total restante: </p>
+                        <p class="mb-2 text-dark">@(Model.Where(p => p.DataEfetivacao is null).Sum(p => p.ValorParcela!.Value).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</p>
                     </div>
                 </div>
 
-                <!-- Meio de pagamento e Número de parcelas -->
+                <!-- Número de parcelas e parcelas pagas -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Número de parcelas: </p>
+                        <p class="mb-2 text-dark">@(Model.First().NumeroParcelas)</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Parcelas @(Model.First().TipoOperacao == OperacaoTipo.Receita ? "recebidas" : "pagas"): </p>
+                        <p class="mb-2 text-dark">@(Model.Count(p => p.DataEfetivacao.HasValue))</p>
+                    </div>
+                </div>
+
+                <!-- Meio de pagamento e Categoria -->
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <p class="mb-2 me-2 text-dark fw-semibold">Meio de pagamento: </p>
                         <p class="mb-2 text-dark">@(MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(Model.First().MeioPagamento))</p>
                     </div>
 
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Categoria: </p>
+                        <p class="mb-2 text-dark">@(MyCoreBankingApp.ConverterEnumCategoriaParaString(Model.First().Categoria))</p>
+                    </div>
                 </div>
 
                 <div class="pt-3" style="max-height: 500px; overflow-y: auto">
