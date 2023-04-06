@@ -143,9 +143,7 @@
                                     <td class="align-middle">
                                         <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
                                             @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
-                                            @(transacao.TipoTransacao == TransacaoTipo.Unica
-                                                ? transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))
-                                                : transacao.ValorParcela!.Value.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                            @(transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
                                         </p>
                                     </td>
 

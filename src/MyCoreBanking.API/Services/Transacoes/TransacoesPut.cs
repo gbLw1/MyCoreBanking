@@ -125,11 +125,11 @@ public static class TransacoesPut
                                 {
                                     if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                                     {
-                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
                                     }
                                     else
                                     {
-                                        transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
                                     }
                                 }
 
@@ -138,12 +138,12 @@ public static class TransacoesPut
                                 {
                                     if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                                     {
-                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
                                         transacaoEntity.Conta!.Saldo += args.Valor;
                                     }
                                     else
                                     {
-                                        transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
                                         transacaoEntity.Conta!.Saldo -= args.Valor;
                                     }
                                 }
@@ -161,14 +161,10 @@ public static class TransacoesPut
                                     }
                                 }
 
-                                // Reajuste valor da transação
-                                transacaoEntity.Valor -= transacaoEntity.ValorParcela!.Value;
-                                transacaoEntity.Valor += args.Valor;
-
                                 // Atualizar os dados da transação
                                 transacaoEntity.Descricao = args.Descricao;
                                 transacaoEntity.Observacao = args.Observacao;
-                                transacaoEntity.ValorParcela = args.Valor;
+                                transacaoEntity.Valor = args.Valor;
                                 transacaoEntity.DataEfetivacao = args.DataEfetivacao;
                                 transacaoEntity.DataTransacao = new DateTime(transacaoEntity.DataTransacao.Year, transacaoEntity.DataTransacao.Month, args.DataTransacao.Day);
 
@@ -176,23 +172,6 @@ public static class TransacoesPut
 
                                 context.Transacoes.Update(transacaoEntity);
                                 await context.SaveChangesAsync();
-
-
-                                // ↓ Atualiza o valor total do parcelamento nas outras parcelas ↓
-                                var parcelas = await context.Transacoes
-                                    .Where(t => t.UsuarioId == userId)
-                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
-                                    .ToListAsync();
-
-                                foreach (var transacao in parcelas)
-                                {
-                                    transacao.Valor = transacaoEntity.Valor;
-                                    transacao.UltimaAtualizacaoEm = DateTime.Now;
-                                }
-
-                                context.Transacoes.UpdateRange(parcelas);
-                                await context.SaveChangesAsync();
-
                                 await dbTransaction.CommitAsync();
                             }
                             catch (Exception)
@@ -226,11 +205,11 @@ public static class TransacoesPut
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                         }
                                         else
                                         {
-                                            transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                         }
                                     }
 
@@ -239,12 +218,12 @@ public static class TransacoesPut
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                             transacao.Conta!.Saldo += args.Valor;
                                         }
                                         else
                                         {
-                                            transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                             transacao.Conta!.Saldo -= args.Valor;
                                         }
                                     }
@@ -262,14 +241,10 @@ public static class TransacoesPut
                                         }
                                     }
 
-                                    // Reajuste valor da transação
-                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
-                                    transacao.Valor += args.Valor;
-
                                     // Atualizar os dados da transação
                                     transacao.Descricao = args.Descricao;
                                     transacao.Observacao = args.Observacao;
-                                    transacao.ValorParcela = args.Valor;
+                                    transacao.Valor = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
                                     transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
 
@@ -278,21 +253,6 @@ public static class TransacoesPut
                                     context.Transacoes.Update(transacao);
                                     await context.SaveChangesAsync();
                                 }
-
-                                // ↓ Atualiza o valor total do parcelamento em TODAS as outras parcelas ↓
-                                var parcelas = await context.Transacoes
-                                    .Where(t => t.UsuarioId == userId)
-                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
-                                    .ToListAsync();
-
-                                foreach (var parcela in parcelas)
-                                {
-                                    parcela.Valor = parcela.ValorParcela!.Value * parcela.NumeroParcelas!.Value;
-                                    parcela.UltimaAtualizacaoEm = DateTime.Now;
-                                }
-
-                                context.Transacoes.UpdateRange(parcelas);
-                                await context.SaveChangesAsync();
 
                                 await dbTransaction.CommitAsync();
                             }
@@ -322,11 +282,11 @@ public static class TransacoesPut
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                         }
                                         else
                                         {
-                                            transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                         }
                                     }
 
@@ -335,12 +295,12 @@ public static class TransacoesPut
                                     {
                                         if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                             transacao.Conta!.Saldo += args.Valor;
                                         }
                                         else
                                         {
-                                            transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                             transacao.Conta!.Saldo -= args.Valor;
                                         }
                                     }
@@ -358,14 +318,10 @@ public static class TransacoesPut
                                         }
                                     }
 
-                                    // Reajuste valor da transação
-                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
-                                    transacao.Valor += args.Valor;
-
                                     // Atualizar os dados da transação
                                     transacao.Descricao = args.Descricao;
                                     transacao.Observacao = args.Observacao;
-                                    transacao.ValorParcela = args.Valor;
+                                    transacao.Valor = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
                                     transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
 

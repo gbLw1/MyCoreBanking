@@ -72,12 +72,6 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .Property(x => x.NumeroParcelas)
             .IsRequired(false);
 
-        // public decimal? ValorParcela { get; set; }
-        builder
-            .Property(x => x.ValorParcela)
-            .HasPrecision(18, 2)
-            .IsRequired(false);
-
         // public Guid UsuarioId { get; set; }
         // public UsuarioEntity? Usuario { get; set; }
         builder

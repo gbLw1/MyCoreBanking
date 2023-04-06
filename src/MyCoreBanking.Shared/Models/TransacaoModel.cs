@@ -47,9 +47,6 @@ public class TransacaoModel
     [JsonPropertyName("numeroParcelas")]
     public int? NumeroParcelas { get; set; }
 
-    [JsonPropertyName("valorParcela")]
-    public decimal? ValorParcela { get; set; }
-
     [JsonPropertyName("referenciaParcelaId")]
     public Guid? ReferenciaParcelaId { get; set; }
 

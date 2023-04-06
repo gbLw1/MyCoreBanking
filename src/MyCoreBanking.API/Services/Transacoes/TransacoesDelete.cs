@@ -84,11 +84,11 @@ public static class TransacoesDelete
                                 {
                                     if (transacao.TipoOperacao == OperacaoTipo.Despesa)
                                     {
-                                        transacao.Conta!.Saldo += transacao.ValorParcela!.Value;
+                                        transacao.Conta!.Saldo += transacao.Valor;
                                     }
                                     else
                                     {
-                                        transacao.Conta!.Saldo -= transacao.ValorParcela!.Value;
+                                        transacao.Conta!.Saldo -= transacao.Valor;
                                     }
                                 }
 
@@ -97,17 +97,16 @@ public static class TransacoesDelete
                                 context.Transacoes.Remove(transacao);
                                 await context.SaveChangesAsync();
 
-                                // Reajustar o valor total do parcelamento
-                                query = query.Where(t => t.ReferenciaParcelaId == refParcelaId).OrderBy(t => t.DataTransacao);
+                                // ↓ Reordenar as parcelas ↓
+                                var todasTransacoesParceladas = await query
+                                    .Where(t => t.ReferenciaParcelaId == refParcelaId)
+                                    .OrderBy(t => t.DataTransacao)
+                                    .ToListAsync();
 
-                                var todasTransacoesParceladas = await query.ToListAsync();
-
-                                // Reordenar as parcelas
                                 for (int i = 0; i < todasTransacoesParceladas.Count; i++)
                                 {
                                     todasTransacoesParceladas[i].ParcelaAtual = i + 1;
                                     todasTransacoesParceladas[i].NumeroParcelas = todasTransacoesParceladas.Count;
-                                    todasTransacoesParceladas[i].Valor = todasTransacoesParceladas[i].ValorParcela!.Value * todasTransacoesParceladas[i].NumeroParcelas!.Value;
                                 }
 
                                 context.Transacoes.UpdateRange(todasTransacoesParceladas);
@@ -135,11 +134,11 @@ public static class TransacoesDelete
                                     {
                                         if (transacaoParcelada.TipoOperacao == OperacaoTipo.Despesa)
                                         {
-                                            transacaoParcelada.Conta!.Saldo += transacaoParcelada.ValorParcela!.Value;
+                                            transacaoParcelada.Conta!.Saldo += transacaoParcelada.Valor;
                                         }
                                         else
                                         {
-                                            transacaoParcelada.Conta!.Saldo -= transacaoParcelada.ValorParcela!.Value;
+                                            transacaoParcelada.Conta!.Saldo -= transacaoParcelada.Valor;
                                         }
                                     }
                                 }
@@ -147,8 +146,6 @@ public static class TransacoesDelete
                                 context.Transacoes.RemoveRange(todasTransacoesParceladas);
                                 await context.SaveChangesAsync();
                                 await dbTransaction.CommitAsync();
-
-                                // TODO: Reordenar as parcelas para que não haja gaps
                             }
                             catch (Exception)
                             {

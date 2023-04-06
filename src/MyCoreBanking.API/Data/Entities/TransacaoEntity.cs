@@ -8,6 +8,10 @@ internal class TransacaoEntity : BaseDataEntity
 
     public string? Observacao { get; set; }
 
+    /// <summary>
+    /// <para>Valor total quando a transação é UNICA</para>
+    /// <para>Valor da parcela quando a transação é PARCELADA</para>
+    /// </summary>
     public decimal Valor { get; set; }
 
     /// <summary>
@@ -57,11 +61,6 @@ internal class TransacaoEntity : BaseDataEntity
     /// </summary>
     public int? NumeroParcelas { get; set; }
 
-    /// <summary>
-    /// <para>Obrigatório quando Parcelamento</para>
-    /// </summary>
-    public decimal? ValorParcela { get; set; }
-
 
     /* --------------------------------- ↓ FKs ↓ -------------------------------- */
 
@@ -88,7 +87,6 @@ internal class TransacaoEntity : BaseDataEntity
         Categoria = Categoria,
         ParcelaAtual = ParcelaAtual,
         NumeroParcelas = NumeroParcelas,
-        ValorParcela = ValorParcela,
         ReferenciaParcelaId = ReferenciaParcelaId,
         Conta = Conta?.Descricao ?? "-----",
     };

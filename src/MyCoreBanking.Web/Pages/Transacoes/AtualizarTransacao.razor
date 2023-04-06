@@ -197,7 +197,7 @@ else
                     Descricao = result.Descricao,
                     MeioPagamento = result.MeioPagamento,
                     Observacao = result.Observacao,
-                    Valor = result.TipoTransacao == TransacaoTipo.Unica ? result.Valor : result.ValorParcela!.Value,
+                    Valor = result.Valor,
                 };
             Efetivada = result.DataEfetivacao.HasValue;
         }

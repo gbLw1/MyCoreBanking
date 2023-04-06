@@ -106,13 +106,12 @@ public static class TransacoesPost
                                 Observacao = args.Observacao,
                                 DataEfetivacao = null, // Não é possível cadastrar uma transação parcelada efetivada
                                 DataTransacao = args.DataVencimento!.Value.AddMonths(i),
-                                Valor = args.ValorParcela!.Value * args.NumeroParcelas.Value,
                                 TipoOperacao = args.TipoOperacao,
                                 TipoTransacao = TransacaoTipo.Parcelada,
                                 MeioPagamento = args.MeioPagamento,
                                 Categoria = args.Categoria,
                                 NumeroParcelas = args.NumeroParcelas,
-                                ValorParcela = args.ValorParcela,
+                                Valor = args.ValorParcela!.Value,
                             };
 
                             context.Transacoes.Add(transacaoEntity);

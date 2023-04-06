@@ -48,11 +48,11 @@ public static class TransacoesEfetivarPut
             // Atualização do saldo
             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
             {
-                transacaoEntity.Conta!.Saldo += transacaoEntity.TipoTransacao is TransacaoTipo.Parcelada ? transacaoEntity.ValorParcela!.Value : transacaoEntity.Valor;
+                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
             }
             else
             {
-                transacaoEntity.Conta!.Saldo -= transacaoEntity.TipoTransacao is TransacaoTipo.Parcelada ? transacaoEntity.ValorParcela!.Value : transacaoEntity.Valor;
+                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
             }
 
             context.Transacoes.Update(transacaoEntity);
