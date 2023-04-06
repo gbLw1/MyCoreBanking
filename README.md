@@ -1,5 +1,13 @@
 # MyCoreBanking
 
+## TODO
+
+- [ ] Gráficos
+- [ ] Filtros para transações
+- [ ] Importação de arquivo CSV
+- [ ] Alterar o diagrama de classe
+- [ ] Alterar o diagrama entidade-relacionamento
+
 ## Sobre
 
 MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas correntes, cartões de crédito, transações, etc.
@@ -7,13 +15,13 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 ## Versões
 
 - v1:
-
   - Cadastro de usuários
   - Login
   - Cadastro de contas
   - Cadastro de transações
     - Únicas
     - Parcelamentos
+    - Importação de arquivo CSV
   - Gráficos de gastos e receitas
   - Gráficos de gastos e receitas por categoria
   - Gráficos de gastos e receitas por conta
@@ -22,10 +30,13 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - Saldo geral (soma de todos os saldos das contas)
 
 - v2 (futuro):
-  - Cadastro de cartões de crédito
-  - Cadastro de faturas
-  - Efetivação de faturas
-  - Cadastro de transferências
+  - Cartões de crédito
+    - Cadastro de faturas
+    - Efetivação de faturas
+  - Transferências
+    - Ao selecionar o tipo de transação "Transferência", o sistema deve exibir as contas disponíveis para o usuário e permitir que ele selecione a conta de destino
+  - Investimentos
+    - Ao selecionar o tipo de transação "Investimento", o sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
 
 ## Tecnologias
 
@@ -34,10 +45,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - Web: Blazor WebAssembly
 - ORM: Entity Framework Core 6.0
 - Database: SQL Server 2022
-- Storage: Azure Storage
-- Authentication: JWT
-- Hosting: Local
-- Monitoring: Terminal (Console)
 
 ## Pré-requisitos
 
@@ -77,6 +84,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Cadastro
   - [x] Transação única
   - [x] Parcelamentos
+  - [ ] Importação de arquivo CSV
 - [x] Listagem
   - [x] Listagem por mês e ano
   - [x] Listagem por parcelamentoId -> (visualizar todas as parcelas de uma transação parcelada)
@@ -101,19 +109,18 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ### Estatísticas financeiras
 
-- [ ] Saldo total (soma do saldo das contas: corrente e carteira)
-- [ ] Total investido (soma do saldo das contas: investimento, poupança)
-- [ ] Número de transações pendentes (mês atual)
-- [ ] Balanço mensal (todas as contas)
-- [ ] Total Despesas por categoria (mês atual)
-- [ ] Total Receitas por categoria (mês atual)
-- [ ] Visão geral de receitas -> obter valor total de receitas por mês (últimos 12 meses)
+- [x] Saldo total (soma do saldo das contas: corrente e carteira)
+- [x] Total investido (soma do saldo das contas: investimento, poupança)
+- [x] Número de transações pendentes (mês atual)
+- [x] Balanço mensal (todas as contas)
+- [x] Total Despesas por categoria (mês atual)
+- [x] Visão geral de receitas e despesas -> obter valor total de receitas e despesas por mês (ano atual)
 
 ## Arquitetura
 
 ### Cliente
 
-O cliente é uma aplicação Blazor WebAssembly, que utiliza o padrão de arquitetura de software MVVM (Model-View-ViewModel). O cliente é responsável por exibir as informações para o usuário e enviar as requisições para a API.
+O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir as informações para o usuário e enviar as requisições para a API.
 
 ### API
 
