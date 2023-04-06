@@ -12,7 +12,7 @@ using MyCoreBanking.API.Data;
 namespace MyCoreBanking.API.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20230328204841_Initial")]
+    [Migration("20230406030336_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,9 +86,6 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<DateTime>("DataTransacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataVencimento")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -126,10 +123,6 @@ namespace MyCoreBanking.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Valor")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("ValorParcela")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 

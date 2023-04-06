@@ -7,8 +7,8 @@ public class TransacoesPostArgs
     public string Descricao { get; set; } = string.Empty;
     public string? Observacao { get; set; }
     public decimal? Valor { get; set; }
-    public DateTime? DataEfetivacao { get; set; }
-    public DateTime? DataTransacao { get; set; }
+    public DateTime? DataEfetivacao { get; set; } = DateTime.Now;
+    public DateTime? DataTransacao { get; set; } = DateTime.Now;
     public OperacaoTipo TipoOperacao { get; set; }
     public TransacaoTipo TipoTransacao { get; set; }
     public MeioPagamentoTipo MeioPagamento { get; set; }
@@ -16,7 +16,6 @@ public class TransacoesPostArgs
     public Guid ContaId { get; set; }
 
     /* ----------------- ↓ Transações Parceladas ↓ ---------------- */
-    public DateTime? InicioParcelamento { get; set; }
     public DateTime? DataVencimento { get; set; }
     public int? NumeroParcelas { get; set; }
     public decimal? ValorParcela { get; set; }
@@ -48,6 +47,7 @@ public class TransacoesPostArgs
             When(t => t.TipoTransacao == TransacaoTipo.Unica, () =>
             {
                 RuleFor(t => t.Valor)
+                    .NotEmpty().WithMessage("O valor da transação é obrigatório")
                     .GreaterThan(0).WithMessage("O valor da transação deve ser maior que zero");
 
                 RuleFor(t => t.DataTransacao)
@@ -56,9 +56,6 @@ public class TransacoesPostArgs
 
             When(t => t.TipoTransacao == TransacaoTipo.Parcelada, () =>
             {
-                RuleFor(t => t.InicioParcelamento)
-                    .NotEmpty().WithMessage("A data de início do parcelamento é obrigatória");
-
                 RuleFor(t => t.DataVencimento)
                     .NotEmpty().WithMessage("A data de vencimento é obrigatória");
 

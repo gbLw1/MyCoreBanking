@@ -38,9 +38,11 @@ public class ContasPUT
                 throw new NotFoundException(message: "Conta não encontrada", paramName: nameof(contaId));
 
             conta.Saldo = args.Saldo;
-            conta.Banco = args.Banco;
+            conta.Banco = args.Tipo == ContaTipo.Carteira ? Banco.Outro : args.Banco;
             conta.Descricao = args.Descricao;
             conta.Tipo = args.Tipo;
+
+            conta.UltimaAtualizacaoEm = DateTime.Now;
 
             context.Contas.Update(conta);
             await context.SaveChangesAsync();

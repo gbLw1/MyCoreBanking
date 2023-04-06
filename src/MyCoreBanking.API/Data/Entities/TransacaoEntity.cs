@@ -8,6 +8,10 @@ internal class TransacaoEntity : BaseDataEntity
 
     public string? Observacao { get; set; }
 
+    /// <summary>
+    /// <para>Valor total quando a transação é UNICA</para>
+    /// <para>Valor da parcela quando a transação é PARCELADA</para>
+    /// </summary>
     public decimal Valor { get; set; }
 
     /// <summary>
@@ -47,10 +51,8 @@ internal class TransacaoEntity : BaseDataEntity
 
     /// <summary>
     /// <para>Obrigatório quando Parcelamento</para>
-    /// <para>Dia limite para efetivar o pagamento, usado para identificar atrasos</para>
+    /// <para>Número referente a parcela da transação</para>
     /// </summary>
-    public DateTime? DataVencimento { get; set; }
-
     public int? ParcelaAtual { get; set; }
 
     /// <summary>
@@ -58,11 +60,6 @@ internal class TransacaoEntity : BaseDataEntity
     /// <para>Quantidade que irá repetir ao cadastrar a transação num intervalo de meses</para>
     /// </summary>
     public int? NumeroParcelas { get; set; }
-
-    /// <summary>
-    /// <para>Obrigatório quando Parcelamento</para>
-    /// </summary>
-    public decimal? ValorParcela { get; set; }
 
 
     /* --------------------------------- ↓ FKs ↓ -------------------------------- */
@@ -88,10 +85,9 @@ internal class TransacaoEntity : BaseDataEntity
         TipoTransacao = TipoTransacao,
         MeioPagamento = MeioPagamento,
         Categoria = Categoria,
-        DataVencimento = DataVencimento,
         ParcelaAtual = ParcelaAtual,
         NumeroParcelas = NumeroParcelas,
-        ValorParcela = ValorParcela,
         ReferenciaParcelaId = ReferenciaParcelaId,
+        Conta = Conta?.Descricao ?? "-----",
     };
 }

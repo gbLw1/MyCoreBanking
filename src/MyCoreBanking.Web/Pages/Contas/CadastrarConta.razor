@@ -1,9 +1,11 @@
 @page "/contas/cadastrar"
 
 <!-- Título -->
-<div class="mb-4 d-flex justify-content-start align-items-center">
+<div class="d-flex justify-content-center align-items-center">
     <p class="m-0 h2 text-dark">Cadastro de conta</p>
 </div>
+
+<hr />
 
 <!-- Área do formulario -->
 <div class="row my-5 justify-content-center">
@@ -64,7 +66,9 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary d-block w-100 py-2 mt-5" type="submit">Cadastrar</button>
+                    @*<button class="btn btn-primary d-block w-100 py-2 mt-5" type="submit">Cadastrar</button>*@
+
+                    <FormButtons CancelRedirect="/contas" SubmitText="Cadastrar" />
 
                 </EditForm>
             </div>

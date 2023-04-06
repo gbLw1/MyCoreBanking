@@ -47,13 +47,21 @@ public static class TransacoesPut
                 case TransacaoTipo.Unica:
                     try
                     {
+                        // Se a transação já estava efetivada e está desfazendo, estorna o saldo da conta
                         if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao is null)
                         {
-                            throw new InvalidOperationException(message: "Não é possível desfazer uma transação efetivada");
+                            if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                            {
+                                transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
+                            }
+                            else
+                            {
+                                transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
+                            }
                         }
 
-                        // Atualizar o saldo da conta se a data de efetivação não for null
-                        if (transacaoEntity.DataEfetivacao.HasValue)
+                        // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
+                        if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
                         {
                             if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                             {
@@ -67,13 +75,28 @@ public static class TransacoesPut
                             }
                         }
 
+                        // Se a transação NÃO estava efetivada e está efetivando, atualiza o saldo da conta e efetiva a transação
+                        if (transacaoEntity.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                        {
+                            if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                            {
+                                transacaoEntity.Conta!.Saldo += args.Valor;
+                            }
+                            else
+                            {
+                                transacaoEntity.Conta!.Saldo -= args.Valor;
+                            }
+                        }
+
                         transacaoEntity.Descricao = args.Descricao;
                         transacaoEntity.Observacao = args.Observacao;
                         transacaoEntity.Valor = args.Valor;
                         transacaoEntity.DataEfetivacao = args.DataEfetivacao;
-                        transacaoEntity.DataTransacao = args.DataTransacao is null ? transacaoEntity.DataTransacao : args.DataTransacao.Value;
-                        transacaoEntity.MeioPagamento = args.MeioPagamento is null ? transacaoEntity.MeioPagamento : args.MeioPagamento.Value;
-                        transacaoEntity.Categoria = args.Categoria is null ? transacaoEntity.Categoria : args.Categoria.Value;
+                        transacaoEntity.DataTransacao = args.DataTransacao;
+                        transacaoEntity.MeioPagamento = args.MeioPagamento;
+                        transacaoEntity.Categoria = args.Categoria;
+
+                        transacaoEntity.UltimaAtualizacaoEm = DateTime.Now;
 
                         context.Transacoes.Update(transacaoEntity);
                         await context.SaveChangesAsync();
@@ -97,46 +120,55 @@ public static class TransacoesPut
                         case "UNICO":
                             try
                             {
+                                // Se a transação já estava efetivada e está desfazendo, estorna o saldo da conta
                                 if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao is null)
-                                {
-                                    throw new InvalidOperationException(message: "Não é possível desfazer uma transação efetivada");
-                                }
-
-                                // Atualizar o saldo da conta se a data de efetivação não for null
-                                if (transacaoEntity.DataEfetivacao.HasValue)
                                 {
                                     if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
                                     {
-                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
+                                    }
+                                    else
+                                    {
+                                        transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
+                                    }
+                                }
+
+                                // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
+                                if (transacaoEntity.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
+                                {
+                                    if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                    {
+                                        transacaoEntity.Conta!.Saldo -= transacaoEntity.Valor;
                                         transacaoEntity.Conta!.Saldo += args.Valor;
                                     }
                                     else
                                     {
-                                        transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
+                                        transacaoEntity.Conta!.Saldo += transacaoEntity.Valor;
                                         transacaoEntity.Conta!.Saldo -= args.Valor;
                                     }
                                 }
 
-                                // Reajuste valor da transação
-                                transacaoEntity.Valor -= transacaoEntity.ValorParcela!.Value;
-                                transacaoEntity.Valor += args.Valor;
+                                // Se a transação NÃO estava efetivada e está efetivando, atualiza o saldo da conta e efetiva a transação
+                                if (transacaoEntity.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                {
+                                    if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                    {
+                                        transacaoEntity.Conta!.Saldo += args.Valor;
+                                    }
+                                    else
+                                    {
+                                        transacaoEntity.Conta!.Saldo -= args.Valor;
+                                    }
+                                }
 
                                 // Atualizar os dados da transação
                                 transacaoEntity.Descricao = args.Descricao;
                                 transacaoEntity.Observacao = args.Observacao;
-                                transacaoEntity.ValorParcela = args.Valor;
+                                transacaoEntity.Valor = args.Valor;
                                 transacaoEntity.DataEfetivacao = args.DataEfetivacao;
+                                transacaoEntity.DataTransacao = new DateTime(transacaoEntity.DataTransacao.Year, transacaoEntity.DataTransacao.Month, args.DataTransacao.Day);
 
-                                // Atualizar o valor total do parcelamento nas outras parcelas
-                                var parcelas = await context.Transacoes
-                                    .Where(t => t.UsuarioId == userId)
-                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
-                                    .ToListAsync();
-
-                                foreach (var transacao in parcelas)
-                                {
-                                    transacao.Valor = transacaoEntity.Valor;
-                                }
+                                transacaoEntity.UltimaAtualizacaoEm = DateTime.Now;
 
                                 context.Transacoes.Update(transacaoEntity);
                                 await context.SaveChangesAsync();
@@ -154,39 +186,69 @@ public static class TransacoesPut
                             {
                                 var query = context.Transacoes
                                     .Include(t => t.Conta)
-                                    .Where(t => t.UsuarioId == userId);
-
-                                query = query.Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId);
-                                query = query.Where(t => t.DataEfetivacao == null);
+                                    .Where(t => t.UsuarioId == userId)
+                                    .Where(t => t.ReferenciaParcelaId == transacaoEntity.ReferenciaParcelaId)
+                                    .Where(t => t.DataEfetivacao == null);
 
                                 var transacoesPendentes = await query.ToListAsync();
 
+                                // Verifica se a transação selecionada pelo Id já está na lista de transações pendentes e inclui se não estiver
+                                if (!transacoesPendentes.Any(t => t.Id == transacaoEntity.Id))
+                                {
+                                    transacoesPendentes.Add(transacaoEntity);
+                                }
+
                                 foreach (var transacao in transacoesPendentes)
                                 {
-                                    // Atualizar o saldo da conta se a data de efetivação não for null
-                                    if (transacaoEntity.DataEfetivacao.HasValue)
+                                    // Se a transação já estava efetivada e está desfazendo, estorna o saldo da conta
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao is null)
                                     {
-                                        if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
-                                            transacaoEntity.Conta!.Saldo += args.Valor;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                         }
                                         else
                                         {
-                                            transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
-                                            transacaoEntity.Conta!.Saldo -= args.Valor;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                         }
                                     }
 
-                                    // Reajuste valor da transação
-                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
-                                    transacao.Valor += args.Valor;
+                                    // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo -= transacao.Valor;
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacao.Conta!.Saldo += transacao.Valor;
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Se a transação NÃO estava efetivada e está efetivando todas as parcelas pendentes, atualiza o saldo da conta e efetiva a transação
+                                    if (transacao.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
 
                                     // Atualizar os dados da transação
                                     transacao.Descricao = args.Descricao;
                                     transacao.Observacao = args.Observacao;
-                                    transacao.ValorParcela = args.Valor;
+                                    transacao.Valor = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
+                                    transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
+
+                                    transacao.UltimaAtualizacaoEm = DateTime.Now;
 
                                     context.Transacoes.Update(transacao);
                                     await context.SaveChangesAsync();
@@ -215,31 +277,55 @@ public static class TransacoesPut
 
                                 foreach (var transacao in transacoes)
                                 {
-                                    // Atualizar o saldo da conta se a data de efetivação não for null
-                                    if (transacaoEntity.DataEfetivacao.HasValue)
+                                    // Se a transação já estava efetivada e está desfazendo, estorna o saldo da conta
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao is null)
                                     {
-                                        if (transacaoEntity.TipoOperacao == OperacaoTipo.Receita)
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
                                         {
-                                            transacaoEntity.Conta!.Saldo -= transacaoEntity.ValorParcela!.Value;
-                                            transacaoEntity.Conta!.Saldo += args.Valor;
+                                            transacao.Conta!.Saldo -= transacao.Valor;
                                         }
                                         else
                                         {
-                                            transacaoEntity.Conta!.Saldo += transacaoEntity.ValorParcela!.Value;
-                                            transacaoEntity.Conta!.Saldo -= args.Valor;
+                                            transacao.Conta!.Saldo += transacao.Valor;
                                         }
                                     }
 
-                                    // Reajuste valor da transação
-                                    transacao.Valor -= transacaoEntity.ValorParcela!.Value;
-                                    transacao.Valor += args.Valor;
+                                    // Se a transação já estava efetivada, altera o saldo da conta com o novo valor
+                                    if (transacao.DataEfetivacao.HasValue && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo -= transacao.Valor;
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacao.Conta!.Saldo += transacao.Valor;
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
+
+                                    // Se a transação NÃO estava efetivada e está efetivando todas as parcelas pendentes, atualiza o saldo da conta e efetiva a transação
+                                    if (transacao.DataEfetivacao is null && args.DataEfetivacao.HasValue)
+                                    {
+                                        if (transacao.TipoOperacao == OperacaoTipo.Receita)
+                                        {
+                                            transacao.Conta!.Saldo += args.Valor;
+                                        }
+                                        else
+                                        {
+                                            transacao.Conta!.Saldo -= args.Valor;
+                                        }
+                                    }
 
                                     // Atualizar os dados da transação
                                     transacao.Descricao = args.Descricao;
                                     transacao.Observacao = args.Observacao;
-                                    transacao.ValorParcela = args.Valor;
+                                    transacao.Valor = args.Valor;
                                     transacao.DataEfetivacao = args.DataEfetivacao;
-                                    transacao.Categoria = args.Categoria is null ? transacao.Categoria : args.Categoria.Value;
+                                    transacao.DataTransacao = new DateTime(transacao.DataTransacao.Year, transacao.DataTransacao.Month, args.DataTransacao.Day);
+
+                                    transacao.UltimaAtualizacaoEm = DateTime.Now;
 
                                     context.Transacoes.Update(transacao);
                                     await context.SaveChangesAsync();
@@ -254,7 +340,7 @@ public static class TransacoesPut
                             }
                             break;
 
-                        default: throw new IndexOutOfRangeException(message: "Tipo de delete inválido. valores aceitos: UNICO, PAGAMENTO-PENDENTE, TODOS");
+                        default: throw new IndexOutOfRangeException(message: "Tipo de update inválido. valores aceitos: UNICO, PAGAMENTO-PENDENTE, TODOS");
                     }
                     break;
 

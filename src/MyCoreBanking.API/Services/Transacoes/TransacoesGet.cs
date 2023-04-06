@@ -1,4 +1,3 @@
-using System.Globalization;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using MyCoreBanking;
 using MyCoreBanking.API.Data;
 using MyCoreBanking.API.Data.Entities;
+using System.Globalization;
 
 namespace FreedomHub.API.Services.Auth;
 
@@ -30,8 +30,9 @@ public static class TransacoesGet
 
             IQueryable<TransacaoEntity> query = context.Transacoes
                 .AsNoTrackingWithIdentityResolution()
+                .Include(t => t.Conta)
                 .Where(t => t.UsuarioId == userId)
-                .OrderByDescending(t => t.DataEfetivacao);
+                .OrderBy(t => t.DataTransacao);
 
 
             // ↓ parâmetros obrigatórios para obter as transações ↓
@@ -58,13 +59,14 @@ public static class TransacoesGet
                 }
 
                 // busca todas as transações com a data de transação ou data de vencimento no mês e ano informados
-                query = query.Where(t =>
-                        (t.TipoTransacao == TransacaoTipo.Parcelada
-                        && t.DataVencimento!.Value.Month == mesInt
-                        && t.DataVencimento.Value.Year == anoInt)
-                    || (t.TipoTransacao == TransacaoTipo.Unica
-                        && t.DataTransacao.Month == mesInt
-                        && t.DataTransacao.Year == anoInt));
+                //query = query.Where(t =>
+                //        (t.TipoTransacao == TransacaoTipo.Parcelada
+                //        && t.DataVencimento!.Value.Month == mesInt
+                //        && t.DataVencimento.Value.Year == anoInt)
+                //    || (t.TipoTransacao == TransacaoTipo.Unica
+                //        && t.DataTransacao.Month == mesInt
+                //        && t.DataTransacao.Year == anoInt));
+                query = query.Where(t => t.DataTransacao.Month == mesInt && t.DataTransacao.Year == anoInt);
             }
 
             #region [Outros filtros de pesquisa por query params]

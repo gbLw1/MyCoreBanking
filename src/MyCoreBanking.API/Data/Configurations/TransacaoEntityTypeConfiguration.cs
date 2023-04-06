@@ -67,20 +67,9 @@ internal sealed class TransacaoEntityTypeConfiguration : BaseEntityTypeConfigura
             .Property(x => x.ReferenciaParcelaId)
             .IsRequired(false);
 
-        // public DateTime? DataVencimento { get; set; }
-        builder
-            .Property(x => x.DataVencimento)
-            .IsRequired(false);
-
         // public int? NumeroParcelas { get; set; }
         builder
             .Property(x => x.NumeroParcelas)
-            .IsRequired(false);
-
-        // public decimal? ValorParcela { get; set; }
-        builder
-            .Property(x => x.ValorParcela)
-            .HasPrecision(18, 2)
             .IsRequired(false);
 
         // public Guid UsuarioId { get; set; }

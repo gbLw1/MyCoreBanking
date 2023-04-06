@@ -38,16 +38,6 @@ partial class MyCoreBankingApp
 
             _Navigation.NavigateTo("/login", true);
         }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
         catch (Exception ex)
         {
             ShowError(ex.Message);
@@ -90,16 +80,6 @@ partial class MyCoreBankingApp
             ShowError(responseContent);
             return null;
         }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return null;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return null;
-        }
         catch (Exception ex)
         {
             ShowError(ex.Message);
@@ -139,16 +119,6 @@ partial class MyCoreBankingApp
             }
 
             _Navigation.NavigateTo("", true);
-        }
-        catch (InvalidOperationException ex)
-        {
-            ShowError(ex.Message);
-            return;
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ShowError(ex.Message);
-            return;
         }
         catch (Exception ex)
         {

@@ -1,163 +1,389 @@
 ﻿@page "/transacoes"
 @using System.Globalization;
 
-<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4" style="font-family:Nunito;">
-    <h3 class="text-dark">Minhas Transações</h3>
-<div class="dropdown">
-  <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Nova Transação
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="/cadastroTransacaoPaga">Já Paga</a></li>
-    <li><a class="dropdown-item" href="/cadastroTransacaoPagar">A Pagar</a></li>
-    <li><a class="dropdown-item" href="/cadastroTransacaoRecorrente">Recorrente</a></li>
-    <li><a class="dropdown-item" href="/cadastroTransacaoParcelada">Parcelamento</a></li>
+<!-- Título -->
+<div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
+    <p class="mb-3 m-sm-0 h2 text-dark">Minhas Transações</p>
 
-  </ul>
-</div>
+    <a href="/transacoes/cadastrar"
+       class="btn text-primary fw-bolder btn-sm border border-primary rounded"
+       style="font-size: 1.2rem">
+        Nova Transação
+    </a>
 </div>
 
+<hr />
 
+@if (model is not null)
+{
+    <div class="card shadow">
 
-<div class="card shadow">
-    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <p class="text-primary m-0 fw-bold">Extrato</p>
-        <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
-                role="button">
-            <i class="fas fa-download fa-sm text-primary-50"></i>
-            &nbsp;Exportar Dados
-        </button>
-    </div>
+        <!-- Filtro data -->
+        <div class="card-header py-3 d-flex justify-content-center align-items-center">
 
-    <div class="card-body">
+            <button @onclick="async () => await VoltarMes()" type="button"
+                    class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                    style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                &laquo;
+            </button>
 
-        <!-- Topo tabela -->
-        <div class="row">
-            <!-- Qtde em exibição -->
-            <div class="col-md-6 text-nowrap">
-                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                    <label class="form-label">
-                        Exibir&nbsp;
-                        <select class="d-inline-block form-select form-select-sm">
-                            <option value="10" selected="">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>&nbsp;
-                    </label>
-                </div>
-            </div>
+            <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(DataBusca.ToString("MMM/yyyy"))</p>
 
-            <!-- Filtro de pesquisa -->
-            <div class="col-md-6">
-                <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-            </div>
+            <button @onclick="async () => await AvancarMes()" type="button"
+                    class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                    style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                &raquo;
+            </button>
+
+            <!-- Export -->
+            <!--
+            <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
+                    role="button">
+                <i class="fas fa-download fa-sm text-primary-50"></i>
+                &nbsp;Exportar Dados
+            </button>
+            -->
         </div>
 
         <!-- Tabela -->
-        <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-            <table class="table my-0" id="dataTable">
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Data</th>
-                        <th>Valor</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="align-middle">
-                            Mercado
-                        </td>
-                        <td class="align-middle">@($"{DateTime.Now:dd/MM/yyyy} às {DateTime.Now:HH}h{DateTime.Now:mm}m")</td>
-                        <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
-                        <td class="align-middle text-center">
-                            <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square text-info"></i>
-                            </button>
-                        </td>
-                        <td class="align-middle">
-                            <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash text-danger"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle">
-                            Mercado
-                        </td>
-                        <td class="align-middle">@($"{DateTime.Now:dd/MM/yyyy} às {DateTime.Now:HH}h{DateTime.Now:mm}m")</td>
-                        <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
-                        <td class="align-middle text-center">
-                            <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square text-info"></i>
-                            </button>
-                        </td>
-                        <td class="align-middle">
-                            <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash text-danger"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle">
-                            Mercado
-                        </td>
-                        <td class="align-middle">@($"{DateTime.Now:dd/MM/yyyy} às {DateTime.Now:HH}h{DateTime.Now:mm}m")</td>
-                        <td class="align-middle">@(rnd.Next(5000).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</td>
-                        <td class="align-middle text-center">
-                            <button type="button" class="btn" @onclick="() => IrParaEdicaoTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-pen-to-square text-info"></i>
-                            </button>
-                        </td>
-                        <td class="align-middle">
-                            <button type="button" class="btn" @onclick="() => ExcluirTransacao(Guid.NewGuid())">
-                                <i class="fa-solid fa-trash text-danger"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="card-body">
 
-        <!-- Qtde em exibição + Paginação-->
-        <div class="row">
-            <div class="col-md-6 align-self-center">
-                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Exibindo 1 ao 10 de 27</p>
-            </div>
-            <div class="col-md-6">
-                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                    </ul>
-                </nav>
-            </div>
+            <!-- Qtde em exibição + Filtro de pesquisa -->
+            <!--
+                <div class="row">
+                    <div class="col-md-6 text-nowrap">
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label class="form-label">
+                                Exibir&nbsp;
+                                <select class="d-inline-block form-select form-select-sm">
+                                    <option value="10" selected="">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>&nbsp;
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                    </div>
+                </div>
+            -->
+            <!-- Tabela -->
+            @if (model.Any())
+            {
+                <div class="table-responsive table mt-2 px-5" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px"></th>
+                                <th>Descrição</th>
+                                <th class="d-none d-lg-table-cell">Categoria</th>
+                                <th>Data</th>
+                                <th class="d-none d-lg-table-cell">Conta</th>
+                                <th>Valor</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            @foreach (var transacao in model)
+                            {
+                                <tr style="border-bottom: 1px solid #cccccc;height: 65px">
+                                @*<tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">*@
+                                    <!-- Status -->
+                                    <td class="align-middle">
+                                        @if (transacao.Efetivada)
+                                        {
+                                            <ToolTip Text="Efetivada">
+                                                <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        }
+                                        else
+                                        {
+                                            <ToolTip Text="Pendente">
+                                                <i class="fa-solid fa-circle-exclamation text-warning" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        }
+                                    </td>
+
+                                    <!-- Descrição -->
+                                    <td class="align-middle fw-semibold">
+                                        @(transacao.TipoTransacao == TransacaoTipo.Unica
+                                            ? transacao.Descricao
+                                            : $"{transacao.Descricao} - ({transacao.ParcelaAtual}/{transacao.NumeroParcelas})")
+                                    </td>
+
+                                    <!-- Categoria -->
+                                    <td class="d-none d-lg-table-cell align-middle">
+                                        @(MyCoreBankingApp.ConverterEnumCategoriaParaString(transacao.Categoria))
+                                    </td>
+
+                                    <!-- Data -->
+                                    <td class="align-middle">
+                                        @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
+                                        {
+                                            <p class="m-0 text-warning fw-semibold">@(transacao.DataTransacao.ToShortDateString())</p>
+                                            <p class="m-0 text-warning fw-semibold">(Em atraso)</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="m-0">@(transacao.DataTransacao.ToShortDateString())</p>
+                                        }
+                                    </td>
+
+                                    <!-- Conta -->
+                                    <td class="d-none d-lg-table-cell align-middle">
+                                        @(transacao.Conta)
+                                    </td>
+
+                                    <!-- Valor -->
+                                    <td class="align-middle">
+                                        <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
+                                            @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
+                                            @(transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                        </p>
+                                    </td>
+
+                                    <!-- Ação: Efetivar -->
+                                    <td class="align-middle text-center">
+                                        @if (!transacao.Efetivada)
+                                        {
+                                            <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" class="cursor-pointer">
+                                                <ToolTip Text="Efetivar">
+                                                    <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
+                                                </ToolTip>
+                                            </a>
+                                        }
+                                    </td>
+
+                                    <!-- Ação: Parcelamento -->
+                                    <td class="align-middle text-center">
+                                        @if (transacao.TipoTransacao == TransacaoTipo.Parcelada)
+                                        {
+                                            <a @onclick="async () => await AbrirModalParcelamento(transacao.ReferenciaParcelaId!.Value)" class="cursor-pointer">
+                                                <ToolTip Text="Parcelamento">
+                                                    <i class="fa-solid fa-eye" style="font-size: 1.4rem;color: #0ae10a;"></i>
+                                                </ToolTip>
+                                            </a>
+                                        }
+                                    </td>
+
+                                    <!-- Ação: Editar -->
+                                    <td class="align-middle text-center">
+                                        <a href="/transacoes/@(transacao.Id)">
+                                            <ToolTip Text="Editar">
+                                                <i class="fa-solid fa-pen-to-square text-info" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        </a>
+                                    </td>
+
+                                    <!-- Ação: Excluir -->
+                                    <td class="align-middle text-center">
+                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id, transacao.TipoTransacao)" class="cursor-pointer">
+                                            <ToolTip Text="Excluir">
+                                                <i class="fa-solid fa-trash text-danger" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Qtde em exibição + Paginação-->
+                <!--
+                    <div class="row">
+                        <div class="col-md-6 align-self-center">
+                            <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Exibindo 1 ao 10 de 27</p>
+                        </div>
+                        <div class="col-md-6">
+                            <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination">
+                                    <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                -->
+            }
+            else
+            {
+                <p class="m-0 h5 text-dark text-center">Nenhuma transação nesse mês.</p>
+            }
+
         </div>
     </div>
-</div>
+}
 
 
 @code {
-    Random rnd = new();
+    IReadOnlyCollection<TransacaoModel> model = Array.Empty<TransacaoModel>();
 
-    void IrParaCadastroTransacao()
+    public DateTime DataBusca { get; set; } = DateTime.Now;
+
+    protected override async Task OnParametersSetAsync()
     {
-        Navigation.NavigateTo("/transacoes/cadastrar");
+        await CarregarTransacoes();
     }
 
-    void IrParaEdicaoTransacao(Guid id)
+    #region [+ Carregar Transacoes]
+
+    async Task CarregarTransacoes()
     {
-        Navigation.NavigateTo($"/transacoes/{id}");
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        await Task.Delay(100);
+
+        var result = await MyCoreBankingApp.ObterTransacoes(mes: DataBusca.Month, ano: DataBusca.Year);
+
+        if (result is null)
+        {
+            model = Array.Empty<TransacaoModel>();
+        }
+        else
+        {
+            model = result;
+        }
+
+        modalLoading.Close();
     }
 
-    void ExcluirTransacao(Guid id)
+    async Task VoltarMes()
     {
-        // Abrir Modal para exclusão . . .
+        DataBusca = DataBusca.AddMonths(-1);
+
+        await CarregarTransacoes();
     }
+
+    async Task AvancarMes()
+    {
+        DataBusca = DataBusca.AddMonths(1);
+
+        await CarregarTransacoes();
+    }
+
+    #endregion
+
+    #region [+ Efetivar Transação]
+
+    async Task AbrirModalEfetivacao(Guid transacaoId)
+    {
+        var modalResult = await MyCoreBankingApp.ShowModal<EfetivacaoTransacaoModal>().Result;
+
+        if (modalResult.Cancelled)
+        {
+            return;
+        }
+
+        var args = new TransacoesEfetivacaoPutArgs
+            {
+                DataEfetivacao = (DateTime)modalResult.Data!
+            };
+
+        await EfetivarTransacao(transacaoId, args);
+    }
+
+    async Task EfetivarTransacao(Guid transacaoId, TransacoesEfetivacaoPutArgs args)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.EfetivarTransacao(transacaoId, args);
+
+        if (result)
+        {
+            await CarregarTransacoes();
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+
+    #region [+ Modal Parcelamento]
+
+    async Task AbrirModalParcelamento(Guid parcelamentoId)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ObterParcelamentos(parcelamentoId);
+
+        if (result is not null)
+        {
+            Dictionary<string, object> parameters = new()
+            {
+                {nameof(ParcelamentosModal.Model), result },
+            };
+
+            MyCoreBankingApp.ShowModal<ParcelamentosModal>(parameters);
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+
+    #region [+ Excluir Transação]
+
+    async Task AbrirModalExcluirTransacao(Guid transacaoId, TransacaoTipo tipo)
+    {
+        switch (tipo)
+        {
+            case TransacaoTipo.Unica:
+                Dictionary<string, object> parameters = new()
+                {
+                    {nameof(DeleteModal.Title),"Exclusão de transação" },
+                    {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
+                    {nameof(DeleteModal.BtnText), "Confirmar" }
+                };
+
+                var modalDeleteUnicoResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
+
+                if (modalDeleteUnicoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId);
+                break;
+
+            case TransacaoTipo.Parcelada:
+                var modalDeleteParcelamentoResult = await MyCoreBankingApp.ShowModal<DeleteParcelamentoModal>().Result;
+
+                if (modalDeleteParcelamentoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId, modalDeleteParcelamentoResult.Data!.ToString());
+                break;
+
+            default:
+                MyCoreBankingApp.ShowError("Não foi possível reconhecer o tipo da transação");
+                break;
+        }
+    }
+
+    async Task ExcluirTransacao(Guid transacaoId, string? tipoDelete = null)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ExcluirTransacao(transacaoId, tipoDelete);
+
+        if (result)
+        {
+            await CarregarTransacoes();
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
 }

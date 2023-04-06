@@ -10,5 +10,4 @@ public enum MeioPagamentoTipo
     Boleto,
     Transferencia,
     Outros,
-    Cartao
 }

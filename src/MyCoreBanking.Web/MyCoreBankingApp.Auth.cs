@@ -1,32 +1,19 @@
 ﻿using MyCoreBanking.Args;
+using MyCoreBanking.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MyCoreBanking.Web;
 
 partial class MyCoreBankingApp
 {
-
     #region [+ Auth Session]
 
-    public class AuthResponse
-    {
-        [JsonPropertyName("tokenType")]
-        public string? TokenType { get; set; }
+    ValueTask<AuthTokenModel?> AuthorizationToken()
+        => _SessionStorage.GetItemAsync<AuthTokenModel?>(nameof(AuthorizationToken));
 
-        [JsonPropertyName("accessToken")]
-        public string? AccessToken { get; set; }
-
-        [JsonPropertyName("expiresIn")]
-        public string? ExpiresIn { get; set; }
-    }
-
-    ValueTask<AuthResponse?> AuthorizationToken()
-        => _SessionStorage.GetItemAsync<AuthResponse?>(nameof(AuthorizationToken));
-
-    ValueTask AuthorizationToken(AuthResponse token)
+    ValueTask AuthorizationToken(AuthTokenModel token)
         => _SessionStorage.SetItemAsync(nameof(AuthorizationToken), token);
 
     public async Task Logout()
@@ -38,8 +25,8 @@ partial class MyCoreBankingApp
 
     #endregion
 
-    public async ValueTask<bool> IsAuthorized() => await AuthorizationToken() is not null;
-
+    public async ValueTask<bool> IsAuthorized()
+        => await AuthorizationToken() is not null;
 
     public async Task Login(AuthTokenPostArgs args)
     {
@@ -65,7 +52,7 @@ partial class MyCoreBankingApp
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var result = JsonSerializer.Deserialize<AuthResponse>(responseContent)
+                var result = JsonSerializer.Deserialize<AuthTokenModel>(responseContent)
                     ?? throw new InvalidOperationException(responseContent);
 
                 await AuthorizationToken(result);
@@ -74,15 +61,8 @@ partial class MyCoreBankingApp
 
             ShowError(responseContent);
         }
-        catch (InvalidOperationException ex)
-        {
-            // Exibir modal de erro com mensagem da API
-            ShowError(ex.Message);
-            return;
-        }
         catch (Exception ex)
         {
-            // Exibir modal de erro com mensagem da API
             ShowError(ex.Message);
             return;
         }

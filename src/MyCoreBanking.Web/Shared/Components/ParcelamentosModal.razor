@@ -1,0 +1,155 @@
+﻿@using System.Globalization;
+
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 text-dark">Visão geral do parcelamento</h1>
+    <i @onclick="Cancelar"
+       style="font-size: 1.4rem;"
+       class="fa-solid fa-xmark float-end cursor-pointer p-1 mb-2"></i>
+</div>
+<div class="d-flex flex-column">
+
+    <div class="my-3">
+
+        @if (Model is not null)
+        {
+            @if (Model.Any())
+            {
+                <!-- Tipo de Operação e Conta -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Tipo de operação: </p>
+                        <p class="mb-2 @(Model.First().TipoOperacao == OperacaoTipo.Receita ? "text-success" : "text-danger")">@(Model.First().TipoOperacao)</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Conta: </p>
+                        <p class="mb-2 text-dark">@(Model.First().Conta)</p>
+                    </div>
+                </div>
+
+                <!-- Total do parcelamento + Total restante -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Total: </p>
+                        <p class="mb-2 text-dark">@(Model.Sum(p => p.Valor).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Total restante: </p>
+                        <p class="mb-2 text-dark">@(Model.Where(p => p.DataEfetivacao is null).Sum(p => p.Valor).ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</p>
+                    </div>
+                </div>
+
+                <!-- Número de parcelas e parcelas pagas -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Número de parcelas: </p>
+                        <p class="mb-2 text-dark">@(Model.First().NumeroParcelas)</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Parcelas @(Model.First().TipoOperacao == OperacaoTipo.Receita ? "recebidas" : "pagas"): </p>
+                        <p class="mb-2 text-dark">@(Model.Count(p => p.DataEfetivacao.HasValue))</p>
+                    </div>
+                </div>
+
+                <!-- Meio de pagamento e Categoria -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Meio de pagamento: </p>
+                        <p class="mb-2 text-dark">@(MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(Model.First().MeioPagamento))</p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="mb-2 me-2 text-dark fw-semibold">Categoria: </p>
+                        <p class="mb-2 text-dark">@(MyCoreBankingApp.ConverterEnumCategoriaParaString(Model.First().Categoria))</p>
+                    </div>
+                </div>
+
+                <div class="pt-3" style="max-height: 500px; overflow-y: auto">
+                    @foreach (var transacao in Model)
+                    {
+                        <div class="px-2 d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center">
+                                <!-- Status -->
+                                <div>
+                                    @if (transacao.Efetivada)
+                                    {
+                                        <i class="fa-solid fa-circle-check text-success" title="Efetivada" style="font-size: 1.4rem"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-circle-exclamation text-warning" title="Pendente" style="font-size: 1.4rem"></i>
+                                    }
+                                </div>
+                                <div class="m-0 ms-2 d-flex flex-column justify-content-center">
+                                    <!-- Descrição-->
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0 fw-semibold">@(transacao.ParcelaAtual) &raquo; @(transacao.Descricao)</p>
+                                    </div>
+                                    <!-- Data - Valor -->
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-2">
+                                            @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
+                                            {
+                                                <p class="m-0 text-warning fw-semibold">@(transacao.DataTransacao.ToShortDateString()) (Em atraso)</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="m-0">@(transacao.DataTransacao.ToShortDateString())</p>
+                                            }
+                                        </div>
+
+                                        <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
+                                            @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
+                                            @(transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ação: Detalhes transação -->
+                            <div class="m-0">
+                                <a href="/transacoes/@(transacao.Id)" title="Detalhes da parcela">
+                                    <i class="fa-solid fa-eye text-info" style="font-size: 1.4rem"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <hr />
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="m-0 text-dark">Não foi possível obter as parcelas</p>
+            }
+        }
+        else
+        {
+            <Spinner Size="50px" />
+        }
+
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <button type="button" @onclick="Cancelar"
+                class="me-3 rounded-pill float-end btn btn-info text-white fw-bold">
+            OK
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IReadOnlyCollection<TransacaoModel>? Model { get; set; }
+
+    [CascadingParameter] BlazoredModalInstance modal { get; set; } = default!;
+
+    async Task Cancelar()
+    {
+        await modal.CancelAsync();
+    }
+}

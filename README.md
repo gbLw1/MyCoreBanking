@@ -1,13 +1,42 @@
 # MyCoreBanking
 
+## TODO
+
+- [x] Gráficos
+- [ ] Filtros para transações
+- [ ] Importação de arquivo CSV
+- [ ] Alterar o diagrama de classe
+- [ ] Alterar o diagrama entidade-relacionamento
+
 ## Sobre
 
 MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas correntes, cartões de crédito, transações, etc.
 
 ## Versões
 
-- [x] v1.0: Funcionalidades básicas de cadastro de usuário, login, cadastro de contas e cadastro de transações únicas e parceladas.
-- [ ] v2.0: Funcionalidade adicional para cadastro de cartões de crédito.
+- v1:
+  - Cadastro de usuários
+  - Login
+  - Cadastro de contas
+  - Cadastro de transações
+    - Únicas
+    - Parcelamentos
+    - Importação de arquivo CSV
+  - Gráficos de gastos e receitas
+  - Gráficos de gastos e receitas por categoria
+  - Gráficos de gastos e receitas por conta
+  - Gráficos de gastos e receitas por mês
+  - Saldos por conta (soma de todas as transações efetivadas da conta)
+  - Saldo geral (soma de todos os saldos das contas)
+
+- v2 (futuro):
+  - Cartões de crédito
+    - Cadastro de faturas
+    - Efetivação de faturas
+  - Transferências
+    - Ao selecionar o tipo de transação "Transferência", o sistema deve exibir as contas disponíveis para o usuário e permitir que ele selecione a conta de destino
+  - Investimentos
+    - Ao selecionar o tipo de transação "Investimento", o sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
 
 ## Tecnologias
 
@@ -16,10 +45,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - Web: Blazor WebAssembly
 - ORM: Entity Framework Core 6.0
 - Database: SQL Server 2022
-- Storage: Azure Storage
-- Authentication: JWT
-- Hosting: Local
-- Monitoring: Terminal (Console)
 
 ## Pré-requisitos
 
@@ -42,7 +67,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Login
 - [x] Ver perfil
 - [x] Alteração
-- [ ] Estatísticas financeiras (gastos, receitas por período, etc) -> 402
 
 ### Contas
 
@@ -60,6 +84,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Cadastro
   - [x] Transação única
   - [x] Parcelamentos
+  - [ ] Importação de arquivo CSV
 - [x] Listagem
   - [x] Listagem por mês e ano
   - [x] Listagem por parcelamentoId -> (visualizar todas as parcelas de uma transação parcelada)
@@ -76,28 +101,26 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - [x] Alteração de parcelas pendente de pagamento
     - [x] Alteração de todas as parcelas
 - [x] Exclusão
-  - [x] Regra de negócio: Não é possível excluir uma transação que já foi paga
   - [x] Exclusão de transação única
   - [x] Exclusão de transação parcelada
     - [x] Excluir parcela única (por id)
     - [x] Excluir todas as parcelas
+- [x] Efetivação de transações
 
-### Cartões de crédito (v2)
+### Estatísticas financeiras
 
-- [ ] Cadastro
-- [ ] Listagem
-  - [ ] Listagem por período
-  - [ ] Listagem por bandeira
-  - [ ] Listagem por banco
-- [ ] Obter por Id
-- [ ] Alteração
-- [ ] Exclusão
+- [x] Saldo total (soma do saldo das contas: corrente e carteira)
+- [x] Total investido (soma do saldo das contas: investimento, poupança)
+- [x] Número de transações pendentes (mês atual)
+- [x] Balanço mensal (todas as contas)
+- [x] Total Despesas por categoria (mês atual)
+- [x] Visão geral de receitas e despesas -> obter valor total de receitas e despesas por mês (ano atual)
 
 ## Arquitetura
 
 ### Cliente
 
-O cliente é uma aplicação Blazor WebAssembly, que utiliza o padrão de arquitetura de software MVVM (Model-View-ViewModel). O cliente é responsável por exibir as informações para o usuário e enviar as requisições para a API.
+O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir as informações para o usuário e enviar as requisições para a API.
 
 ### API
 
@@ -297,7 +320,7 @@ Transacao{
     datetime2 DataPagamento
     nvarchar(max) Tipo "enum TransacaoTipo"
     uniqueidentifier UsuarioId FK
-    uniqueidentifier MeioDePagamentoId FK    
+    uniqueidentifier MeioDePagamentoId FK
 }
 
 Usuario ||--|{ MeioDePagamento : possui

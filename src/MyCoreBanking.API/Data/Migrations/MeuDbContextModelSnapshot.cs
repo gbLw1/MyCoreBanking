@@ -84,9 +84,6 @@ namespace MyCoreBanking.API.Migrations
                     b.Property<DateTime>("DataTransacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataVencimento")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -124,10 +121,6 @@ namespace MyCoreBanking.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Valor")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("ValorParcela")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 

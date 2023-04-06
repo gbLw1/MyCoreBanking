@@ -1,0 +1,45 @@
+﻿<div class="d-flex justify-content-between align-items-center">
+    <h1 class="h3 text-dark">Efetivar transação</h1>
+    <i @onclick="Cancelar"
+       style="font-size: 1.4rem;"
+       class="fa-solid fa-xmark float-end cursor-pointer p-1 mb-2"></i>
+</div>
+<div class="d-flex flex-column">
+
+    <div class="d-flex flex-column justify-content-center my-3">
+
+        <p class="m-0 regular-16">
+            Informe a data que deseja efetivar a transação.
+        </p>
+
+        <input @bind-value="Data" type="date" class="form-control" />
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <button type="button" @onclick="Cancelar"
+                class="me-3 rounded-pill float-end btn btn-secondary">
+            CANCELAR
+        </button>
+
+        <button type="button" @onclick="ConfirmarEfetivacao"
+                class="rounded-pill float-end btn btn-success text-white fw-bold">
+            EFETIVAR
+        </button>
+    </div>
+</div>
+
+@code {
+    public DateTime Data { get; set; } = DateTime.Now;
+
+    [CascadingParameter] BlazoredModalInstance modal { get; set; } = default!;
+
+    async Task Cancelar()
+    {
+        await modal.CancelAsync();
+    }
+
+    async Task ConfirmarEfetivacao()
+    {
+        await modal.CloseAsync(ModalResult.Ok(Data));
+    }
+}
