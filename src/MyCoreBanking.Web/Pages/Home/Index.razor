@@ -1,5 +1,9 @@
 ﻿@page "/"
 @using System.Globalization;
+@using ChartJs.Blazor.BarChart;
+@using ChartJs.Blazor.LineChart;
+@using ChartJs.Blazor.PieChart;
+@using System.Drawing;
 
 <!-- Título -->
 <div class="d-flex justify-content-start align-items-center">
@@ -11,7 +15,7 @@
 @if (model is null)
 {
     <div class="d-flex justify-content-center align-items-center" style="min-height: 50vh;">
-        <Spinner Size="50px" />
+        Aguarde...
     </div>
 }
 else
@@ -50,15 +54,6 @@ else
                         <div class="col me-2">
                             <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Transações pendentes</span></div>
                             <div class="text-dark fw-bold h5 mb-0 me-3"><span>@(model.TransacoesPendentes)</span></div>
-                            @*<div class="row g-0 align-items-center">
-                                <div class="col-auto">
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="visually-hidden">50%</span></div>
-                                    </div>
-                                </div>
-                            </div>*@
                         </div>
                         <div class="col-auto"><i class="fa-regular fa-calendar-minus fa-2x text-warning"></i></div>
                     </div>
@@ -80,7 +75,63 @@ else
         </div>
     </div>
 
+    <!-- Charts -->
+    <div class="row">
 
+        <!-- Total entrada / saída no ano atual -->
+        <div class="col-lg-12 col-xl-8">
+            <div class="card shadow mb-4" style="height: 100%">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0 py-2">Movimentações Entrada / Saída em @(DateTime.Now.Year)</h6>
+                </div>
+                <div class="card-body d-flex align-items-center">
+                        <Chart Config="_lineConfig" @ref="_chart"></Chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total gasto por categoria no mês atual -->
+        <div class="mt-4 mt-xl-0 col-lg-12 col-xl-4">
+            <div class="card shadow mb-4" style="height: 100%">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0 py-2">Total gasto neste mês (@(DateTime.Now.ToString("MMMM")))</h6>
+                </div>
+                <div class="card-body d-flex align-items-center">
+                        <Chart Config="_pieConfig"></Chart>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <!-- Total gasto por categoria no ano atual -->
+        <div class="col-lg-12 col-xl-8">
+            <div class="card shadow mb-4" style="height: 100%">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0 py-2">Total gasto em cada categoria neste ano (@(DateTime.Now.Year))</h6>
+                </div>
+                <div class="card-body d-flex align-items-center">
+                    <Chart Config="_barConfig"></Chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anúncio -->
+        <div class="mt-4 mt-xl-0 col-lg-12 col-xl-4">
+            <div class="card shadow mb-4" style="height: 100%">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0 py-2">Anúncio plano de assinatura</h6>
+                </div>
+                <div class="card-body d-flex align-items-center">
+                    <img src="/assets/img/dogs/image2.jpeg" style="object-fit: cover; width: 100%; height: 100%;" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
@@ -201,10 +252,17 @@ else
             </div>
         </div>
     </div>
+    -->
 }
 
 @code {
+
     RelatorioModel? model;
+
+    private PieConfig? _pieConfig;
+    private LineConfig? _lineConfig;
+    private BarConfig? _barConfig;
+    private Chart _chart;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -218,6 +276,204 @@ else
         }
 
         await CarregarEstatisticas();
+
+        CarregarGraficos();
+    }
+
+    void CarregarGraficos()
+    {
+        GerarGraficoLinhasDespesasReceitasAnual();
+        GerarGraficoPizzaDespesasPorCategoriaMensal();
+        GerarGraficoDeBarrasDespesasPorCategoriaAnual();
+    }
+
+    void GerarGraficoLinhasDespesasReceitasAnual()
+    {
+        _lineConfig = new LineConfig
+            {
+                Options = new LineOptions
+                {
+                    Responsive = true,
+                    Scales = new Scales
+                    {
+                        XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            Ticks = new CategoryTicks
+                            {
+                                AutoSkip = false
+                            }
+                        }
+                    },
+                        YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                BeginAtZero = true
+                            }
+                        }
+                    }
+                    }
+                }
+            };
+
+        LineDataset<decimal> despesaDataset = new LineDataset<decimal>
+        {
+            Label = "Despesas",
+            BackgroundColor = ColorUtil.FromDrawingColor(Color.Red),
+            BorderColor = ColorUtil.FromDrawingColor(Color.Red),
+            Fill = false
+        };
+
+        LineDataset<decimal> receitaDataset = new LineDataset<decimal>
+        {
+            Label = "Receitas",
+            BackgroundColor = ColorUtil.FromDrawingColor(Color.Green),
+            BorderColor = ColorUtil.FromDrawingColor(Color.Green),
+            Fill = false
+        };
+
+        foreach (var graph in model.GraficoMovimentacaoAnoAtual)
+        {
+            _lineConfig.Data.Labels.Add(graph.Mes switch
+            {
+                1 => "Janeiro",
+                2 => "Fevereiro",
+                3 => "Março",
+                4 => "Abril",
+                5 => "Maio",
+                6 => "Junho",
+                7 => "Julho",
+                8 => "Agosto",
+                9 => "Setembro",
+                10 => "Outubro",
+                11 => "Novembro",
+                12 => "Dezembro",
+                _ => "Mês inválido"
+            });
+            despesaDataset.Add(graph.ValorDespesa);
+            receitaDataset.Add(graph.ValorReceita);
+        }
+
+        _lineConfig.Data.Datasets.Add(despesaDataset);
+        _lineConfig.Data.Datasets.Add(receitaDataset);
+    }
+
+    void GerarGraficoPizzaDespesasPorCategoriaMensal()
+    {
+        _pieConfig = new PieConfig
+        {
+            Options = new PieOptions
+            {
+                Responsive = true,
+            }
+        };
+
+        PieDataset<decimal> data = new()
+        {
+            BackgroundColor = new[]
+            {
+                ColorUtil.RandomColorString(), // Alimentacao,
+                ColorUtil.RandomColorString(), // Casa,
+                ColorUtil.RandomColorString(), // Educacao,
+                ColorUtil.RandomColorString(), // Eletronicos,
+                ColorUtil.RandomColorString(), // Investimentos,
+                ColorUtil.RandomColorString(), // Lazer,
+                ColorUtil.RandomColorString(), // Outros,
+                ColorUtil.RandomColorString(), // Presente,
+                ColorUtil.RandomColorString(), // Salario,
+                ColorUtil.RandomColorString(), // Saude,
+                ColorUtil.RandomColorString(), // Servico,
+                ColorUtil.RandomColorString(), // Supermercado,
+                ColorUtil.RandomColorString(), // Transporte,
+                ColorUtil.RandomColorString(), // Vestuario,
+                ColorUtil.RandomColorString(), // Viagem,
+            }
+        };
+
+        foreach (var graph in model.GraficoDespesaPorCategoriaMensal)
+        {
+            _pieConfig.Data.Labels.Add(MyCoreBankingApp.ConverterEnumCategoriaParaString(graph.Categoria));
+            data.Add(graph.Valor);
+        }
+
+        _pieConfig.Data.Datasets.Add(data);
+    }
+
+    void GerarGraficoDeBarrasDespesasPorCategoriaAnual()
+    {
+        _barConfig = new BarConfig
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false
+                },
+                Scales = new BarScales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            Ticks = new CategoryTicks
+                            {
+                                AutoSkip = false
+                            }
+                        }
+                    },
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                BeginAtZero = true
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        BarDataset<decimal> data = new()
+        {
+            BackgroundColor = new[]
+            {
+                ColorUtil.RandomColorString(), // Alimentacao,
+                ColorUtil.RandomColorString(), // Casa,
+                ColorUtil.RandomColorString(), // Educacao,
+                ColorUtil.RandomColorString(), // Eletronicos,
+                ColorUtil.RandomColorString(), // Investimentos,
+                ColorUtil.RandomColorString(), // Lazer,
+                ColorUtil.RandomColorString(), // Outros,
+                ColorUtil.RandomColorString(), // Presente,
+                ColorUtil.RandomColorString(), // Salario,
+                ColorUtil.RandomColorString(), // Saude,
+                ColorUtil.RandomColorString(), // Servico,
+                ColorUtil.RandomColorString(), // Supermercado,
+                ColorUtil.RandomColorString(), // Transporte,
+                ColorUtil.RandomColorString(), // Vestuario,
+                ColorUtil.RandomColorString(), // Viagem,
+            },
+        };
+
+        //foreach (var categoria in Enum.GetValues<Categoria>())
+        //{
+        //    _barConfig.Data.Labels.Add(MyCoreBankingApp.ConverterEnumCategoriaParaString(categoria));
+        //}
+
+        foreach (var graph in model.GraficoDespesaPorCategoriaAnual)
+        {
+            _barConfig.Data.Labels.Add(MyCoreBankingApp.ConverterEnumCategoriaParaString(graph.Categoria));
+            data.Add(graph.Valor);
+        }
+
+        _barConfig.Data.Datasets.Add(data);
     }
 
     async Task CarregarEstatisticas()

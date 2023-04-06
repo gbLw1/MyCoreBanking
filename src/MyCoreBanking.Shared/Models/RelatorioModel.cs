@@ -16,11 +16,15 @@ public class RelatorioModel
     [JsonPropertyName("balancoMensal")]
     public decimal BalancoMensal { get; set; }
 
-    [JsonPropertyName("GraficoDespesaReceitaDoAnoAtual")]
-    public List<GraficoDespesaReceita>? GraficoDespesaReceitaDoAnoAtual { get; set; }
+    [JsonPropertyName("graficoMovimentacaoAnoAtual")]
+    public List<GraficoDespesaReceita>? GraficoMovimentacaoAnoAtual { get; set; }
 
-    [JsonPropertyName("graficoDespesaPorCategoria")]
-    public List<GraficoDespesaPorCategoria>? GraficoDespesaPorCategoria { get; set; }
+    [JsonPropertyName("graficoDespesaPorCategoriaMensal")]
+    public List<GraficoDespesaPorCategoria>? GraficoDespesaPorCategoriaMensal { get; set; }
+
+    [JsonPropertyName("graficoDespesaPorCategoriaAnual")]
+    public List<GraficoDespesaPorCategoria>? GraficoDespesaPorCategoriaAnual { get; set; }
+
 }
 
 public class GraficoDespesaReceita

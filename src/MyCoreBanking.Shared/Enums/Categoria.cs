@@ -2,19 +2,19 @@ namespace MyCoreBanking;
 
 public enum Categoria
 {
+    Alimentacao,
     Casa,
     Educacao,
     Eletronicos,
-    Lazer,
-    Alimentacao,
-    Transporte,
-    Saude,
-    Supermercado,
-    Vestuario,
-    Viagem,
-    Servico,
     Investimentos,
+    Lazer,
+    Outros,
     Presente,
     Salario,
-    Outros,
+    Saude,
+    Servico,
+    Supermercado,
+    Transporte,
+    Vestuario,
+    Viagem,
 }

@@ -38,8 +38,8 @@
     </div>
 
     <a class="scroll-to-top border rounded-circle d-inline cursor-pointer"
-            id="myBtn"
-            style="display: none!important;">
+       id="myBtn"
+       style="display: none!important;">
         <i class="fas fa-angle-up"></i>
     </a>
 
@@ -52,22 +52,17 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
 
+    <!-- ↓ ChartJs.Blazor ↓ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <!-- This is the glue between Blazor and Chart.js -->
+    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
+
+
+    <!-- Scroll script -->
     <script>
-        // Get the button
         let btn = document.getElementById("myBtn");
 
-        // When the user scrolls down 60px from the top of the document, show the button
-        //window.onscroll = function () { scrollFunction() };
-
-        //function scrollFunction() {
-        //    if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
-        //        btn.style.cssText = "display: initial !important;";
-        //    } else {
-        //        btn.style.cssText = "display: none !important;";
-        //    }
-        //}
-
-        // When the user clicks on the button, scroll to the top of the document
         btn.addEventListener('click', () => {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;

@@ -95,8 +95,20 @@ public static class RelatoriosGet
                 }
             }
 
-            // ↓ GRÁFICO DE DESPESAS POR CATEGORIA ↓
-            var graficoTotalDespesasPorCategoria = await context.Transacoes
+            // ↓ GRÁFICO DE DESPESAS POR CATEGORIA MENSAL ↓
+            var graficoTotalDespesasPorCategoriaMensal = await context.Transacoes
+                .AsNoTracking()
+                .Where(t => t.UsuarioId == userId)
+                .Where(t => t.DataEfetivacao != null)
+                .Where(t => t.DataTransacao.Year == DateTime.Now.Year)
+                .Where(t => t.DataTransacao.Month == DateTime.Now.Month)
+                .Where(t => t.TipoOperacao == OperacaoTipo.Despesa)
+                .GroupBy(t => t.Categoria)
+                .Select(g => new GraficoDespesaPorCategoria { Categoria = g.Key, Valor = g.Sum(t => t.Valor) })
+                .ToListAsync();
+
+            // ↓ GRÁFICO DE DESPESAS POR CATEGORIA ANUAL ↓
+            var graficoTotalDespesasPorCategoriaAnual = await context.Transacoes
                 .AsNoTracking()
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.DataEfetivacao != null)
@@ -113,8 +125,9 @@ public static class RelatoriosGet
                 TotalInvestido = totalInvestido,
                 TransacoesPendentes = numeroTransacoesPendentesDoMesAtual,
                 BalancoMensal = balancoMensal,
-                GraficoDespesaReceitaDoAnoAtual = graficoReceitasDespesasAnoAtual,
-                GraficoDespesaPorCategoria = graficoTotalDespesasPorCategoria,
+                GraficoMovimentacaoAnoAtual = graficoReceitasDespesasAnoAtual,
+                GraficoDespesaPorCategoriaMensal = graficoTotalDespesasPorCategoriaMensal,
+                GraficoDespesaPorCategoriaAnual = graficoTotalDespesasPorCategoriaAnual,
             };
 
             return httpRequest.CreateResult(relatorio);
