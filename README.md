@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Gráficos
+- [x] Gráficos
 - [ ] Filtros para transações
 - [ ] Importação de arquivo CSV
 - [ ] Alterar o diagrama de classe
