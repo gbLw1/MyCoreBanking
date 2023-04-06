@@ -48,7 +48,7 @@ else
             </div>
         </div>
         <div class="col-md-6 col-xl-3 mb-4">
-            <div class="card shadow border-start-warning py-2">
+            <div class="card shadow border-start-warning py-2" style="height: 94.8px">
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
@@ -79,7 +79,7 @@ else
     <div class="row">
 
         <!-- Total entrada / saída no ano atual -->
-        <div class="col-lg-12 col-xl-8">
+        <div class="d-none d-md-block col-lg-12 col-xl-8">
             <div class="card shadow mb-4" style="height: 100%">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0 py-2">Movimentações Entrada / Saída em @(DateTime.Now.Year)</h6>
@@ -91,13 +91,20 @@ else
         </div>
 
         <!-- Total gasto por categoria no mês atual -->
-        <div class="mt-4 mt-xl-0 col-lg-12 col-xl-4">
+        <div class="d-none d-md-block mt-4 mt-xl-0 col-lg-12 col-xl-4">
             <div class="card shadow mb-4" style="height: 100%">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0 py-2">Total gasto neste mês (@(DateTime.Now.ToString("MMMM")))</h6>
                 </div>
-                <div class="card-body d-flex align-items-center">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    @if (model.GraficoDespesaPorCategoriaMensal.Sum(c => c.Valor) == 0)
+                    {
+                        <p class="m-0 text-dark text-center">Você ainda não possui movimentações</p>
+                    }
+                    else
+                    {
                         <Chart Config="_pieConfig"></Chart>
+                    }
                 </div>
             </div>
         </div>
@@ -106,7 +113,7 @@ else
 
     <div class="row mt-4">
         <!-- Total gasto por categoria no ano atual -->
-        <div class="col-lg-12 col-xl-8">
+        <div class="d-none d-md-block col-lg-12 col-xl-8">
             <div class="card shadow mb-4" style="height: 100%">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0 py-2">Total gasto em cada categoria neste ano (@(DateTime.Now.Year))</h6>
@@ -376,21 +383,21 @@ else
         {
             BackgroundColor = new[]
             {
-                ColorUtil.RandomColorString(), // Alimentacao,
-                ColorUtil.RandomColorString(), // Casa,
-                ColorUtil.RandomColorString(), // Educacao,
-                ColorUtil.RandomColorString(), // Eletronicos,
-                ColorUtil.RandomColorString(), // Investimentos,
-                ColorUtil.RandomColorString(), // Lazer,
-                ColorUtil.RandomColorString(), // Outros,
-                ColorUtil.RandomColorString(), // Presente,
-                ColorUtil.RandomColorString(), // Salario,
-                ColorUtil.RandomColorString(), // Saude,
-                ColorUtil.RandomColorString(), // Servico,
-                ColorUtil.RandomColorString(), // Supermercado,
-                ColorUtil.RandomColorString(), // Transporte,
-                ColorUtil.RandomColorString(), // Vestuario,
-                ColorUtil.RandomColorString(), // Viagem,
+                ColorUtil.FromDrawingColor(Color.Lavender), // Alimentacao,
+                ColorUtil.FromDrawingColor(Color.Gray), // Casa,
+                ColorUtil.FromDrawingColor(Color.Aqua), // Educacao,
+                ColorUtil.FromDrawingColor(Color.Blue), // Eletronicos,
+                ColorUtil.FromDrawingColor(Color.DarkBlue), // Investimentos,
+                ColorUtil.FromDrawingColor(Color.Peru), // Lazer,
+                ColorUtil.FromDrawingColor(Color.Brown), // Outros,
+                ColorUtil.FromDrawingColor(Color.Magenta), // Presente,
+                ColorUtil.FromDrawingColor(Color.DarkViolet), // Salario,
+                ColorUtil.FromDrawingColor(Color.HotPink), // Saude,
+                ColorUtil.FromDrawingColor(Color.Yellow), // Servico,
+                ColorUtil.FromDrawingColor(Color.Orange), // Supermercado,
+                ColorUtil.FromDrawingColor(Color.Red), // Transporte,
+                ColorUtil.FromDrawingColor(Color.LightGreen), // Vestuario,
+                ColorUtil.FromDrawingColor(Color.Green), // Viagem,
             }
         };
 
@@ -444,21 +451,21 @@ else
         {
             BackgroundColor = new[]
             {
-                ColorUtil.RandomColorString(), // Alimentacao,
-                ColorUtil.RandomColorString(), // Casa,
-                ColorUtil.RandomColorString(), // Educacao,
-                ColorUtil.RandomColorString(), // Eletronicos,
-                ColorUtil.RandomColorString(), // Investimentos,
-                ColorUtil.RandomColorString(), // Lazer,
-                ColorUtil.RandomColorString(), // Outros,
-                ColorUtil.RandomColorString(), // Presente,
-                ColorUtil.RandomColorString(), // Salario,
-                ColorUtil.RandomColorString(), // Saude,
-                ColorUtil.RandomColorString(), // Servico,
-                ColorUtil.RandomColorString(), // Supermercado,
-                ColorUtil.RandomColorString(), // Transporte,
-                ColorUtil.RandomColorString(), // Vestuario,
-                ColorUtil.RandomColorString(), // Viagem,
+                ColorUtil.FromDrawingColor(Color.Lavender), // Alimentacao,
+                ColorUtil.FromDrawingColor(Color.Gray), // Casa,
+                ColorUtil.FromDrawingColor(Color.Aqua), // Educacao,
+                ColorUtil.FromDrawingColor(Color.Blue), // Eletronicos,
+                ColorUtil.FromDrawingColor(Color.DarkBlue), // Investimentos,
+                ColorUtil.FromDrawingColor(Color.Peru), // Lazer,
+                ColorUtil.FromDrawingColor(Color.Brown), // Outros,
+                ColorUtil.FromDrawingColor(Color.Magenta), // Presente,
+                ColorUtil.FromDrawingColor(Color.DarkViolet), // Salario,
+                ColorUtil.FromDrawingColor(Color.HotPink), // Saude,
+                ColorUtil.FromDrawingColor(Color.Yellow), // Servico,
+                ColorUtil.FromDrawingColor(Color.Orange), // Supermercado,
+                ColorUtil.FromDrawingColor(Color.Red), // Transporte,
+                ColorUtil.FromDrawingColor(Color.LightGreen), // Vestuario,
+                ColorUtil.FromDrawingColor(Color.Green), // Viagem,
             },
         };
 

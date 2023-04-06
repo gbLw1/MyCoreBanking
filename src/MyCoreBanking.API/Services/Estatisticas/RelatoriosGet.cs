@@ -39,12 +39,13 @@ public static class RelatoriosGet
                 .Where(c => c.Tipo == ContaTipo.Investimento || c.Tipo == ContaTipo.Poupanca)
                 .SumAsync(c => c.Saldo);
 
-            // ↓ TRANSAÇÕES PENDENTES DO MÊS ATUAL ↓
+            // ↓ TRANSAÇÕES PENDENTES ↓
             var numeroTransacoesPendentesDoMesAtual = await context.Transacoes
                 .AsNoTracking()
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.DataEfetivacao == null)
-                .Where(t => t.DataTransacao.Month == DateTime.Now.Month)
+                .Where(t => t.DataTransacao.Year <= DateTime.Now.Year)
+                .Where(t => t.DataTransacao.Month <= DateTime.Now.Month)
                 .CountAsync();
 
             // ↓ BALANÇO MENSAL ↓
