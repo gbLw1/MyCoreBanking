@@ -18,31 +18,49 @@
 {
     <div class="card shadow">
 
-        <!-- Filtro data -->
-        <div class="card-header py-3 d-flex justify-content-center align-items-center">
+        <!-- Header tabela -->
+        <div class="card-header py-3 d-flex justify-content-between align-items-center"
+             style="padding: 0 64px;">
 
-            <button @onclick="async () => await VoltarMes()" type="button"
-                    class="btn btn-light rounded-circle text-center text-primary fw-bold"
-                    style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
-                &laquo;
-            </button>
+            <!-- Filtros -->
+            <div>
+                <!-- TODO: Abrir modal com filtragem das transações -->
+                <button onclick=""
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
+                        role="button">
+                    <i class="me-2 fa-solid fa-filter fa-2x text-primary"></i>
+                    Filtrar
+                </button>
+            </div>
 
-            <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(DataBusca.ToString("MMM/yyyy"))</p>
+            <!-- Navegar entre os meses -->
+            <div class="d-flex justify-content-center align-items-center">
+                <button @onclick="async () => await VoltarMes()" type="button"
+                        class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                        style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                    &laquo;
+                </button>
 
-            <button @onclick="async () => await AvancarMes()" type="button"
-                    class="btn btn-light rounded-circle text-center text-primary fw-bold"
-                    style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
-                &raquo;
-            </button>
+                <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(DataBusca.ToString("MMM/yyyy"))</p>
 
-            <!-- Export -->
-            <!--
-            <button class="btn text-primary fw-bolder btn-sm d-none d-sm-inline-block border border-primary rounded"
-                    role="button">
-                <i class="fas fa-download fa-sm text-primary-50"></i>
-                &nbsp;Exportar Dados
-            </button>
-            -->
+                <button @onclick="async () => await AvancarMes()" type="button"
+                        class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                        style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                    &raquo;
+                </button>
+            </div>
+
+            <!-- Import CSV -->
+            <div>
+                <button class="ms-2 position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
+                        role="button">
+                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                        Novo!
+                    </span>
+                    Importar
+                    <i class="ms-2 fa-solid fa-file-csv fa-2x text-primary"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Tabela -->
@@ -78,11 +96,11 @@
                         <thead>
                             <tr>
                                 <th style="width: 40px"></th>
-                                <th>Descrição</th>
-                                <th class="d-none d-lg-table-cell">Categoria</th>
-                                <th>Data</th>
-                                <th class="d-none d-lg-table-cell">Conta</th>
-                                <th>Valor</th>
+                                <th>DESCRIÇÃO</th>
+                                <th class="d-none d-lg-table-cell">CATEGORIA</th>
+                                <th>DATA</th>
+                                <th class="d-none d-lg-table-cell">CONTA</th>
+                                <th>VALOR</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -91,8 +109,8 @@
                         <tbody class="table-group-divider">
                             @foreach (var transacao in model)
                             {
-                                <tr style="border-bottom: 1px solid #cccccc;height: 65px">
-                                @*<tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #1cc88a0a;" : "background-color: #c81c1c0a;") border-bottom: 1px solid #cccccc;">*@
+                                @*<tr style="border-bottom: 1px solid #cccccc;height: 65px">*@
+                                <tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #00ff0014;" : "background-color: #ff000014;") border-bottom: 1px solid #cccccc;height: 65px;">
                                     <!-- Status -->
                                     <td class="align-middle">
                                         @if (transacao.Efetivada)
@@ -110,19 +128,19 @@
                                     </td>
 
                                     <!-- Descrição -->
-                                    <td class="align-middle fw-semibold">
+                                    <td class="align-middle fw-bold">
                                         @(transacao.TipoTransacao == TransacaoTipo.Unica
                                             ? transacao.Descricao
                                             : $"{transacao.Descricao} - ({transacao.ParcelaAtual}/{transacao.NumeroParcelas})")
                                     </td>
 
                                     <!-- Categoria -->
-                                    <td class="d-none d-lg-table-cell align-middle">
+                                    <td class="d-none d-lg-table-cell align-middle fw-bold">
                                         @(MyCoreBankingApp.ConverterEnumCategoriaParaString(transacao.Categoria))
                                     </td>
 
                                     <!-- Data -->
-                                    <td class="align-middle">
+                                    <td class="align-middle fw-bold">
                                         @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
                                         {
                                             <p class="m-0 text-warning fw-semibold">@(transacao.DataTransacao.ToShortDateString())</p>
@@ -135,12 +153,12 @@
                                     </td>
 
                                     <!-- Conta -->
-                                    <td class="d-none d-lg-table-cell align-middle">
+                                    <td class="d-none d-lg-table-cell align-middle fw-bold">
                                         @(transacao.Conta)
                                     </td>
 
                                     <!-- Valor -->
-                                    <td class="align-middle">
+                                    <td class="align-middle fw-bold">
                                         <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
                                             @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
                                             @(transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
