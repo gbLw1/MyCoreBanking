@@ -1,5 +1,6 @@
 ﻿@page "/transacoes"
 @using System.Globalization;
+@using System.Text;
 
 <!-- Título -->
 <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
@@ -16,6 +17,56 @@
 
 @if (model is not null)
 {
+    @if (Filtrando())
+    {
+        <div class="d-flex align-items-center mb-3">
+            @if (FiltroDataEfetivacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroDataEfetivacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroDataEfetivacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroMeioPagamentoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroMeioPagamento()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroMeioPagamento())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroTipoOperacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroTipoOperacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroTipoOperacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroTipoTransacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroTipoTransacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroTipoTransacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroCategoriaAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroCategoria()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroCategoria())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+        </div>
+    }
+
     <div class="card shadow">
 
         <!-- Header tabela -->
@@ -24,37 +75,58 @@
 
             <!-- Filtros -->
             <div>
-                <!-- TODO: Abrir modal com filtragem das transações -->
-                <button onclick=""
-                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
-                        role="button">
-                    <i class="me-2 fa-solid fa-filter fa-2x text-primary"></i>
-                    Filtrar
-                </button>
+                @if (Filtrando())
+                {
+                    <button @onclick="async () => await LimparTodosFiltros()"
+                            class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded">
+                        Limpar filtros
+                        <i class="ms-2 fa-solid fa-times text-danger"></i>
+                    </button>
+                }
+                else
+                {
+                    <button @onclick="async () => await AbrirModalFiltro()"
+                            class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
+                            role="button">
+                        <i class="me-2 fa-solid fa-filter fa-2x text-primary"></i>
+                        Filtrar
+                    </button>
+                }
             </div>
 
             <!-- Navegar entre os meses -->
             <div class="d-flex justify-content-center align-items-center">
-                <button @onclick="async () => await VoltarMes()" type="button"
-                        class="btn btn-light rounded-circle text-center text-primary fw-bold"
-                        style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
-                    &laquo;
-                </button>
+                @if (FiltroBusca.DataEfetivacao.HasValue)
+                {
+                    <p class="m-0 p-2 fw-bold border border-primary rounded-pill text-primary">
+                        Efetivadas no dia @(FiltroBusca.DataEfetivacao.Value.ToShortDateString())
+                    </p>
+                }
+                else
+                {
 
-                <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(DataBusca.ToString("MMM/yyyy"))</p>
+                    <button @onclick="async () => await VoltarMes()" type="button"
+                            class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                            style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                        &laquo;
+                    </button>
 
-                <button @onclick="async () => await AvancarMes()" type="button"
-                        class="btn btn-light rounded-circle text-center text-primary fw-bold"
-                        style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
-                    &raquo;
-                </button>
+                    <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(FiltroBusca.DataBusca.ToString("MMM/yyyy"))</p>
+
+                    <button @onclick="async () => await AvancarMes()" type="button"
+                            class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                            style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                        &raquo;
+                    </button>
+                }
             </div>
 
             <!-- Import CSV -->
             <div>
                 <button class="ms-2 position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
                         role="button">
-                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                          style="line-height: normal">
                         Novo!
                     </span>
                     Importar
@@ -66,29 +138,6 @@
         <!-- Tabela -->
         <div class="card-body">
 
-            <!-- Qtde em exibição + Filtro de pesquisa -->
-            <!--
-                <div class="row">
-                    <div class="col-md-6 text-nowrap">
-                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                            <label class="form-label">
-                                Exibir&nbsp;
-                                <select class="d-inline-block form-select form-select-sm">
-                                    <option value="10" selected="">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>&nbsp;
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                    </div>
-                </div>
-            -->
-            <!-- Tabela -->
             @if (model.Any())
             {
                 <div class="table-responsive table mt-2 px-5" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -115,7 +164,7 @@
                                     <td class="align-middle">
                                         @if (transacao.Efetivada)
                                         {
-                                            <ToolTip Text="Efetivada">
+                                            <ToolTip Text="Efetivada" DataEfetivacao="transacao.DataEfetivacao!.Value">
                                                 <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
                                             </ToolTip>
                                         }
@@ -234,7 +283,8 @@
             }
             else
             {
-                <p class="m-0 h5 text-dark text-center">Nenhuma transação nesse mês.</p>
+                <p class="m-0 mb-4 h5 text-dark text-center">Nenhuma transação encontrada.</p>
+                <p class="m-0 h4 text-dark text-center" style="font-family: arial;">¯\_(ツ)_/¯</p>
             }
 
         </div>
@@ -245,12 +295,89 @@
 @code {
     IReadOnlyCollection<TransacaoModel> model = Array.Empty<TransacaoModel>();
 
-    public DateTime DataBusca { get; set; } = DateTime.Now;
+    public FiltroTransacoes FiltroBusca = new();
 
     protected override async Task OnParametersSetAsync()
     {
         await CarregarTransacoes();
     }
+
+    #region [+ Filtros de Busca]
+
+    async Task AbrirModalFiltro()
+    {
+        var modal = MyCoreBankingApp.ShowModal<FiltroTransacoesModal>();
+
+        if ((await modal.Result).Cancelled)
+        {
+            return;
+        }
+
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        FiltroBusca = (FiltroTransacoes)(await modal.Result).Data!;
+
+        await CarregarTransacoes();
+
+        modalLoading.Close();
+    }
+
+    bool Filtrando()
+        => FiltroBusca.DataEfetivacao.HasValue
+           || FiltroBusca.MeioPagamento.HasValue
+           || FiltroBusca.TipoOperacao.HasValue
+           || FiltroBusca.TipoTransacao.HasValue
+           || FiltroBusca.Categoria.HasValue;
+
+    async Task LimparTodosFiltros()
+    {
+        FiltroBusca = new();
+        await CarregarTransacoes();
+    }
+
+    bool FiltroDataEfetivacaoAplicado() => FiltroBusca.DataEfetivacao.HasValue;
+    bool FiltroMeioPagamentoAplicado() => FiltroBusca.MeioPagamento.HasValue;
+    bool FiltroTipoOperacaoAplicado() => FiltroBusca.TipoOperacao.HasValue;
+    bool FiltroTipoTransacaoAplicado() => FiltroBusca.TipoTransacao.HasValue;
+    bool FiltroCategoriaAplicado() => FiltroBusca.Categoria.HasValue;
+
+    string FiltroDataEfetivacao() => $"Data de efetivação: {FiltroBusca.DataEfetivacao!.Value.ToShortDateString()}";
+    string FiltroMeioPagamento() => $"Meio de pagamento: {MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(FiltroBusca.MeioPagamento!.Value)}";
+    string FiltroTipoOperacao() => $"Tipo de operação: {FiltroBusca.TipoOperacao!.Value}";
+    string FiltroTipoTransacao() => $"Tipo de transação: {MyCoreBankingApp.ConverterEnumTipoTransacaoParaString(FiltroBusca.TipoTransacao!.Value)}";
+    string FiltroCategoria() => $"Categoria: {MyCoreBankingApp.ConverterEnumCategoriaParaString(FiltroBusca.Categoria!.Value)}";
+
+    async Task RemoverFiltroDataEfetivacao()
+    {
+        FiltroBusca.DataEfetivacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroMeioPagamento()
+    {
+        FiltroBusca.MeioPagamento = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroTipoOperacao()
+    {
+        FiltroBusca.TipoOperacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroTipoTransacao()
+    {
+        FiltroBusca.TipoTransacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroCategoria()
+    {
+        FiltroBusca.Categoria = null;
+        await CarregarTransacoes();
+    }
+
+    #endregion
 
     #region [+ Carregar Transacoes]
 
@@ -260,7 +387,14 @@
 
         await Task.Delay(100);
 
-        var result = await MyCoreBankingApp.ObterTransacoes(mes: DataBusca.Month, ano: DataBusca.Year);
+        var result = await MyCoreBankingApp.ObterTransacoes(
+            mes: FiltroBusca.DataBusca.Month,
+            ano: FiltroBusca.DataBusca.Year,
+            dataEfetivacao: FiltroBusca.DataEfetivacao,
+            meioDePagamento: FiltroBusca.MeioPagamento,
+            tipoDeOperacao: FiltroBusca.TipoOperacao,
+            tipoDeTransacao: FiltroBusca.TipoTransacao,
+            categoria: FiltroBusca.Categoria);
 
         if (result is null)
         {
@@ -276,14 +410,14 @@
 
     async Task VoltarMes()
     {
-        DataBusca = DataBusca.AddMonths(-1);
+        FiltroBusca.DataBusca = FiltroBusca.DataBusca.AddMonths(-1);
 
         await CarregarTransacoes();
     }
 
     async Task AvancarMes()
     {
-        DataBusca = DataBusca.AddMonths(1);
+        FiltroBusca.DataBusca = FiltroBusca.DataBusca.AddMonths(1);
 
         await CarregarTransacoes();
     }
