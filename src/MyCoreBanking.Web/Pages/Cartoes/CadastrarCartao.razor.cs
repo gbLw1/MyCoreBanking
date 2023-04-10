@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyCoreBanking.Web.Pages.Cartoes.Cadastro;
+namespace MyCoreBanking.Web.Pages.Cartoes;
 
 public class CartaoViewModel
 {
