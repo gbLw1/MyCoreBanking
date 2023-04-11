@@ -20,6 +20,7 @@
         border-radius: 6px;
         z-index: 1;
         margin-bottom: 8px;
+        line-height: normal;
     }
 
         #spanText::after {
@@ -38,12 +39,27 @@
     }
 </style>
 
-<div class="tooltip-wrapper">
-    <span id="spanText">@((MarkupString)Text)</span>
-    @ChildContent
-</div>
+@if (DataEfetivacao != default)
+{
+    <div class="tooltip-wrapper">
+        <span id="spanText">
+            @((MarkupString)Text)
+            <br>
+            @(DataEfetivacao.ToShortDateString())
+        </span>
+        @ChildContent
+    </div>
+}
+else
+{
+    <div class="tooltip-wrapper">
+        <span id="spanText">@((MarkupString)Text)</span>
+        @ChildContent
+    </div>
+}
 
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public string Text { get; set; }
+    [Parameter] public DateTime DataEfetivacao { get; set; }
 }

@@ -42,6 +42,11 @@ public static class TransacoesGet
             {
                 query = query.Where(t => t.ReferenciaParcelaId == parcelamentoId);
             }
+            else if (queryParameters.TryGetValue("dataEfetivacao", out var dataEfetivacaoStr)
+                    && DateTime.TryParse(dataEfetivacaoStr, out var dataEfetivacao))
+            {
+                query = query.Where(t => t.DataEfetivacao!.Value.Date == dataEfetivacao.Date);
+            }
             else
             {
                 if (!queryParameters.TryGetValue("mes", out var mes)
@@ -97,33 +102,6 @@ public static class TransacoesGet
                 && Enum.TryParse<Categoria>(categoria, out var categoriaEnum))
             {
                 query = query.Where(t => t.Categoria == categoriaEnum);
-            }
-
-            // Filtro por período de data de pagamento
-            string[] formatosDeData = { "dd-MM-yyyy", "dd/MM/yyyy" };
-            CultureInfo ptBR = new("pt-BR");
-            DateTime dataInicial = default;
-            DateTime dataFinal = default;
-
-            // Filtro por "dataInicial"
-            if (queryParameters.TryGetValue("dataInicial", out string? dataInicialString)
-                && DateTime.TryParseExact(dataInicialString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataInicial))
-            {
-                query = query.Where(t => t.DataEfetivacao >= dataInicial);
-            }
-
-            // Filtro por "dataFinal"
-            if (queryParameters.TryGetValue("dataFinal", out string? dataFinalString)
-                && DateTime.TryParseExact(dataFinalString, formatosDeData, ptBR, DateTimeStyles.AssumeLocal, out dataFinal))
-            {
-                query = query.Where(t => t.DataEfetivacao <= dataFinal);
-            }
-
-            // Validação de "dataInicial" e "dataFinal"
-            if (dataInicial != default && dataFinal != default
-                && dataInicial.CompareTo(dataFinal) > 0)
-            {
-                throw new ArgumentException("A data inicial não pode ser maior que a data final.");
             }
 
             #endregion

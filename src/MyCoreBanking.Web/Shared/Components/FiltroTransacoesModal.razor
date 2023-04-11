@@ -1,0 +1,93 @@
+﻿<div class="d-flex justify-content-between mb-3">
+    <p class="h3 m-0 text-dark">Filtre sua busca por:</p>
+    <i @onclick="Cancelar"
+       style="font-size: 1.4rem;"
+       class="fa-solid fa-xmark float-end cursor-pointer p-1 m-0"></i>
+</div>
+
+<div class="d-flex flex-column mb-3">
+
+    <!-- Data de efetivação -->
+    <div class="mb-3">
+        <p class="m-0 fw-bold">Data de efetivação</p>
+        <input type="date" @bind-value="FiltroBusca.DataEfetivacao" class="form-control" />
+        <p class="m-0 form-text" style="line-height: normal">Preencha com uma data para obter todas as transações efetivadas do dia informado</p>
+    </div>
+
+    <div class="mb-3">
+        <p class="m-0 fw-bold">Meio de pagamento</p>
+        <select @bind="FiltroBusca.MeioPagamento" class="form-select">
+            <option value="null" selected disabled>Selecione</option>
+            @foreach (MeioPagamentoTipo tipo in Enum.GetValues<MeioPagamentoTipo>())
+            {
+                <option value="@tipo">@MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(tipo)</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <p class="m-0 fw-bold">Tipo de operação</p>
+        <select @bind="FiltroBusca.TipoOperacao" class="form-select">
+            <option value="null" selected disabled>Selecione</option>
+            @foreach (OperacaoTipo tipo in Enum.GetValues<OperacaoTipo>())
+            {
+                <option value="@tipo">@tipo</option>
+            }
+        </select>
+    </div>
+    
+
+    <div class="mb-3">
+        <p class="m-0 fw-bold">Tipo de transação</p>
+        <select @bind="FiltroBusca.TipoTransacao" class="form-select">
+            <option value="null" selected disabled>Selecione</option>
+            @foreach (TransacaoTipo tipo in Enum.GetValues<TransacaoTipo>())
+            {
+                <option value="@tipo">@MyCoreBankingApp.ConverterEnumTipoTransacaoParaString(tipo)</option>
+            }
+        </select>
+    </div>
+    
+
+    <div class="mb-3">
+        <p class="m-0 fw-bold">Categoria</p>
+        <select @bind="FiltroBusca.Categoria" class="form-select">
+            <option value="null" selected disabled>Selecione</option>
+            @foreach (Categoria categoria in Enum.GetValues<Categoria>())
+            {
+                <option value="@categoria">@MyCoreBankingApp.ConverterEnumCategoriaParaString(categoria)</option>
+            }
+        </select>
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-end align-items-center">
+    <button type="button" @onclick="Cancelar"
+            class="me-3 rounded-pill float-end btn btn-secondary">
+        CANCELAR
+    </button>
+
+    <button type="button" @onclick="ConfirmarExclusao"
+            class="rounded-pill float-end fw-bold btn btn-info text-white">
+        FILTRAR
+    </button>
+</div>
+
+
+@code {
+
+    public FiltroTransacoes FiltroBusca = new();
+
+    [CascadingParameter] BlazoredModalInstance modal { get; set; } = default!;
+
+    async Task Cancelar()
+    {
+        await modal.CancelAsync();
+    }
+
+    async Task ConfirmarExclusao()
+    {
+        await modal.CloseAsync(ModalResult.Ok(FiltroBusca));
+    }
+}

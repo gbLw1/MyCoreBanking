@@ -3,17 +3,54 @@ using MyCoreBanking.Models;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace MyCoreBanking.Web;
 
 partial class MyCoreBankingApp
 {
-    public async Task<IReadOnlyCollection<TransacaoModel>?> ObterTransacoes(int mes, int ano)
+    public async Task<IReadOnlyCollection<TransacaoModel>?> ObterTransacoes(
+        int mes,
+        int ano,
+        DateTime? dataEfetivacao = null,
+        MeioPagamentoTipo? meioDePagamento = null,
+        OperacaoTipo? tipoDeOperacao = null,
+        TransacaoTipo? tipoDeTransacao = null,
+        Categoria? categoria = null)
     {
         try
         {
-            var requestUri = $"{BaseAddress}/transacoes?mes={mes}&ano={ano}";
+            var sb = new StringBuilder();
+
+            sb.Append($"{BaseAddress}/transacoes?mes={mes}&ano={ano}");
+
+            if (dataEfetivacao.HasValue)
+            {
+                sb.Append($"&dataEfetivacao={dataEfetivacao.Value.ToString("yyyy-MM-dd")}");
+            }
+
+            if (meioDePagamento.HasValue)
+            {
+                sb.Append($"&meioDePagamento={meioDePagamento.Value.ToString()}");
+            }
+
+            if (tipoDeOperacao.HasValue)
+            {
+                sb.Append($"&tipoDeOperacao={tipoDeOperacao.Value.ToString()}");
+            }
+
+            if (tipoDeTransacao.HasValue)
+            {
+                sb.Append($"&tipoDeTransacao={tipoDeTransacao.Value.ToString()}");
+            }
+
+            if (categoria.HasValue)
+            {
+                sb.Append($"&categoria={categoria.Value.ToString()}");
+            }
+
+            var requestUri = sb.ToString();
 
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
 

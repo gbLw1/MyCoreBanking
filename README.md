@@ -3,10 +3,10 @@
 ## TODO
 
 - [x] Gráficos
-- [ ] Filtros para transações
+- [x] Filtros para transações
 - [ ] Importação de arquivo CSV
-- [ ] Alterar o diagrama de classe
-- [ ] Alterar o diagrama entidade-relacionamento
+- [x] Alterar o diagrama de classe
+- [x] Alterar o diagrama entidade-relacionamento
 
 ## Sobre
 
@@ -172,8 +172,56 @@ classDiagram
 
 class TransacaoTipo{
     <<enumeration>>
+    Unica
+    Parcelada
+}
+
+class OperacaoTipo{
+    <<enumeration>>
     Receita
     Despesa
+}
+
+class MeioPagamentoTipo{
+    <<enumeration>>
+    CartaoDeCreditoEntityDeCredito
+    ContaCorrente
+}
+
+class ContaTipo{
+    <<enumeration>>
+    Corrente
+    Poupanca
+    Investimento
+    Carteira
+}
+
+class Categoria{
+    <<enumeration>>
+    Alimentacao
+    Casa
+    Educacao
+    Eletronicos
+    Investimentos
+    Lazer
+    Outros
+    Presente
+    Salario
+    Saude
+    Servico
+    Supermercado
+    Transporte
+    Vestuario
+    Viagem
+}
+
+class BandeiraCartao{
+    <<enumeration>>
+    Visa
+    Mastercard
+    Elo
+    AmericanExpress
+    Hipercard
 }
 
 class Banco{
@@ -188,27 +236,11 @@ class Banco{
     Caixa
 }
 
-class BandeiraCartao{
-    <<enumeration>>
-    Visa
-    Mastercard
-    Elo
-    AmericanExpress
-    Hipercard
-}
-
-class MeioDePagamentoTipo{
-    <<enumeration>>
-    CartaoDeCreditoEntityDeCredito
-    ContaCorrente
-}
-
 class BaseEntity{
     Id: Guid
 }
 
 class BaseDataEntity{
-    Id: Guid
     CriadoEm: DateTime
     UltimaAtualizacaoEm: DateTime
 }
@@ -218,57 +250,42 @@ class UsuarioEntity{
     Email: String
     SenhaHash: String
     Transacoes: List~TransacaoEntity~
-    MeiosDePagamento: List~MeioDePagamentoEntity~
-    ContasCorrente: List~ContaCorrenteEntity~
-    CartoesDeCredito: List~CartaoDeCreditoEntity~
+    ContasCorrente: List~ContaEntity~
     HashSenha(String senha) void
     SenhaValida(String senha) bool
-}
-
-class MeioDePagamentoEntity{
-    Apelido: String
-    Observacao: String
-    Tipo: MeioDePagamentoTipo
-    Usuario : UsuarioEntity
-    Transacoes : List~TransacaoEntity~
-    CartaoDeCredito : CartaoDeCreditoEntity
-    ContaCorrente : ContaCorrenteEntity
 }
 
 class TransacaoEntity{
     Descricao: String
     Observacao: String?
     Valor: Decimal
-    DataPagamento: DateTime
+    DataEfetivacao: DateTime
+    DataTransacao: DateTime
+    TipoOperacao: OperacaoTipo
+    TipoTransacao: TransacaoTipo
+    MeioPagamento: MeioPagamentoTipo
+    Categoria: Categoria
+    ReferenciaParcelaId: Guid?
+    ParcelaAtual: Int?
+    NumeroParcelas: Int?
     Usuario: UsuarioEntity
-    MeioDePagamento: MeioDePagamentoEntity
-    Tipo: TransacaoTipo
+    Conta: ContaEntity
 }
 
-class CartaoDeCreditoEntity{
-    NumerosFinais: String
+class ContaEntity{
+    Saldo: Decimal
     Banco: Banco
-    Bandeira: BandeiraCartao
-    MeioDePagamento: MeioDePagamentoEntity
+    Descricao: String
+    Tipo: ContaTipo
+    Usuario: UsuarioEntity
+    Transacoes: List~TransacaoEntity~
 }
-
-class ContaCorrenteEntity{
-    Banco: Banco
-    Agencia: String
-    Conta: String
-    MeioDePagamento: MeioDePagamentoEntity
-}
-
-
-
 
 
 %% Relacionamentos:
 UsuarioEntity --|> BaseDataEntity
 TransacaoEntity --|> BaseDataEntity
-MeioDePagamentoEntity --|> BaseDataEntity
-CartaoDeCreditoEntity --|> BaseEntity
-ContaCorrenteEntity --|> BaseEntity
+ContaEntity --|> BaseDataEntity
 BaseDataEntity --|> BaseEntity
 ```
 
@@ -277,31 +294,18 @@ BaseDataEntity --|> BaseEntity
 ```mermaid
 erDiagram
 
-ContaCorrente{
-    uniqueidentifier Id PK, FK
-    nvarchar(max) Banco "enum Banco"
-    nvarchar(max) Agencia
-    nvarchar(max) Conta
-}
-
-MeioDePagamento{
+ContaEntity{
     uniqueidentifier Id PK
+    nvarchar(max) Descricao
+    nvarchar(max) Banco "enum Banco"
+    decimal Saldo
     datetime2 CriadoEm
     datetime2 UltimaAtualizacaoEm
-    nvarchar(max) Apelido
-    nvarchar(max) Observacao
-    nvarchar(max) Tipo "enum MeioDePagamentoTipo"
+    nvarchar(max) Tipo "enum ContaTipo"
     uniqueidentifier UsuarioId FK
 }
 
-CartaoDeCredito{
-    uniqueidentifier Id PK, FK
-    nvarchar(max) NumerosFinais
-    nvarchar(max) Bandeira "enum BandeiraCartao"
-    nvarcahr(max) Banco "enum Banco"
-}
-
-Usuario{
+UsuarioEntity{
     uniqueidentifier Id PK
     nvarchar(max) Nome
     nvarchar(max) Email UK
@@ -310,22 +314,26 @@ Usuario{
     datetime2 UltimaAtualizacaoEm
 }
 
-Transacao{
+TransacaoEntity{
     uniqueidentifier Id PK
-    datetime2 CriadoEm
-    datetime2 UltimaAtualizacaoEm
     nvarchar(max) Descricao
     nvarchar(max) Observacao
     decimal Valor
-    datetime2 DataPagamento
-    nvarchar(max) Tipo "enum TransacaoTipo"
+    datetime2 DataEfetivacao
+    datetime2 DataTransacao
+    nvarchar(max) TipoOperacao "enum OperacaoTipo"
+    nvarchar(max) TipoTransacao "enum TransacaoTipo"
+    nvarchar(max) MeioPagamento "enum MeioPagamentoTipo"
+    nvarchar(max) Categoria "enum Categoria"
+    uniqueidentifier ReferenciaParcelaId
+    int ParcelaAtual
+    int NumeroParcelas
     uniqueidentifier UsuarioId FK
-    uniqueidentifier MeioDePagamentoId FK
+    uniqueidentifier ContaId FK
 }
 
-Usuario ||--|{ MeioDePagamento : possui
-Usuario ||--|{ Transacao : possui
-ContaCorrente |o--|| MeioDePagamento : eh
-CartaoDeCredito |o--|| MeioDePagamento : eh
-Transacao }|--|| MeioDePagamento : usa
+%%Relacionamentos:
+UsuarioEntity ||--|{ ContaEntity : possui
+UsuarioEntity ||--|{ TransacaoEntity : possui
+ContaEntity ||--|{ TransacaoEntity : possui
 ```
