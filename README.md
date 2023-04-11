@@ -6,7 +6,7 @@
 - [x] Filtros para transações
 - [ ] Importação de arquivo CSV
 - [x] Alterar o diagrama de classe
-- [ ] Alterar o diagrama entidade-relacionamento
+- [x] Alterar o diagrama entidade-relacionamento
 
 ## Sobre
 
@@ -294,31 +294,18 @@ BaseDataEntity --|> BaseEntity
 ```mermaid
 erDiagram
 
-ContaCorrente{
-    uniqueidentifier Id PK, FK
-    nvarchar(max) Banco "enum Banco"
-    nvarchar(max) Agencia
-    nvarchar(max) Conta
-}
-
-MeioDePagamento{
+ContaEntity{
     uniqueidentifier Id PK
+    nvarchar(max) Descricao
+    nvarchar(max) Banco "enum Banco"
+    decimal Saldo
     datetime2 CriadoEm
     datetime2 UltimaAtualizacaoEm
-    nvarchar(max) Apelido
-    nvarchar(max) Observacao
-    nvarchar(max) Tipo "enum MeioDePagamentoTipo"
+    nvarchar(max) Tipo "enum ContaTipo"
     uniqueidentifier UsuarioId FK
 }
 
-CartaoDeCredito{
-    uniqueidentifier Id PK, FK
-    nvarchar(max) NumerosFinais
-    nvarchar(max) Bandeira "enum BandeiraCartao"
-    nvarcahr(max) Banco "enum Banco"
-}
-
-Usuario{
+UsuarioEntity{
     uniqueidentifier Id PK
     nvarchar(max) Nome
     nvarchar(max) Email UK
@@ -327,22 +314,26 @@ Usuario{
     datetime2 UltimaAtualizacaoEm
 }
 
-Transacao{
+TransacaoEntity{
     uniqueidentifier Id PK
-    datetime2 CriadoEm
-    datetime2 UltimaAtualizacaoEm
     nvarchar(max) Descricao
     nvarchar(max) Observacao
     decimal Valor
-    datetime2 DataPagamento
-    nvarchar(max) Tipo "enum TransacaoTipo"
+    datetime2 DataEfetivacao
+    datetime2 DataTransacao
+    nvarchar(max) TipoOperacao "enum OperacaoTipo"
+    nvarchar(max) TipoTransacao "enum TransacaoTipo"
+    nvarchar(max) MeioPagamento "enum MeioPagamentoTipo"
+    nvarchar(max) Categoria "enum Categoria"
+    uniqueidentifier ReferenciaParcelaId
+    int ParcelaAtual
+    int NumeroParcelas
     uniqueidentifier UsuarioId FK
-    uniqueidentifier MeioDePagamentoId FK
+    uniqueidentifier ContaId FK
 }
 
-Usuario ||--|{ MeioDePagamento : possui
-Usuario ||--|{ Transacao : possui
-ContaCorrente |o--|| MeioDePagamento : eh
-CartaoDeCredito |o--|| MeioDePagamento : eh
-Transacao }|--|| MeioDePagamento : usa
+%%Relacionamentos:
+UsuarioEntity ||--|{ ContaEntity : possui
+UsuarioEntity ||--|{ TransacaoEntity : possui
+ContaEntity ||--|{ TransacaoEntity : possui
 ```
