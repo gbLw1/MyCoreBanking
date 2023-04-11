@@ -103,7 +103,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [x] Listagem por tipo de operação (enum) -> (receita, despesa)
   - [x] Listagem por tipo de transação (enum) -> (única, parcelada)
   - [x] Listagem por categoria (enum) -> (alimentação, transporte, etc)
-  - [x] Listagem por período de pagamentos efetivados -> (data inicial e/ou data final)
+  - [x] Listagem por data de efetivação -> (visualizar transações efetivadas de um dia específico)
 - [x] Obter por Id
 - [x] Alteração
   - [x] Alteração de transação única
