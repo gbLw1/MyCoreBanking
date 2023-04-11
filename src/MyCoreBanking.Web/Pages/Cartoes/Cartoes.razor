@@ -1,5 +1,7 @@
 ﻿@page "/cartoes"
 
+@inject IToastService Toast
+
 <!-- Título -->
 <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
     <p class="mb-3 m-sm-0 h2 text-dark">Meus cartões</p>
@@ -13,7 +15,8 @@
 
 <hr />
 
-<div class="containerCartao"
+<div @onclick="ExibirInfo"
+     class="containerCartao"
      style="background-color: #9c44dc; color: white;">
     <img class="logoMasterCard" src="../assets/img/cards/mastercardlogo.png">
     <img class="chip" src="../assets/img/cards/chip.png">
@@ -23,6 +26,18 @@
 
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Toast.ShowWarning("Atenção! Página em desenvolvimento...");
+        }
+    }
+
+    private void ExibirInfo()
+    {
+        Toast.ShowInfo("Ainda não é possível acessar esse recurso.");
+    }
 
     void IrParaDetalhesCartao(Guid id)
     {

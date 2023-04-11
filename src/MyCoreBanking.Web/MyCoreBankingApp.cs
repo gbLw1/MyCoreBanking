@@ -1,5 +1,6 @@
 ﻿using Blazored.Modal.Services;
 using Blazored.SessionStorage;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace MyCoreBanking.Web;
@@ -7,21 +8,24 @@ namespace MyCoreBanking.Web;
 partial class MyCoreBankingApp
 {
     private readonly IModalService _ModalService;
-    private readonly NavigationManager _Navigation;
+    private readonly IToastService _ToastService;
     private readonly ISessionStorageService _SessionStorage;
+    private readonly NavigationManager _Navigation;
     private readonly HttpClient _HttpClientService;
 
     private readonly string BaseAddress;
 
     public MyCoreBankingApp(
             IModalService modalService,
-            NavigationManager navigation,
+            IToastService toastService,
             ISessionStorageService sessionStorage,
+            NavigationManager navigation,
             HttpClient httpClientService)
     {
         _ModalService = modalService;
-        _Navigation = navigation;
+        _ToastService = toastService;
         _SessionStorage = sessionStorage;
+        _Navigation = navigation;
         _HttpClientService = httpClientService;
 
         BaseAddress = "http://localhost:7071";

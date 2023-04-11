@@ -125,6 +125,7 @@ partial class MyCoreBankingApp
                 return;
             }
 
+            _ToastService.ShowSuccess(message: "Conta cadastrada com sucesso!");
             _Navigation.NavigateTo("/contas");
         }
         catch (Exception ex)
@@ -165,6 +166,7 @@ partial class MyCoreBankingApp
                 return;
             }
 
+            _ToastService.ShowSuccess(message: "Conta alterada com sucesso!");
             _Navigation.NavigateTo("/contas");
         }
         catch (Exception ex)
@@ -203,6 +205,7 @@ partial class MyCoreBankingApp
                 return false;
             }
 
+            _ToastService.ShowSuccess(message: "Conta excluída com sucesso!");
             return true;
         }
         catch (Exception ex)

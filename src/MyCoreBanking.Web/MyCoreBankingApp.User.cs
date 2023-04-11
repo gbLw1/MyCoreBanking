@@ -36,7 +36,8 @@ partial class MyCoreBankingApp
                 return;
             }
 
-            _Navigation.NavigateTo("/login", true);
+            _ToastService.ShowSuccess(message: "Seu cadastro foi realizado com sucesso! Você já pode realizar o login");
+            _Navigation.NavigateTo("/login");
         }
         catch (Exception ex)
         {
