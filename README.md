@@ -1,16 +1,8 @@
 # MyCoreBanking
 
-## TODO
-
-- [x] Gráficos
-- [x] Filtros para transações
-- [ ] Importação de arquivo CSV
-- [x] Alterar o diagrama de classe
-- [x] Alterar o diagrama entidade-relacionamento
-
 ## Sobre
 
-MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas correntes, cartões de crédito, transações, etc.
+MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas, transações, acompanhamento das estatísticas por gráficos de movimentações, etc. O projeto foi desenvolvido utilizando o framework .NET 6.0, com a linguagem C#. O sistema foi dividido em duas partes: API e Web. A API foi desenvolvida utilizando Azure Functions e o banco de dados utilizado foi o SQL Server 2022. A Web foi desenvolvida utilizando Blazor WebAssembly.
 
 ## Versões
 
@@ -22,31 +14,26 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - Únicas
     - Parcelamentos
     - Importação de arquivo CSV
-  - Gráficos de gastos e receitas
-  - Gráficos de gastos e receitas por categoria
-  - Gráficos de gastos e receitas por conta
-  - Gráficos de gastos e receitas por mês
-  - Saldos por conta (soma de todas as transações efetivadas da conta)
+  - Gráficos de movimentações (receitas e despesas)
+  - Gráficos de gastos por categoria (mensal e anual)
+  - Saldo por conta (soma de todas as transações efetivadas da conta)
   - Saldo geral (soma de todos os saldos das contas)
 
 - v2 (futuro):
   - Cartões de crédito
     - Cadastro de faturas
     - Efetivação de faturas
+  - Planejamento
+    - Possibilita criar metas de gastos onde o usuário pode definir um valor e uma data limite para atingir seu objetivo
+    - O sistema deve calcular e notificar o usuário quando o valor disponível estiver chegando próximo ao valor estipulado para a meta
   - Transferências
-    - Ao selecionar o tipo de transação "Transferência", o sistema deve exibir as contas disponíveis para o usuário e permitir que ele selecione a conta de destino
+    - Possibilita transferir transações entre contas
   - Investimentos
-    - Ao selecionar o tipo de transação "Investimento", o sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
+    - Ao selecionar o tipo de transação "Investimento", exibir um campo para selecionar a conta de origem e a conta de destino
+    - O sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
+    - A conta de destino deve ser do tipo "Investimento" ou "Poupança" e a conta de origem deve ser do tipo "Corrente" ou "Carteira"
 
-## Tecnologias
-
-- Framework: .NET 6.0
-- API: Azure Functions 4.0
-- Web: Blazor WebAssembly
-- ORM: Entity Framework Core 6.0
-- Database: SQL Server 2022
-
-## Pré-requisitos
+## Pré-requisitos para rodar o projeto
 
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Azure Functions Core Tools](https://docs.microsoft.com/pt-br/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2)
@@ -58,6 +45,30 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
 - [Azure Data Studio (opcional: SGBD)](https://docs.microsoft.com/pt-br/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15)
 - [Postman (opcional: testar requisições)](https://www.postman.com/downloads/)
+
+## Tecnologias utilizadas
+
+- Framework: .NET 6.0
+- API: Azure Functions 4.0
+- Web: Blazor WebAssembly
+- ORM: Entity Framework Core 6.0
+- Database: SQL Server 2022
+
+## Bibliotecas utilizadas
+
+### Back-end
+
+- [FluentValidation](https://fluentvalidation.net/) - Validação de dados
+- [BCrypt.Net](https://github.com/BcryptNet/bcrypt.net) - Criptografia de senhas
+- [JWT](https://jwt.io/) - Autenticação via token
+
+### Front-end
+
+- [Blazored.FluentValidation](https://github.com/Blazored/FluentValidation) - Validação de dados nos formulários do Blazor
+- [Blazored.Toast](https://github.com/Blazored/Toast) - Notificações
+- [Blazored.Modal](https://github.com/Blazored/Modal) - Modal
+- [Blazored.SessionStorage](https://github.com/Blazored/SessionStorage) - Armazenamento de dados na sessão do navegador
+- [ChartJs.Blazor](https://github.com/mariusmuntean/ChartJs.Blazor) - Gráficos
 
 ## Funcionalidades
 
@@ -111,10 +122,11 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 - [x] Saldo total (soma do saldo das contas: corrente e carteira)
 - [x] Total investido (soma do saldo das contas: investimento, poupança)
-- [x] Número de transações pendentes (mês atual)
+- [x] Número de transações pendentes
 - [x] Balanço mensal (todas as contas)
+- [x] Visão geral de movimentações -> obter valor total de receitas e despesas por mês (ano atual)
 - [x] Total Despesas por categoria (mês atual)
-- [x] Visão geral de receitas e despesas -> obter valor total de receitas e despesas por mês (ano atual)
+- [x] Total Despesas por categoria (ano atual)
 
 ## Arquitetura
 
@@ -136,7 +148,7 @@ O banco de dados é um SQL Server 2022, que utiliza o Entity Framework Core para
 
 ```mermaid
 graph LR
-    A[Usuário] --> B[Blazor WebAssembly]
+    A[Usuário] --> B[Web]
     B --> C[API]
     C --> D[Banco de Dados]
     D --> C
@@ -151,16 +163,37 @@ graph LR
 ```mermaid
 sequenceDiagram
     participant U as Usuário
-    participant S as Blazor WebAssembly
-    participant R as API
+    participant S as Blazor WebAssembly (Web)
+    participant R as Azure Function (API)
     participant D as Banco de Dados
 
-    U->>S: Cadastrar usuário
-    S->>R: Salvar usuário
-    R->>D: Salvar usuário
-    D->>R: Usuário salvo
-    R->>S: Usuário salvo
-    S->>U: Usuário salvo
+    U ->> S: Entra no site
+    S ->> R: Efetua uma requisição para a API
+    R ->> D: Efetua uma consulta no banco de dados
+    D ->> R: Retorna os dados da consulta
+    R ->> S: Retorna uma resposta
+    S ->> U: Exibe a resposta
+
+```
+
+## Exemplo diagrama de sequência no fluxo de login
+
+<!-- Mermaid sequence diagram -->
+
+```mermaid
+sequenceDiagram
+    participant U as Usuário
+    participant S as Blazor WebAssembly (Web)
+    participant R as Azure Function (API)
+    participant D as SQL Server (DB)
+
+    U ->> S: Login
+    S ->> R: POST /api/usuario/login
+    R ->> D: SELECT * FROM Usuario WHERE Email = @Email AND Senha = @Senha
+    D ->> R: Retorna o usuário se encontrado
+    R ->> S: 200 OK
+    S ->> U: Login efetuado com sucesso
+
 ```
 
 ## Diagrama de classe
