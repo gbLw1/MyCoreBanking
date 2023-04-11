@@ -3,9 +3,9 @@
 ## TODO
 
 - [x] Gráficos
-- [ ] Filtros para transações
+- [x] Filtros para transações
 - [ ] Importação de arquivo CSV
-- [ ] Alterar o diagrama de classe
+- [x] Alterar o diagrama de classe
 - [ ] Alterar o diagrama entidade-relacionamento
 
 ## Sobre
@@ -172,8 +172,56 @@ classDiagram
 
 class TransacaoTipo{
     <<enumeration>>
+    Unica
+    Parcelada
+}
+
+class OperacaoTipo{
+    <<enumeration>>
     Receita
     Despesa
+}
+
+class MeioPagamentoTipo{
+    <<enumeration>>
+    CartaoDeCreditoEntityDeCredito
+    ContaCorrente
+}
+
+class ContaTipo{
+    <<enumeration>>
+    Corrente
+    Poupanca
+    Investimento
+    Carteira
+}
+
+class Categoria{
+    <<enumeration>>
+    Alimentacao
+    Casa
+    Educacao
+    Eletronicos
+    Investimentos
+    Lazer
+    Outros
+    Presente
+    Salario
+    Saude
+    Servico
+    Supermercado
+    Transporte
+    Vestuario
+    Viagem
+}
+
+class BandeiraCartao{
+    <<enumeration>>
+    Visa
+    Mastercard
+    Elo
+    AmericanExpress
+    Hipercard
 }
 
 class Banco{
@@ -188,27 +236,11 @@ class Banco{
     Caixa
 }
 
-class BandeiraCartao{
-    <<enumeration>>
-    Visa
-    Mastercard
-    Elo
-    AmericanExpress
-    Hipercard
-}
-
-class MeioDePagamentoTipo{
-    <<enumeration>>
-    CartaoDeCreditoEntityDeCredito
-    ContaCorrente
-}
-
 class BaseEntity{
     Id: Guid
 }
 
 class BaseDataEntity{
-    Id: Guid
     CriadoEm: DateTime
     UltimaAtualizacaoEm: DateTime
 }
@@ -218,57 +250,42 @@ class UsuarioEntity{
     Email: String
     SenhaHash: String
     Transacoes: List~TransacaoEntity~
-    MeiosDePagamento: List~MeioDePagamentoEntity~
-    ContasCorrente: List~ContaCorrenteEntity~
-    CartoesDeCredito: List~CartaoDeCreditoEntity~
+    ContasCorrente: List~ContaEntity~
     HashSenha(String senha) void
     SenhaValida(String senha) bool
-}
-
-class MeioDePagamentoEntity{
-    Apelido: String
-    Observacao: String
-    Tipo: MeioDePagamentoTipo
-    Usuario : UsuarioEntity
-    Transacoes : List~TransacaoEntity~
-    CartaoDeCredito : CartaoDeCreditoEntity
-    ContaCorrente : ContaCorrenteEntity
 }
 
 class TransacaoEntity{
     Descricao: String
     Observacao: String?
     Valor: Decimal
-    DataPagamento: DateTime
+    DataEfetivacao: DateTime
+    DataTransacao: DateTime
+    TipoOperacao: OperacaoTipo
+    TipoTransacao: TransacaoTipo
+    MeioPagamento: MeioPagamentoTipo
+    Categoria: Categoria
+    ReferenciaParcelaId: Guid?
+    ParcelaAtual: Int?
+    NumeroParcelas: Int?
     Usuario: UsuarioEntity
-    MeioDePagamento: MeioDePagamentoEntity
-    Tipo: TransacaoTipo
+    Conta: ContaEntity
 }
 
-class CartaoDeCreditoEntity{
-    NumerosFinais: String
+class ContaEntity{
+    Saldo: Decimal
     Banco: Banco
-    Bandeira: BandeiraCartao
-    MeioDePagamento: MeioDePagamentoEntity
+    Descricao: String
+    Tipo: ContaTipo
+    Usuario: UsuarioEntity
+    Transacoes: List~TransacaoEntity~
 }
-
-class ContaCorrenteEntity{
-    Banco: Banco
-    Agencia: String
-    Conta: String
-    MeioDePagamento: MeioDePagamentoEntity
-}
-
-
-
 
 
 %% Relacionamentos:
 UsuarioEntity --|> BaseDataEntity
 TransacaoEntity --|> BaseDataEntity
-MeioDePagamentoEntity --|> BaseDataEntity
-CartaoDeCreditoEntity --|> BaseEntity
-ContaCorrenteEntity --|> BaseEntity
+ContaEntity --|> BaseDataEntity
 BaseDataEntity --|> BaseEntity
 ```
 
