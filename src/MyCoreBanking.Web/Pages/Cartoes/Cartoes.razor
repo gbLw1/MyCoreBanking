@@ -1,7 +1,5 @@
 ﻿@page "/cartoes"
 
-@inject IToastService Toast
-
 <!-- Título -->
 <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
     <p class="mb-3 m-sm-0 h2 text-dark">Meus cartões</p>
@@ -30,13 +28,13 @@
     {
         if (firstRender)
         {
-            Toast.ShowWarning("Atenção! Página em desenvolvimento...");
+            BlazoredToast.ShowWarning("Atenção! Página em desenvolvimento...");
         }
     }
 
     private void ExibirInfo()
     {
-        Toast.ShowInfo("Ainda não é possível acessar esse recurso.");
+        BlazoredToast.ShowInfo("Ainda não é possível acessar esse recurso.");
     }
 
     void IrParaDetalhesCartao(Guid id)
