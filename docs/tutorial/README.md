@@ -12,7 +12,9 @@ Certifique-se de ter todos os [pré-requisitos](../../README.md#pré-requisitos-
 
 ### 1. Clonar o repositório e abrir o projeto
 
-Abra o Visual Studio e clique em `Clone repo` e cole a URL do repositório. 
+Abra o Visual Studio e clique em `Clone repo` e cole a URL do repositório. Em seguida, clique em `Clone`.
+
+Obs.: Você deve estar autenticado com sua conta do GitHub no Visual Studio e ter o [Git](https://git-scm.com/downloads) instalado para que consiga clonar o repositório.
 
 ### 2. Variáveis de ambiente
 
