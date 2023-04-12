@@ -4,6 +4,8 @@
 
 MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas, transações, acompanhamento das estatísticas por gráficos de movimentações, etc. O projeto foi desenvolvido utilizando o framework .NET 6.0, com a linguagem C#. O sistema foi dividido em duas partes: API e Web. A API foi desenvolvida utilizando Azure Functions e o banco de dados utilizado foi o SQL Server 2022. A Web foi desenvolvida utilizando Blazor WebAssembly.
 
+---
+
 ## Versões
 
 - v1:
@@ -33,18 +35,30 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - O sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
     - A conta de destino deve ser do tipo "Investimento" ou "Poupança" e a conta de origem deve ser do tipo "Corrente" ou "Carteira"
 
+---
+
 ## Pré-requisitos para rodar o projeto
 
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Azure Functions Core Tools](https://docs.microsoft.com/pt-br/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2)
 - [EF Core Tools](https://docs.microsoft.com/pt-br/ef/core/cli/dotnet)
 - [SQL Server 2022](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads)
-- [Visual Studio Code](https://code.visualstudio.com/)
-  - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
-  - [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
-  - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
+- Escolha uma [IDE](https://pt.wikipedia.org/wiki/Ambiente_de_desenvolvimento_integrado) de sua preferência:
+  - [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/)
+  - [Visual Studio Code](https://code.visualstudio.com/)
+    - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+    - [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
+    - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
 - [Azure Data Studio (opcional: SGBD)](https://docs.microsoft.com/pt-br/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15)
 - [Postman (opcional: testar requisições)](https://www.postman.com/downloads/)
+
+Caso opte por utilizar o Visual Studio Code, é necessário instalar as extensões citadas acima. Para instalar as extensões, basta clicar no ícone de extensões no canto esquerdo da IDE e pesquisar pelo nome da extensão.
+
+---
+
+## [Como rodar o projeto ?](/docs/tutorial/README.md)
+
+---
 
 ## Tecnologias utilizadas
 
@@ -53,6 +67,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - Web: Blazor WebAssembly
 - ORM: Entity Framework Core 6.0
 - Database: SQL Server 2022
+
+---
 
 ## Bibliotecas utilizadas
 
@@ -73,6 +89,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [Blazored.Modal](https://github.com/Blazored/Modal) - Modal
 - [Blazored.SessionStorage](https://github.com/Blazored/SessionStorage) - Armazenamento de dados na sessão do navegador
 - [ChartJs.Blazor](https://github.com/mariusmuntean/ChartJs.Blazor) - Gráficos
+
+---
 
 ## Funcionalidades
 
@@ -132,6 +150,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Total Despesas por categoria (mês atual)
 - [x] Total Despesas por categoria (ano atual)
 
+---
+
 ## Arquitetura
 
 ### Shared
@@ -146,6 +166,8 @@ O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir
 
 A API é uma Azure Function, que utiliza o padrão REST para expor os endpoints. É responsável por receber as requisições do cliente, validar os dados e chamar os serviços de domínio. Os serviços de domínio são responsáveis por realizar as regras de negócio e persistir os dados no banco de dados.
 
+---
+
 ## Diagrama de contexto
 
 <!-- Mermaid context diagram -->
@@ -159,6 +181,8 @@ graph LR
     C --> B
     B --> A
 ```
+
+---
 
 ## Diagrama de sequência
 
@@ -199,6 +223,8 @@ sequenceDiagram
     S ->> U: Login efetuado com sucesso
 
 ```
+
+---
 
 ## Diagrama de classe
 
@@ -325,6 +351,8 @@ TransacaoEntity --|> BaseDataEntity
 ContaEntity --|> BaseDataEntity
 BaseDataEntity --|> BaseEntity
 ```
+
+---
 
 ## Diagrama entidade-relacionamento
 
