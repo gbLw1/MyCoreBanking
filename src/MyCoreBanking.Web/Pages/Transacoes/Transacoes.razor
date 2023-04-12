@@ -1,6 +1,9 @@
 ﻿@page "/transacoes"
 @using System.Globalization;
 @using System.Text;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+@using MyCoreBanking.CsvConfig;
 
 <!-- Título -->
 <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
@@ -121,16 +124,16 @@
                 }
             </div>
 
-            <!-- Import CSV -->
+            <!-- Export CSV -->
             <div>
-                <button @onclick="ExibirAlerta"
+                <button @onclick="ExportarCsv"
                         class="ms-2 position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
                         role="button">
                     <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
                           style="line-height: normal">
                         Novo!
                     </span>
-                    Importar
+                    Exportar
                     <i class="ms-2 fa-solid fa-file-csv fa-2x text-primary"></i>
                 </button>
             </div>
@@ -425,11 +428,51 @@
 
     #endregion
 
-    #region [+ Import CSV]
+    #region [+ Export CSV]
 
-    void ExibirAlerta()
+    void ExportarCsv()
     {
-        BlazoredToast.ShowWarning("A importação de transações em arquivo CSV está em desenvolvimento e será disponibilizada em breve.");
+        var memoryStream = new MemoryStream();
+        using var streamWriter = new StreamWriter(memoryStream);
+
+        var config = new CsvConfiguration(CultureInfo.GetCultureInfo("pt-BR"))
+        {
+            HasHeaderRecord = true,
+            Delimiter = ";",
+            Encoding = Encoding.UTF8,
+        };
+
+        using (var csv = new CsvWriter(streamWriter, config))
+        {
+            csv.Context.RegisterClassMap<TransacaoModelMap>();
+
+            csv.WriteHeader<TransacaoModel>();
+
+            csv.NextRecord();
+
+            foreach (var transacao in model)
+            {
+                csv.WriteRecord(transacao);
+                csv.NextRecord();
+            }
+        }
+
+        var bytes = memoryStream.ToArray();
+        DownloadCsv(bytes);
+    }
+
+    void DownloadCsv(byte[]? arquivo)
+    {
+        if (arquivo is null)
+        {
+            BlazoredToast.ShowError("Não foi possível exportar as transações para CSV.");
+            return;
+        }
+
+        var nomeArquivo = $"MyCoreBanking-Transações-{DateTime.Now:yyyyMMddHHmmss}.csv";
+        JS.InvokeVoidAsync("downloadCsv", nomeArquivo, Convert.ToBase64String(arquivo));
+
+        BlazoredToast.ShowSuccess("Transações exportadas com sucesso. Seu download deve começar em instantes.");
     }
 
     #endregion

@@ -13,7 +13,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - Cadastro de transações
     - Únicas
     - Parcelamentos
-    - Importação de arquivo CSV
+  - Exportação de arquivo CSV
   - Gráficos de movimentações (receitas e despesas)
   - Gráficos de gastos por categoria (mensal e anual)
   - Saldo por conta (soma de todas as transações efetivadas da conta)
@@ -56,9 +56,13 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ## Bibliotecas utilizadas
 
+### Comuns (Shared)
+
+- [CsvHelper](https://joshclose.github.io/CsvHelper/) - Manipulação de arquivos CSV
+- [FluentValidation](https://fluentvalidation.net/) - Validação de dados
+
 ### Back-end
 
-- [FluentValidation](https://fluentvalidation.net/) - Validação de dados
 - [BCrypt.Net](https://github.com/BcryptNet/bcrypt.net) - Criptografia de senhas
 - [JWT](https://jwt.io/) - Autenticação via token
 
@@ -95,7 +99,6 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Cadastro
   - [x] Transação única
   - [x] Parcelamentos
-  - [ ] Importação de arquivo CSV
 - [x] Listagem
   - [x] Listagem por mês e ano
   - [x] Listagem por parcelamentoId -> (visualizar todas as parcelas de uma transação parcelada)
@@ -117,6 +120,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - [x] Excluir parcela única (por id)
     - [x] Excluir todas as parcelas
 - [x] Efetivação de transações
+- [x] Exportação de arquivo CSV
 
 ### Estatísticas financeiras
 
@@ -130,6 +134,10 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ## Arquitetura
 
+### Shared
+
+O projeto Shared é responsável por conter as classes que são compartilhadas entre os projetos de domínio, API e cliente.
+
 ### Cliente
 
 O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir as informações para o usuário e enviar as requisições para a API.
@@ -137,10 +145,6 @@ O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir
 ### API
 
 A API é uma Azure Function, que utiliza o padrão REST para expor os endpoints. É responsável por receber as requisições do cliente, validar os dados e chamar os serviços de domínio. Os serviços de domínio são responsáveis por realizar as regras de negócio e persistir os dados no banco de dados.
-
-### Banco de dados
-
-O banco de dados é um SQL Server 2022, que utiliza o Entity Framework Core para mapear as entidades do domínio para tabelas do banco de dados. O banco de dados é responsável por armazenar os dados da aplicação.
 
 ## Diagrama de contexto
 
