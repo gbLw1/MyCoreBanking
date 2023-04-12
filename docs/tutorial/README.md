@@ -16,7 +16,7 @@ Abra o Visual Studio e clique em `Clone repo` e cole a URL do repositório.
 
 ### 2. Variáveis de ambiente
 
-Renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
+No projeto `MyCoreBanking.API`, renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
 
 ### 3. Setup do banco de dados
 
@@ -57,7 +57,7 @@ code .
 
 ### 3. Variáveis de ambiente
 
-Renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
+No projeto `MyCoreBanking.API`, renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
 
 ### 4. Setup do banco de dados
 
