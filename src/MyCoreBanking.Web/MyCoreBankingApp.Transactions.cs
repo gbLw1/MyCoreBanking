@@ -204,6 +204,7 @@ partial class MyCoreBankingApp
                 return;
             }
 
+            _ToastService.ShowSuccess(message: "Transação cadastrada com sucesso!");
             _Navigation.NavigateTo("/transacoes");
         }
         catch (Exception ex)
@@ -244,6 +245,10 @@ partial class MyCoreBankingApp
                 return;
             }
 
+            _ToastService.ShowSuccess(message:
+                (tipoUpdate == "TODOS" || tipoUpdate == "PAGAMENTO-PENDENTE")
+                ? "Transações alteradas com sucesso!"
+                : "Transação alterada com sucesso!");
             _Navigation.NavigateTo("/transacoes");
         }
         catch (Exception ex)
@@ -284,6 +289,7 @@ partial class MyCoreBankingApp
                 return false;
             }
 
+            _ToastService.ShowSuccess(message: "Transação efetivada com sucesso!");
             return true;
         }
         catch (Exception ex)
@@ -323,6 +329,7 @@ partial class MyCoreBankingApp
                 return false;
             }
 
+            _ToastService.ShowSuccess(message: tipoDelete == "TODOS" ? "Transações excluídas com sucesso!" : "Transação excluída com sucesso!");
             return true;
         }
         catch (Exception ex)

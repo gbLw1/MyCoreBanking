@@ -79,6 +79,14 @@ a, .btn-link {
     align-items: center;
 }
 
+    .containerCartao:hover {
+        cursor: pointer;
+    }
+
+    .containerCartao:active {
+        transform: scale(0.95);
+    }
+
 .containerCartaoNubank {
     display: flex;
     justify-content: center;
@@ -103,7 +111,7 @@ a, .btn-link {
     height: 50px;
 }
 
-.nomeCartao{
+.nomeCartao {
     position: relative;
     top: 115px;
     right: 100px;
@@ -204,4 +212,8 @@ a, .btn-link {
 .no-overlay {
     position: fixed !important;
     z-index: 9999 !important;
+}
+
+.blazored-toast-icon {
+    justify-content: center !important;
 }

@@ -13,7 +13,8 @@
 
 <hr />
 
-<div class="containerCartao"
+<div @onclick="ExibirInfo"
+     class="containerCartao"
      style="background-color: #9c44dc; color: white;">
     <img class="logoMasterCard" src="../assets/img/cards/mastercardlogo.png">
     <img class="chip" src="../assets/img/cards/chip.png">
@@ -23,6 +24,18 @@
 
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazoredToast.ShowWarning("Atenção! Página em desenvolvimento...");
+        }
+    }
+
+    private void ExibirInfo()
+    {
+        BlazoredToast.ShowInfo("Ainda não é possível acessar esse recurso.");
+    }
 
     void IrParaDetalhesCartao(Guid id)
     {
