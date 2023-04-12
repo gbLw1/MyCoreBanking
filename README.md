@@ -4,6 +4,8 @@
 
 MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. O objetivo é criar um sistema de controle financeiro pessoal, com funcionalidades básicas de um banco, como cadastro de contas, transações, acompanhamento das estatísticas por gráficos de movimentações, etc. O projeto foi desenvolvido utilizando o framework .NET 6.0, com a linguagem C#. O sistema foi dividido em duas partes: API e Web. A API foi desenvolvida utilizando Azure Functions e o banco de dados utilizado foi o SQL Server 2022. A Web foi desenvolvida utilizando Blazor WebAssembly.
 
+---
+
 ## Versões
 
 - v1:
@@ -33,18 +35,115 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
     - O sistema deve descontar o saldo da conta de origem e adicionar o valor na conta de destino selecionada
     - A conta de destino deve ser do tipo "Investimento" ou "Poupança" e a conta de origem deve ser do tipo "Corrente" ou "Carteira"
 
+---
+
 ## Pré-requisitos para rodar o projeto
 
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Azure Functions Core Tools](https://docs.microsoft.com/pt-br/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2)
 - [EF Core Tools](https://docs.microsoft.com/pt-br/ef/core/cli/dotnet)
 - [SQL Server 2022](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads)
-- [Visual Studio Code](https://code.visualstudio.com/)
-  - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
-  - [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
-  - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
+- Escolhe uma [IDE](https://pt.wikipedia.org/wiki/Ambiente_de_desenvolvimento_integrado) de sua preferência:
+  - [Visual Studio](https://visualstudio.microsoft.com/pt-br/downloads/)
+  - [Visual Studio Code](https://code.visualstudio.com/)
+    - [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+    - [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
+    - [Azurite](https://marketplace.visualstudio.com/items?itemName=Azurite.azurite)
 - [Azure Data Studio (opcional: SGBD)](https://docs.microsoft.com/pt-br/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15)
 - [Postman (opcional: testar requisições)](https://www.postman.com/downloads/)
+
+---
+
+## Passo a passo para rodar o projeto pelo VS Code
+
+### 1. Clonar o repositório
+
+```bash
+git clone <url>
+```
+
+### 2. Abrir o projeto no vscode
+
+```bash
+code .
+```
+
+### 3. Variáveis de ambiente
+
+Renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
+
+### 4. Setup do banco de dados
+
+Para criar o banco de dados, basta aplicar as migrations do Entity Framework Core. Para isso, abra o terminal do vscode, certifique-se de estar na pasta `~\MyCoreBanking\src\MyCoreBanking.API` e execute o comando abaixo:
+
+```bash
+dotnet ef database update
+```
+
+### 5. Executar a API Azure Functions
+
+Ainda no terminal do vscode, certifique-se de estar na pasta `~\MyCoreBanking\src\MyCoreBanking.API` e execute o comando abaixo:
+
+```bash
+func start --csharp
+```
+
+### 6. Executar o Blazor WebAssembly
+
+Para o projeto web funcionar corretamente, é necessário que a API esteja rodando.
+
+Então, em outro terminal do vscode, certifique-se de estar na pasta `~\MyCoreBanking\src\MyCoreBanking.Web` e execute o comando abaixo:
+
+```bash
+dotnet run
+```
+
+### 7. Acessar o sistema
+
+Acesse o endereço `https://localhost:7197` no navegador.
+
+### 8. Testar as requisições (opcional)
+
+Utilize o endereço `https://localhost:7071` no Postman.
+
+### 9. Acessar o banco de dados (opcional)
+
+Utilize as credenciais abaixo para acessar o banco de dados:
+
+- Server: (localdb)\mssqllocaldb
+- Authentication: SQL Server Authentication
+- Database: MyCoreBanking
+
+---
+
+## Passo a passo para rodar o projeto pelo Visual Studio
+
+### 1. Clonar o repositório e abrir o projeto
+
+Abra o Visual Studio e clique em `Clone repo` e cole a URL do repositório. 
+
+### 2. Variáveis de ambiente
+
+Renomeie o arquivo `local.settings.sample.json` para `local.settings.json`
+
+### 3. Setup do banco de dados
+
+Para criar o banco de dados, basta aplicar as migrations do Entity Framework Core.
+
+Para isso, clique com o botão direito no projeto `MyCoreBanking.API`, clique para abrir no terminal e execute o comando abaixo:
+
+```bash
+dotnet ef database update
+```
+
+### 4. Execução do projeto
+
+- Para executar o projeto, clique com o botão direito na solução `MyCoreBanking` e clique em `Configure Startup Projects...`.
+- Em seguida, marque a opção `Multiple startup projects` e selecione `Start` para os projetos `MyCoreBanking.API` e `MyCoreBanking.Web`.
+- Clique em `OK` para salvar as alterações.
+- Agora, basta clicar no botão `Start` ou pressionar `F5` para executar o projeto.
+
+---
 
 ## Tecnologias utilizadas
 
@@ -53,6 +152,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - Web: Blazor WebAssembly
 - ORM: Entity Framework Core 6.0
 - Database: SQL Server 2022
+
+---
 
 ## Bibliotecas utilizadas
 
@@ -73,6 +174,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [Blazored.Modal](https://github.com/Blazored/Modal) - Modal
 - [Blazored.SessionStorage](https://github.com/Blazored/SessionStorage) - Armazenamento de dados na sessão do navegador
 - [ChartJs.Blazor](https://github.com/mariusmuntean/ChartJs.Blazor) - Gráficos
+
+---
 
 ## Funcionalidades
 
@@ -132,6 +235,8 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 - [x] Total Despesas por categoria (mês atual)
 - [x] Total Despesas por categoria (ano atual)
 
+---
+
 ## Arquitetura
 
 ### Shared
@@ -146,6 +251,8 @@ O cliente é uma aplicação Blazor WebAssembly, que  é responsável por exibir
 
 A API é uma Azure Function, que utiliza o padrão REST para expor os endpoints. É responsável por receber as requisições do cliente, validar os dados e chamar os serviços de domínio. Os serviços de domínio são responsáveis por realizar as regras de negócio e persistir os dados no banco de dados.
 
+---
+
 ## Diagrama de contexto
 
 <!-- Mermaid context diagram -->
@@ -159,6 +266,8 @@ graph LR
     C --> B
     B --> A
 ```
+
+---
 
 ## Diagrama de sequência
 
@@ -199,6 +308,8 @@ sequenceDiagram
     S ->> U: Login efetuado com sucesso
 
 ```
+
+---
 
 ## Diagrama de classe
 
@@ -325,6 +436,8 @@ TransacaoEntity --|> BaseDataEntity
 ContaEntity --|> BaseDataEntity
 BaseDataEntity --|> BaseEntity
 ```
+
+---
 
 ## Diagrama entidade-relacionamento
 
