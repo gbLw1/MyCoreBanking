@@ -6,6 +6,7 @@ Veja abaixo como fazer o setup do projeto e executá-lo utilizando a IDE de sua 
 Certifique-se de ter todos os [pré-requisitos](../../README.md#pré-requisitos-para-rodar-o-projeto) instalados antes de seguir com o tutorial.
 
 ---
+---
 
 ## Executar utilizando Visual Studio
 
@@ -27,13 +28,17 @@ Para isso, clique com o botão direito no projeto `MyCoreBanking.API`, clique pa
 dotnet ef database update
 ```
 
-### 4. Execução do projeto
+### 4. Projetos de inicialização
 
-- Para executar o projeto, clique com o botão direito na solução `MyCoreBanking` e clique em `Configure Startup Projects...`.
+- Clique com o botão direito na solução `MyCoreBanking` e clique em `Configure Startup Projects...`.
 - Em seguida, marque a opção `Multiple startup projects` e selecione `Start` para os projetos `MyCoreBanking.API` e `MyCoreBanking.Web`.
 - Clique em `OK` para salvar as alterações.
-- Agora, basta clicar no botão `Start` ou pressionar `F5` para executar o projeto.
 
+### 5. Executar o projeto
+
+Agora, basta clicar no botão `Start` ou pressionar `F5` para executar o projeto.
+
+---
 ---
 
 ## Executar utilizando VS Code
