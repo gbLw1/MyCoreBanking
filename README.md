@@ -147,6 +147,7 @@ Caso opte por utilizar o Visual Studio Code, é necessário instalar as extensõ
 - [x] Número de transações pendentes
 - [x] Balanço mensal (todas as contas)
 - [x] Visão geral de movimentações -> obter valor total de receitas e despesas por mês (ano atual)
+- [x] Visão geral de movimentações -> obter valor total de receitas e despesas por mês (dos últimos 12 meses)
 - [x] Total Despesas por categoria (mês atual)
 - [x] Total Despesas por categoria (ano atual)
 

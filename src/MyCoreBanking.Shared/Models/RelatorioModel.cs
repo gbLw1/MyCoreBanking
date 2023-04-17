@@ -19,6 +19,9 @@ public class RelatorioModel
     [JsonPropertyName("graficoMovimentacaoAnoAtual")]
     public List<GraficoDespesaReceita>? GraficoMovimentacaoAnoAtual { get; set; }
 
+    [JsonPropertyName("graficoMovimentacaoUltimos12Meses")]
+    public List<GraficoDespesaReceita>? GraficoMovimentacaoUltimos12Meses { get; set; }
+
     [JsonPropertyName("graficoDespesaPorCategoriaMensal")]
     public List<GraficoDespesaPorCategoria>? GraficoDespesaPorCategoriaMensal { get; set; }
 
@@ -31,6 +34,9 @@ public class GraficoDespesaReceita
 {
     [JsonPropertyName("mes")]
     public int Mes { get; set; }
+
+    [JsonPropertyName("ano")]
+    public int Ano { get; set; }
 
     [JsonPropertyName("valorDespesa")]
     public decimal ValorDespesa { get; set; }

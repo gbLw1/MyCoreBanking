@@ -82,7 +82,7 @@ else
         <div class="d-none d-md-block col-lg-12 col-xl-8">
             <div class="card shadow mb-4" style="height: 100%">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary fw-bold m-0 py-2">Movimentações Entrada / Saída em @(DateTime.Now.Year)</h6>
+                    <h6 class="text-primary fw-bold m-0 py-2">Movimentações Entrada / Saída nos últimos 12 meses</h6>
                 </div>
                 <div class="card-body d-flex align-items-center">
                         <Chart Config="_lineConfig" @ref="_chart"></Chart>
@@ -343,24 +343,25 @@ else
             Fill = false
         };
 
-        foreach (var graph in model.GraficoMovimentacaoAnoAtual)
+        foreach (var graph in model.GraficoMovimentacaoUltimos12Meses)
         {
             _lineConfig.Data.Labels.Add(graph.Mes switch
             {
-                1 => "Janeiro",
-                2 => "Fevereiro",
-                3 => "Março",
-                4 => "Abril",
-                5 => "Maio",
-                6 => "Junho",
-                7 => "Julho",
-                8 => "Agosto",
-                9 => "Setembro",
-                10 => "Outubro",
-                11 => "Novembro",
-                12 => "Dezembro",
+                1 => $"Jan/{graph.Ano}",
+                2 => $"Fev/{graph.Ano}",
+                3 => $"Mar/{graph.Ano}",
+                4 => $"Abr/{graph.Ano}",
+                5 => $"Mai/{graph.Ano}",
+                6 => $"Jun/{graph.Ano}",
+                7 => $"Jul/{graph.Ano}",
+                8 => $"Ago/{graph.Ano}",
+                9 => $"Set/{graph.Ano}",
+                10 => $"Out/{graph.Ano}",
+                11 => $"Nov/{graph.Ano}",
+                12 => $"Dez/{graph.Ano}",
                 _ => "Mês inválido"
             });
+
             despesaDataset.Add(graph.ValorDespesa);
             receitaDataset.Add(graph.ValorReceita);
         }
