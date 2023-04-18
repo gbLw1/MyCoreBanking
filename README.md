@@ -147,6 +147,7 @@ Caso opte por utilizar o Visual Studio Code, é necessário instalar as extensõ
 - [x] Número de transações pendentes
 - [x] Balanço mensal (todas as contas)
 - [x] Visão geral de movimentações -> obter valor total de receitas e despesas por mês (ano atual)
+- [x] Visão geral de movimentações -> obter valor total de receitas e despesas por mês (dos últimos 12 meses)
 - [x] Total Despesas por categoria (mês atual)
 - [x] Total Despesas por categoria (ano atual)
 
@@ -360,41 +361,43 @@ BaseDataEntity --|> BaseEntity
 erDiagram
 
 ContaEntity{
-    uniqueidentifier Id PK
-    nvarchar(max) Descricao
-    nvarchar(max) Banco "enum Banco"
-    decimal Saldo
-    datetime2 CriadoEm
-    datetime2 UltimaAtualizacaoEm
-    nvarchar(max) Tipo "enum ContaTipo"
-    uniqueidentifier UsuarioId FK
+    uniqueidentifier Id PK "NOT NULL"
+    datetime2 CriadoEm "NOT NULL"
+    datetime2 UltimaAtualizacaoEm "NOT NULL"
+    nvarchar(max) Descricao "NOT NULL"
+    nvarchar(max) Banco "NOT NULL"
+    decimal Saldo "NOT NULL"
+    nvarchar(max) Tipo "NOT NULL"
+    uniqueidentifier UsuarioId FK "NOT NULL"
 }
 
 UsuarioEntity{
-    uniqueidentifier Id PK
-    nvarchar(max) Nome
-    nvarchar(max) Email UK
-    nvarchar(max) SenhaHash
-    datetime2 CriadoEm
-    datetime2 UltimaAtualizacaoEm
+    uniqueidentifier Id PK "NOT NULL"
+    datetime2 CriadoEm "NOT NULL"
+    datetime2 UltimaAtualizacaoEm "NOT NULL"
+    nvarchar(max) Nome "NOT NULL"
+    nvarchar(max) Email UK "NOT NULL"
+    nvarchar(max) SenhaHash "NOT NULL"
 }
 
 TransacaoEntity{
-    uniqueidentifier Id PK
-    nvarchar(max) Descricao
-    nvarchar(max) Observacao
-    decimal Valor
-    datetime2 DataEfetivacao
-    datetime2 DataTransacao
-    nvarchar(max) TipoOperacao "enum OperacaoTipo"
-    nvarchar(max) TipoTransacao "enum TransacaoTipo"
-    nvarchar(max) MeioPagamento "enum MeioPagamentoTipo"
-    nvarchar(max) Categoria "enum Categoria"
-    uniqueidentifier ReferenciaParcelaId
-    int ParcelaAtual
-    int NumeroParcelas
-    uniqueidentifier UsuarioId FK
-    uniqueidentifier ContaId FK
+    uniqueidentifier Id PK "NOT NULL"
+    datetime2 CriadoEm "NOT NULL"
+    datetime2 UltimaAtualizacaoEm "NOT NULL"
+    nvarchar(max) Descricao "NOT NULL"
+    nvarchar(max) Observacao "NULL"
+    decimal Valor "NOT NULL"
+    datetime2 DataEfetivacao "NULL"
+    datetime2 DataTransacao "NOT NULL"
+    nvarchar(max) TipoOperacao "NOT NULL"
+    nvarchar(max) TipoTransacao "NOT NULL"
+    nvarchar(max) MeioPagamento "NOT NULL"
+    nvarchar(max) Categoria "NOT NULL"
+    uniqueidentifier ReferenciaParcelaId "NULL"
+    int ParcelaAtual "NULL"
+    int NumeroParcelas "NULL"
+    uniqueidentifier UsuarioId FK "NOT NULL"
+    uniqueidentifier ContaId FK "NOT NULL"
 }
 
 %%Relacionamentos:
