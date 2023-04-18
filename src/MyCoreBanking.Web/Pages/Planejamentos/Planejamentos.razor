@@ -1,0 +1,143 @@
+﻿@page "/planejamentos"
+
+<!-- Título -->
+<div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
+    <p class="mb-3 m-sm-0 h2 text-dark">Meus planejamentos</p>
+</div>
+
+<hr />
+
+<div class="mb-5">
+    <p class="m-0 h2 text-dark text-center">Agora é possível controlar cada moeda em seu bolso.</p>
+    <p class="m-0 h4 text-dark text-center">Faça seus planejamentos, crie metas, economize, conquiste!</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary fw-bold m-0">Limite de gastos</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="small fw-bold">Compra de carro novo<span class="float-end">100%</span></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                    <h4 class="small fw-bold">07/2021 ~ 07/2023</h4>
+                    <h4 class="small fw-bold">R$ 37.543 / 30.000</h4>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
+                </div>
+                <p class="ms-1 mb-3 form-text">Você ultrapassou o limite de gasto máximo para atingir essa meta!</p>
+
+
+                <h4 class="small fw-bold">Fundo de emergência<span class="float-end">75%</span></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                    <h4 class="small fw-bold">03/2023 ~ 03/2025</h4>
+                    <h4 class="small fw-bold">R$ 15.000 / 20.000</h4>
+                </div>
+                <div class="progress mb-4">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"><span class="visually-hidden">75%</span></div>
+                </div>
+
+
+                <h4 class="small fw-bold">Pagamento de dívida<span class="float-end">50%</span></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                    <h4 class="small fw-bold">05/2023 ~ 05/2024</h4>
+                    <h4 class="small fw-bold">R$ 2.500 / 5.000</h4>
+                </div>
+                <div class="progress mb-4">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="visually-hidden">50%</span></div>
+                </div>
+
+
+                <h4 class="small fw-bold">Férias em família<span class="float-end">25%</span></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                    <h4 class="small fw-bold">04/2023 ~ 12/2023</h4>
+                    <h4 class="small fw-bold">R$ 2.500 / 10.000</h4>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"><span class="visually-hidden">25%</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary fw-bold m-0">Novo planejamento</h6>
+            </div>
+            <div class="card-body">
+                <form class="p-3">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="descricao"><strong>Descrição do objetivo</strong></label>
+                                <input autocomplete="off" class="form-control" type="text" id="descricao" placeholder="Viagem para outro país" name="descricao">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <p class="m-0 text-dark">Valor limite de gasto</p>
+                                <div class="d-flex align-items-center">
+                                    <p class="m-0 me-2 h5 text-dark">R$ </p>
+                                    <input type="number" class="form-control" placeholder="45000" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="inicio"><strong>Data de início</strong></label>
+                                <input class="form-control" type="date" id="inicio" name="inicio">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label class="form-label" for="fim"><strong>Data de término</strong></label>
+                                <input class="form-control" type="date" id="fim" name="fim">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary fw-bold m-0">Dicas para o desenvolvimento</h6>
+            </div>
+            <div class="card-body">
+                <p class="m-0">
+                    Para atingir um objetivo o usuário precisará informar um valor X, e para obter o seu limite de gastos mensal,
+                    será necessário dividir o valor pelo número de meses (período entre início e término),
+                    assim é possível obter o valor mínimo que será necessário para economizar durante todo o período do planejamento.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+    </div>
+</div>
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazoredToast.ShowWarning("Atenção! Página em desenvolvimento...");
+        }
+    }
+}
