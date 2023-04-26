@@ -15,11 +15,15 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
   - Cadastro de transações
     - Únicas
     - Parcelamentos
+  - Filtro de transações
   - Exportação de arquivo CSV
-  - Gráficos de movimentações (receitas e despesas)
-  - Gráficos de gastos por categoria (mensal e anual)
-  - Saldo por conta (soma de todas as transações efetivadas da conta)
-  - Saldo geral (soma de todos os saldos das contas)
+  - Estatísticas financeiras
+    - Saldo geral
+    - Saldo por conta
+    - Número de transações pendentes
+    - Balanço mensal
+    - Gráficos de movimentações (receitas e despesas) nos últimos 12 meses
+    - Gráficos de gastos por categoria (mensal e anual)
 
 - v2 (futuro):
   - Cartões de crédito
