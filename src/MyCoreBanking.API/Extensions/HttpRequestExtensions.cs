@@ -1,12 +1,13 @@
-﻿using System.Text;
-using System.Text.Json;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
 using MyCoreBanking.API.Helpers;
+using System.Text;
+using System.Text.Json;
 
 namespace MyCoreBanking.API.Extensions;
 
@@ -43,6 +44,12 @@ internal static class HttpRequestExtensions
             UnauthorizedAccessException => new ContentResult()
             {
                 Content = exception.Message,
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status401Unauthorized,
+            },
+            SecurityTokenSignatureKeyNotFoundException => new ContentResult()
+            {
+                Content = "Token inválido, faça o login novamente.",
                 ContentType = "plain/text",
                 StatusCode = StatusCodes.Status401Unauthorized,
             },
