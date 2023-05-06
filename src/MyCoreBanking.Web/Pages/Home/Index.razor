@@ -27,7 +27,17 @@ else
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Seu saldo</span></div>
-                            <div class="text-dark fw-bold h5 mb-0"><span>@(model.SaldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</span></div>
+                            <div class="text-dark fw-bold h5 mb-0">
+                                <span>
+                                    @if (model.SaldoTotal < 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-down text-danger"></i>
+                                    }
+                                    else if (model.SaldoTotal > 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-up text-success"></i>
+                                    }
+                                @(model.SaldoTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-primary"></i></div>
                     </div>
@@ -40,7 +50,17 @@ else
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total investido</span></div>
-                            <div class="text-dark fw-bold h5 mb-0"><span>@(model.TotalInvestido.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</span></div>
+                            <div class="text-dark fw-bold h5 mb-0">
+                                <span>
+                                    @if (model.TotalInvestido < 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-down text-danger"></i>
+                                    }
+                                    else if (model.TotalInvestido > 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-up text-success"></i>
+                                    }
+                                    @(model.TotalInvestido.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</span></div>
                         </div>
                         <div class="col-auto"><i class="fa-solid fa-money-bill-trend-up fa-2x text-success"></i></div>
                     </div>
@@ -53,7 +73,11 @@ else
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Transações pendentes</span></div>
-                            <div class="text-dark fw-bold h5 mb-0 me-3"><span>@(model.TransacoesPendentes)</span></div>
+                            <div class="text-dark fw-bold h5 mb-0 me-3">
+                                <span>
+                                    @(model.TransacoesPendentes)
+                                </span>
+                            </div>
                         </div>
                         <div class="col-auto"><i class="fa-regular fa-calendar-minus fa-2x text-warning"></i></div>
                     </div>
@@ -66,7 +90,19 @@ else
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Balanço mensal</span></div>
-                            <div class="text-dark fw-bold h5 mb-0"><span>@(model.BalancoMensal.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))</span></div>
+                            <div class="text-dark fw-bold h5 mb-0">
+                                <span>
+                                    @if (model.BalancoMensal < 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-down text-danger"></i>
+                                    }
+                                    else if (model.BalancoMensal > 0)
+                                    {
+                                        <i class="pe-2 fa-solid fa-arrow-up text-success"></i>
+                                    }
+                                    @(model.BalancoMensal.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                </span>
+                            </div>
                         </div>
                         <div class="col-auto"><i class="fa-solid fa-scale-balanced fa-2x text-info"></i></div>
                     </div>
@@ -85,7 +121,7 @@ else
                     <h6 class="text-primary fw-bold m-0 py-2">Movimentações Entrada / Saída nos últimos 12 meses</h6>
                 </div>
                 <div class="card-body d-flex align-items-center">
-                        <Chart Config="_lineConfig" @ref="_chart"></Chart>
+                    <Chart Config="_lineConfig" @ref="_chart"></Chart>
                 </div>
             </div>
         </div>
@@ -328,20 +364,20 @@ else
             };
 
         LineDataset<decimal> despesaDataset = new LineDataset<decimal>
-        {
-            Label = "Despesas",
-            BackgroundColor = ColorUtil.FromDrawingColor(Color.Red),
-            BorderColor = ColorUtil.FromDrawingColor(Color.Red),
-            Fill = false
-        };
+            {
+                Label = "Despesas",
+                BackgroundColor = ColorUtil.FromDrawingColor(Color.Red),
+                BorderColor = ColorUtil.FromDrawingColor(Color.Red),
+                Fill = false
+            };
 
         LineDataset<decimal> receitaDataset = new LineDataset<decimal>
-        {
-            Label = "Receitas",
-            BackgroundColor = ColorUtil.FromDrawingColor(Color.Green),
-            BorderColor = ColorUtil.FromDrawingColor(Color.Green),
-            Fill = false
-        };
+            {
+                Label = "Receitas",
+                BackgroundColor = ColorUtil.FromDrawingColor(Color.Green),
+                BorderColor = ColorUtil.FromDrawingColor(Color.Green),
+                Fill = false
+            };
 
         foreach (var graph in model.GraficoMovimentacaoUltimos12Meses)
         {
@@ -373,16 +409,16 @@ else
     void GerarGraficoPizzaDespesasPorCategoriaMensal()
     {
         _pieConfig = new PieConfig
-        {
-            Options = new PieOptions
             {
-                Responsive = true,
-            }
-        };
+                Options = new PieOptions
+                {
+                    Responsive = true,
+                }
+            };
 
         PieDataset<decimal> data = new()
-        {
-            BackgroundColor = new[]
+            {
+                BackgroundColor = new[]
             {
                 ColorUtil.FromDrawingColor(Color.Lavender), // Alimentacao,
                 ColorUtil.FromDrawingColor(Color.Gray), // Casa,
@@ -399,8 +435,8 @@ else
                 ColorUtil.FromDrawingColor(Color.Red), // Transporte,
                 ColorUtil.FromDrawingColor(Color.LightGreen), // Vestuario,
                 ColorUtil.FromDrawingColor(Color.Green), // Viagem,
-            }
-        };
+    }
+            };
 
         foreach (var graph in model.GraficoDespesaPorCategoriaMensal)
         {
@@ -414,17 +450,17 @@ else
     void GerarGraficoDeBarrasDespesasPorCategoriaAnual()
     {
         _barConfig = new BarConfig
-        {
-            Options = new BarOptions
             {
-                Responsive = true,
-                Legend = new Legend
+                Options = new BarOptions
                 {
-                    Display = false
-                },
-                Scales = new BarScales
-                {
-                    XAxes = new List<CartesianAxis>
+                    Responsive = true,
+                    Legend = new Legend
+                    {
+                        Display = false
+                    },
+                    Scales = new BarScales
+                    {
+                        XAxes = new List<CartesianAxis>
                     {
                         new CategoryAxis
                         {
@@ -434,7 +470,7 @@ else
                             }
                         }
                     },
-                    YAxes = new List<CartesianAxis>
+                        YAxes = new List<CartesianAxis>
                     {
                         new LinearCartesianAxis
                         {
@@ -444,13 +480,13 @@ else
                             }
                         }
                     }
+                    }
                 }
-            }
-        };
+            };
 
         BarDataset<decimal> data = new()
-        {
-            BackgroundColor = new[]
+            {
+                BackgroundColor = new[]
             {
                 ColorUtil.FromDrawingColor(Color.Lavender), // Alimentacao,
                 ColorUtil.FromDrawingColor(Color.Gray), // Casa,
@@ -467,8 +503,8 @@ else
                 ColorUtil.FromDrawingColor(Color.Red), // Transporte,
                 ColorUtil.FromDrawingColor(Color.LightGreen), // Vestuario,
                 ColorUtil.FromDrawingColor(Color.Green), // Viagem,
-            },
-        };
+    },
+            };
 
         //foreach (var categoria in Enum.GetValues<Categoria>())
         //{

@@ -17,7 +17,7 @@
                         @(model?.Nome == "Desconhecido" || string.IsNullOrWhiteSpace(model?.Nome) ? "?" : model?.Nome[0].ToString().ToUpper())
                     </p>
                 </div>
-                <div class="mb-3"><button disabled class="btn btn-primary disabled btn-sm" type="button">Alterar foto</button></div>
+                @*<div class="mb-3"><button disabled class="btn btn-primary disabled btn-sm" type="button">Alterar foto</button></div>*@
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+@*                        <div class="row">
                             <div class="col">
                                 <div class="mb-3">
                                     <label class="form-label" for="telefone"><strong>Telefone</strong></label>
@@ -63,7 +63,7 @@
                                     <input class="form-control" type="text" id="documento" placeholder="000.000.000-00" name="documento" disabled>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                         <div class="mb-3 d-flex justify-content-end">
                             @if (string.IsNullOrWhiteSpace(model!.Nome))
