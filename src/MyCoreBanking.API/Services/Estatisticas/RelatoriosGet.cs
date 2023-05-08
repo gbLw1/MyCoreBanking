@@ -63,6 +63,7 @@ public static class RelatoriosGet
                 .Where(t => t.UsuarioId == userId)
                 .Where(t => t.DataEfetivacao != null)
                 .Where(t => t.DataTransacao.Month == DateTime.Now.Month)
+                .Where(t => t.DataTransacao.Year == DateTime.Now.Year)
                 .SumAsync(t => t.TipoOperacao == OperacaoTipo.Receita ? t.Valor : -t.Valor);
 
 
