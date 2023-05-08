@@ -53,6 +53,12 @@ internal static class HttpRequestExtensions
                 ContentType = "plain/text",
                 StatusCode = StatusCodes.Status401Unauthorized,
             },
+            SecurityTokenExpiredException => new ContentResult()
+            {
+                Content = "Token expirado, faça o login novamente.",
+                ContentType = "plain/text",
+                StatusCode = StatusCodes.Status401Unauthorized,
+            },
             NotFoundException => new ContentResult()
             {
                 Content = exception.Message,
