@@ -1,4 +1,5 @@
 ﻿@page "/contas"
+@using System.Globalization;
 
 <!-- Título -->
 <div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
@@ -35,7 +36,7 @@
                             <div class="d-flex flex-column flex-md-row mb-3">
                                 <p class="m-0">Saldo: </p>
                                 <p class="m-0 ps-0 ps-md-2 @(conta.Saldo > 0 ? "text-success" : "text-danger")">
-                                    @(conta.Saldo.ToString("C"))
+                                    @(conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
                                 </p>
                             </div>
 

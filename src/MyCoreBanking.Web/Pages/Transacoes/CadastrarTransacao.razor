@@ -15,7 +15,7 @@
         <div class="col-12 col-lg-9 col-xl-7 mb-4">
             <div class="card shadow-lg o-hidden border-0">
                 <div class="pt-5 px-5">
-                @*<div class="pt-5 px-5" style="border-radius: 5px; @(args.TipoOperacao == OperacaoTipo.Receita ? "border: 5px solid #1cc88a;background-color: #1cc88a14;" : "border: 5px solid #e74a3b;background-color: #c81c1c14;")">*@
+                    @*<div class="pt-5 px-5" style="border-radius: 5px; @(args.TipoOperacao == OperacaoTipo.Receita ? "border: 5px solid #1cc88a;background-color: #1cc88a14;" : "border: 5px solid #e74a3b;background-color: #c81c1c14;")">*@
                     <EditForm Model="args" OnValidSubmit="OnValidSubmit">
                         <FluentValidationValidator />
                         <ValidationSummary />
@@ -147,7 +147,11 @@
                             <div class="mb-3">
                                 <p class="m-0 text-dark">Valor total</p>
                                 <div class="d-flex align-items-center">
-                                    <p class="m-0 me-2 h5">@(args.ValorParcela.HasValue && args.NumeroParcelas.HasValue ? (args.ValorParcela.Value * args.NumeroParcelas.Value).ToString("C") : 0.ToString("C"))</p>
+                                    <p class="m-0 me-2 h5">
+                                        @(args.ValorParcela.HasValue && args.NumeroParcelas.HasValue
+                                            ? (args.ValorParcela.Value * args.NumeroParcelas.Value).ToString("C", CultureInfo.GetCultureInfo("pt-BR"))
+                                            : 0.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                    </p>
                                 </div>
                             </div>
                         }
