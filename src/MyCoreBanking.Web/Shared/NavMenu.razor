@@ -79,18 +79,4 @@
     [Parameter]
     public string NavMenuCssClass { get; set; } = "d-flex";
 
-    void ToggleMenu()
-    {
-        if (NavMenuCssClass == "d-flex")
-        {
-            NavMenuCssClass = "d-none";
-        }
-        else
-        {
-            NavMenuCssClass = "d-flex";
-        }
-
-        StateHasChanged();
-    }
-
 }
