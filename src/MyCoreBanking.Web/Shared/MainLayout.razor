@@ -2,12 +2,12 @@
 
 <div id="wrapper" style="min-height: 100vh">
     <!-- NavMenu -->
-    <NavMenu />
+    <NavMenu NavMenuCssClass="@NavMenuCssClassToggled" />
 
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
             <!-- Header -->
-            <Header />
+            <Header OnToggleMenu="ToggleMenu" />
 
             <div class="container-fluid">
                 @Body
@@ -27,5 +27,19 @@
 
 
 @code {
+    private string NavMenuCssClassToggled { get; set; } = "d-flex";
 
+    void ToggleMenu()
+    {
+        if (NavMenuCssClassToggled == "d-flex")
+        {
+            NavMenuCssClassToggled = "d-none";
+        }
+        else
+        {
+            NavMenuCssClassToggled = "d-flex";
+        }
+
+        StateHasChanged();
+    }
 }

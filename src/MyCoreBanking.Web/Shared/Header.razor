@@ -6,6 +6,11 @@
             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Pesquisar por..."><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
         </form>
         -->
+
+        <button @onclick="OnToggleMenu" class="btn d-block d-sm-none">
+            <i class="fa-solid fa-bars" style="font-size: 1.4rem;"></i>
+        </button>
+
         <ul class="navbar-nav flex-nowrap ms-auto">
             <!--
             <li class="nav-item dropdown d-sm-none no-arrow">
@@ -144,6 +149,9 @@
 
 
 @code {
+
+    [Parameter] public EventCallback OnToggleMenu { get; set; }
+
     UsuarioModel? model;
 
     protected override async Task OnParametersSetAsync()
@@ -172,5 +180,4 @@
 
         model = result;
     }
-
 }
