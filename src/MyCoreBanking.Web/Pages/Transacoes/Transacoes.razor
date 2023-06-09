@@ -73,7 +73,7 @@
     <div class="card shadow">
 
         <!-- Header tabela -->
-        <div class="card-header py-3 d-flex justify-content-between align-items-center"
+        <div class="card-header py-3 d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center"
              style="padding: 0 64px;">
 
             <!-- Filtros -->
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Navegar entre os meses -->
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center my-3 my-md-0">
                 @if (FiltroBusca.DataEfetivacao.HasValue)
                 {
                     <p class="m-0 p-2 fw-bold border border-primary rounded-pill text-primary">

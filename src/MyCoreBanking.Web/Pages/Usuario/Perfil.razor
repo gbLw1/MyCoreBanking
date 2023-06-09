@@ -37,13 +37,13 @@
                 {
                     <EditForm Model="model" OnValidSubmit="OnValidSubmit">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label" for="nome_completo"><strong>Nome completo</strong></label>
                                     <input autocomplete="off" class="form-control" type="text" id="nome_completo" placeholder="Joseph Giuseppe" name="nome_completo" @bind-value="model.Nome" @bind-value:event="oninput">
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label" for="email"><strong>Email</strong></label>
                                     <input class="form-control" type="email" id="email" placeholder="user@example.com" name="email" disabled @bind-value="model.Email">
