@@ -28,7 +28,14 @@ partial class MyCoreBankingApp
         _Navigation = navigation;
         _HttpClientService = httpClientService;
 
-        BaseAddress = "http://localhost:7071";
+        if (_Navigation.Uri.Contains("localhost"))
+        {
+            BaseAddress = "http://localhost:7071";
+        }
+        else
+        {
+            BaseAddress = "https://api-mycore-finance.azurewebsites.net";
+        }
     }
 
     public async Task Initialize()

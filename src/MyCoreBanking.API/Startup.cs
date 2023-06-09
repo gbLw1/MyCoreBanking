@@ -14,19 +14,21 @@ public class Startup : FunctionsStartup
 
         builder.Services.AddDbContext<MeuDbContext>(options =>
         {
-            options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection")
+            options.UseSqlServer(Environment.GetEnvironmentVariable(
+                variable: "ConnectionStrings:DefaultConnection",
+                target: EnvironmentVariableTarget.Process)
                 ?? throw new ArgumentException("ConnectionStrings:DefaultConnection"));
 
-            options.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
-            options.EnableDetailedErrors().LogTo(Console.WriteLine);
+            // options.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
+            // options.EnableDetailedErrors().LogTo(Console.WriteLine);
         });
 
-        var appSettings = new AppSettings
+        builder.Services.AddSingleton(new AppSettings
         {
-            JwtSecret = Environment.GetEnvironmentVariable("JwtSecret")
-                ?? throw new ArgumentException("JwtSecret"),
-        };
-
-        builder.Services.AddSingleton(appSettings);
+            JwtSecret = Environment.GetEnvironmentVariable(
+                variable: "JwtSecret",
+                target: EnvironmentVariableTarget.Process)
+                ?? "1234567Teste@123",
+        });
     }
 }

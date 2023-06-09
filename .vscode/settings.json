@@ -24,4 +24,6 @@
     "azureFunctions.preDeployTask": "publish (functions)",
     "thunder-client.saveToWorkspace": true,
     "thunder-client.workspaceRelativePath": "docs/thunder-client",
+    "appService.defaultWebAppToDeploy": "/subscriptions/a9bb0346-4c2e-4e22-88dc-5c4376385270/resourceGroups/MyCoreBanking/providers/Microsoft.Web/sites/mycorebanking",
+    "appService.deploySubpath": "src\\MyCoreBanking.Web\\bin\\Release\\net6.0\\publish",
 }
