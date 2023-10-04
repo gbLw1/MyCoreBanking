@@ -10,7 +10,10 @@ internal sealed class MeuDbContextFactory : IDesignTimeDbContextFactory<MeuDbCon
         var optionsBuilder = new DbContextOptionsBuilder<MeuDbContext>();
 
         optionsBuilder.UseSqlServer(
-            connectionString: "Data Source=(localdb)\\mssqllocaldb; Initial Catalog=MyCoreBanking; Trusted_Connection=True; TrustServerCertificate=True");
+            connectionString: Environment.GetEnvironmentVariable(
+                variable: "ConnectionStrings:DefaultConnection",
+                target: EnvironmentVariableTarget.Process)
+            ?? throw new ArgumentException("ConnectionStrings:DefaultConnection"));
 
         return new MeuDbContext(optionsBuilder.Options);
     }
