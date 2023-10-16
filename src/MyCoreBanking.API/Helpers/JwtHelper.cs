@@ -45,9 +45,9 @@ public static class JwtHelper
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = creds.Key,
             ValidateIssuer = true,
-            ValidIssuers = new string[] {"localhost", "api-mycore-finance.azurewebsites.net"},
+            ValidIssuers = new string[] { "localhost", "api-mycorebanking.azurewebsites.net" },
             ValidateAudience = true,
-            ValidAudiences = new string[] {"localhost", "api-mycore-finance.azurewebsites.net"},
+            ValidAudiences = new string[] { "localhost", "api-mycorebanking.azurewebsites.net" },
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
