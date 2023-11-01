@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "bracketSameLine": true,
+  "editorconfig": true,
+  "proseWrap": "always",
+  "singleQuote": false,
+  "tabWidth": 2,
+  "tabs": false,
+  "semi": true,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "bracketSpacing": true
+}
