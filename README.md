@@ -8,7 +8,7 @@ MyCoreBanking é um projeto pessoal para estudo de desenvolvimento de software. 
 
 ## Versões
 
-- v1:
+- [v1](https://github.com/gbLw1/MyCoreBanking/tree/aa1034ee50d1843be6cebb89d439d94aa427e168):
   - Cadastro de usuários
   - Login
   - Cadastro de contas
