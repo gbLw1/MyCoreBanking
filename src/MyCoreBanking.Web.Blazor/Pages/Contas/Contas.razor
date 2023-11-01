@@ -1,0 +1,125 @@
+﻿@page "/contas"
+@using System.Globalization;
+
+<!-- Título -->
+<div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
+    <p class="mb-3 m-sm-0 h2 text-dark">Minhas Contas</p>
+
+    <a href="/contas/cadastrar"
+       class="btn text-primary fw-bolder btn-sm border border-primary rounded"
+       style="font-size: 1.2rem">
+        Nova Conta
+    </a>
+</div>
+
+<hr/>
+
+@if (model is not null)
+{
+    @if (model.Any())
+    {
+        <div class="row">
+            @foreach (var conta in model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow" style="margin-bottom: 10px; height: 100%;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="mb-3 card-title fw-bold">@(conta.Descricao)</h5>
+
+                            <div class="d-flex flex-column flex-md-row mb-3">
+                                <p class="m-0">Tipo de conta: </p>
+                                <p class="m-0 ps-0 ps-md-2">
+                                    @(MyCoreBankingApp.ConverterEnumTipoContaParaString(conta.Tipo))
+                                </p>
+                            </div>
+
+                            <div class="d-flex flex-column flex-md-row mb-3">
+                                <p class="m-0">Saldo: </p>
+                                <p class="m-0 ps-0 ps-md-2 @(conta.Saldo > 0 ? "text-success" : "text-danger")">
+                                    @(conta.Saldo.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <a href="/contas/@(conta.Id)" class="card-link">
+                                    Editar
+                                </a>
+                                <a @onclick="async () => await AbrirModalExcluirConta(conta.Id)"
+                                   class="card-link" type="button">
+                                    Excluir
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <p class="m-0 text-center text-danger h3">Ocorreu um erro ao tentar obter suas contas.</p>
+        </div>
+    }
+}
+
+@code {
+
+    IReadOnlyCollection<ContaModel>? model;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await CarregarContas();
+    }
+
+    async Task CarregarContas()
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ObterContas();
+
+        if (result is null)
+        {
+            model = new List<ContaModel>();
+        }
+        else
+        {
+            model = result;
+        }
+
+        modalLoading.Close();
+    }
+
+    async Task AbrirModalExcluirConta(Guid contaId)
+    {
+        Dictionary<string, object> parameters = new()
+        {
+            {nameof(DeleteModal.Title),"Exclusão de conta" },
+            {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a conta?"},
+            {nameof(DeleteModal.BtnText), "Confirmar" }
+        };
+
+        var modalResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
+
+        if (modalResult.Cancelled)
+        {
+            return;
+        }
+
+        await ExcluirConta(contaId);
+    }
+
+    async Task ExcluirConta(Guid contaId)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ExcluirConta(contaId);
+
+        if (result)
+        {
+            await CarregarContas();
+        }
+
+        modalLoading.Close();
+    }
+}

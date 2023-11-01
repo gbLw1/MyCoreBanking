@@ -1,0 +1,594 @@
+﻿@page "/transacoes"
+@using System.Globalization;
+@using System.Text;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+@using MyCoreBanking.CsvConfig;
+
+<!-- Título -->
+<div class="d-flex flex-wrap flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center">
+    <p class="mb-3 m-sm-0 h2 text-dark">Minhas Transações</p>
+
+    <a href="/transacoes/cadastrar"
+       class="btn text-primary fw-bolder btn-sm border border-primary rounded"
+       style="font-size: 1.2rem">
+        Nova Transação
+    </a>
+</div>
+
+<hr />
+
+@if (model is not null)
+{
+    @if (Filtrando())
+    {
+        <div class="d-flex align-items-center mb-3">
+            @if (FiltroDataEfetivacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroDataEfetivacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroDataEfetivacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroMeioPagamentoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroMeioPagamento()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroMeioPagamento())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroTipoOperacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroTipoOperacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroTipoOperacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroTipoTransacaoAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroTipoTransacao()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroTipoTransacao())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+
+            @if (FiltroCategoriaAplicado())
+            {
+                <button @onclick="async () => await RemoverFiltroCategoria()"
+                        class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded me-2">
+                    @(FiltroCategoria())
+                    <i class="ms-2 fa-solid fa-times text-danger"></i>
+                </button>
+            }
+        </div>
+    }
+
+    <div class="card shadow">
+
+        <!-- Header tabela -->
+        <div class="card-header py-3 d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center"
+             style="padding: 0 64px;">
+
+            <!-- Filtros -->
+            <div>
+                @if (Filtrando())
+                {
+                    <button @onclick="async () => await LimparTodosFiltros()"
+                            class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded">
+                        Limpar filtros
+                        <i class="ms-2 fa-solid fa-times text-danger"></i>
+                    </button>
+                }
+                else
+                {
+                    <button @onclick="async () => await AbrirModalFiltro()"
+                            class="position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
+                            role="button">
+                        <i class="me-2 fa-solid fa-filter fa-2x text-primary"></i>
+                        Filtrar
+                    </button>
+                }
+            </div>
+
+            <!-- Navegar entre os meses -->
+            <div class="d-flex justify-content-center align-items-center my-3 my-md-0">
+                @if (FiltroBusca.DataEfetivacao.HasValue)
+                {
+                    <p class="m-0 p-2 fw-bold border border-primary rounded-pill text-primary">
+                        Efetivadas no dia @(FiltroBusca.DataEfetivacao.Value.ToShortDateString())
+                    </p>
+                }
+                else
+                {
+
+                    <button @onclick="async () => await VoltarMes()" type="button"
+                            class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                            style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                        &laquo;
+                    </button>
+
+                    <p class="m-0 mx-3 fw-bold border border-primary btn rounded-pill text-primary">@(FiltroBusca.DataBusca.ToString("MMM/yyyy"))</p>
+
+                    <button @onclick="async () => await AvancarMes()" type="button"
+                            class="btn btn-light rounded-circle text-center text-primary fw-bold"
+                            style="width: 40px; height: 40px; font-size: 1.4rem; line-height: 0">
+                        &raquo;
+                    </button>
+                }
+            </div>
+
+            <!-- Export CSV -->
+            <div>
+                <button @onclick="ExportarCsv"
+                        class="ms-2 position-relative btn text-primary fw-bolder btn-sm d-flex align-items-center border border-primary rounded"
+                        role="button">
+                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                          style="line-height: normal">
+                        Novo!
+                    </span>
+                    Exportar
+                    <i class="ms-2 fa-solid fa-file-csv fa-2x text-primary"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="card-body">
+
+            @if (model.Any())
+            {
+                <div class="table-responsive table mt-2 px-5" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px"></th>
+                                <th>DESCRIÇÃO</th>
+                                <th class="d-none d-lg-table-cell">CATEGORIA</th>
+                                <th>DATA</th>
+                                <th class="d-none d-lg-table-cell">CONTA</th>
+                                <th>VALOR</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            @foreach (var transacao in model)
+                            {
+                                @*<tr style="border-bottom: 1px solid #cccccc;height: 65px">*@
+                                <tr style="@(transacao.TipoOperacao == OperacaoTipo.Receita ? "background-color: #00ff0014;" : "background-color: #ff000014;") border-bottom: 1px solid #cccccc;height: 65px;">
+                                    <!-- Status -->
+                                    <td class="align-middle">
+                                        @if (transacao.Efetivada)
+                                        {
+                                            <ToolTip Text="Efetivada" DataEfetivacao="transacao.DataEfetivacao!.Value">
+                                                <i class="fa-solid fa-circle-check text-success" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        }
+                                        else
+                                        {
+                                            <ToolTip Text="Pendente">
+                                                <i class="fa-solid fa-circle-exclamation text-warning" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        }
+                                    </td>
+
+                                    <!-- Descrição -->
+                                    <td class="align-middle fw-bold">
+                                        @(transacao.TipoTransacao == TransacaoTipo.Unica
+                                            ? transacao.Descricao
+                                            : $"{transacao.Descricao} - ({transacao.ParcelaAtual}/{transacao.NumeroParcelas})")
+                                    </td>
+
+                                    <!-- Categoria -->
+                                    <td class="d-none d-lg-table-cell align-middle fw-bold">
+                                        @(MyCoreBankingApp.ConverterEnumCategoriaParaString(transacao.Categoria))
+                                    </td>
+
+                                    <!-- Data -->
+                                    <td class="align-middle fw-bold">
+                                        @if (transacao.DataTransacao < DateTime.Today && !transacao.Efetivada)
+                                        {
+                                            <p class="m-0 text-warning fw-semibold">@(transacao.DataTransacao.ToShortDateString())</p>
+                                            <p class="m-0 text-warning fw-semibold">(Em atraso)</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="m-0">@(transacao.DataTransacao.ToShortDateString())</p>
+                                        }
+                                    </td>
+
+                                    <!-- Conta -->
+                                    <td class="d-none d-lg-table-cell align-middle fw-bold">
+                                        @(transacao.Conta)
+                                    </td>
+
+                                    <!-- Valor -->
+                                    <td class="align-middle fw-bold">
+                                        <p class="m-0 @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "text-danger" : "text-success")">
+                                            @(transacao.TipoOperacao == OperacaoTipo.Despesa ? "-" : "+")
+                                            @(transacao.Valor.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                                        </p>
+                                    </td>
+
+                                    <!-- Ação: Efetivar -->
+                                    <td class="align-middle text-center">
+                                        @if (!transacao.Efetivada)
+                                        {
+                                            <a @onclick="async () => await AbrirModalEfetivacao(transacao.Id)" class="cursor-pointer">
+                                                <ToolTip Text="Efetivar">
+                                                    <i class="fa-solid fa-circle-check text-secondary" style="font-size: 1.4rem"></i>
+                                                </ToolTip>
+                                            </a>
+                                        }
+                                    </td>
+
+                                    <!-- Ação: Parcelamento -->
+                                    <td class="align-middle text-center">
+                                        @if (transacao.TipoTransacao == TransacaoTipo.Parcelada)
+                                        {
+                                            <a @onclick="async () => await AbrirModalParcelamento(transacao.ReferenciaParcelaId!.Value)" class="cursor-pointer">
+                                                <ToolTip Text="Parcelamento">
+                                                    <i class="fa-solid fa-eye" style="font-size: 1.4rem;color: #0ae10a;"></i>
+                                                </ToolTip>
+                                            </a>
+                                        }
+                                    </td>
+
+                                    <!-- Ação: Editar -->
+                                    <td class="align-middle text-center">
+                                        <a href="/transacoes/@(transacao.Id)">
+                                            <ToolTip Text="Editar">
+                                                <i class="fa-solid fa-pen-to-square text-info" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        </a>
+                                    </td>
+
+                                    <!-- Ação: Excluir -->
+                                    <td class="align-middle text-center">
+                                        <a @onclick="async () => await AbrirModalExcluirTransacao(transacao.Id, transacao.TipoTransacao)" class="cursor-pointer">
+                                            <ToolTip Text="Excluir">
+                                                <i class="fa-solid fa-trash text-danger" style="font-size: 1.4rem"></i>
+                                            </ToolTip>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Qtde em exibição + Paginação-->
+                <!--
+                    <div class="row">
+                        <div class="col-md-6 align-self-center">
+                            <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Exibindo 1 ao 10 de 27</p>
+                        </div>
+                        <div class="col-md-6">
+                            <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination">
+                                    <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                -->
+            }
+            else
+            {
+                <p class="m-0 mb-4 h5 text-dark text-center">Nenhuma transação encontrada.</p>
+                <p class="m-0 h4 text-dark text-center" style="font-family: arial;">¯\_(ツ)_/¯</p>
+            }
+
+        </div>
+    </div>
+}
+
+
+@code {
+    IReadOnlyCollection<TransacaoModel> model = Array.Empty<TransacaoModel>();
+
+    public FiltroTransacoes FiltroBusca = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await CarregarTransacoes();
+    }
+
+    #region [+ Filtros de Busca]
+
+    async Task AbrirModalFiltro()
+    {
+        var modal = MyCoreBankingApp.ShowModal<FiltroTransacoesModal>();
+
+        if ((await modal.Result).Cancelled)
+        {
+            return;
+        }
+
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        FiltroBusca = (FiltroTransacoes)(await modal.Result).Data!;
+
+        await CarregarTransacoes();
+
+        modalLoading.Close();
+    }
+
+    bool Filtrando()
+        => FiltroBusca.DataEfetivacao.HasValue
+           || FiltroBusca.MeioPagamento.HasValue
+           || FiltroBusca.TipoOperacao.HasValue
+           || FiltroBusca.TipoTransacao.HasValue
+           || FiltroBusca.Categoria.HasValue;
+
+    async Task LimparTodosFiltros()
+    {
+        FiltroBusca = new();
+        await CarregarTransacoes();
+    }
+
+    bool FiltroDataEfetivacaoAplicado() => FiltroBusca.DataEfetivacao.HasValue;
+    bool FiltroMeioPagamentoAplicado() => FiltroBusca.MeioPagamento.HasValue;
+    bool FiltroTipoOperacaoAplicado() => FiltroBusca.TipoOperacao.HasValue;
+    bool FiltroTipoTransacaoAplicado() => FiltroBusca.TipoTransacao.HasValue;
+    bool FiltroCategoriaAplicado() => FiltroBusca.Categoria.HasValue;
+
+    string FiltroDataEfetivacao() => $"Data de efetivação: {FiltroBusca.DataEfetivacao!.Value.ToShortDateString()}";
+    string FiltroMeioPagamento() => $"Meio de pagamento: {MyCoreBankingApp.ConverterEnumMeioPagamentoParaString(FiltroBusca.MeioPagamento!.Value)}";
+    string FiltroTipoOperacao() => $"Tipo de operação: {FiltroBusca.TipoOperacao!.Value}";
+    string FiltroTipoTransacao() => $"Tipo de transação: {MyCoreBankingApp.ConverterEnumTipoTransacaoParaString(FiltroBusca.TipoTransacao!.Value)}";
+    string FiltroCategoria() => $"Categoria: {MyCoreBankingApp.ConverterEnumCategoriaParaString(FiltroBusca.Categoria!.Value)}";
+
+    async Task RemoverFiltroDataEfetivacao()
+    {
+        FiltroBusca.DataEfetivacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroMeioPagamento()
+    {
+        FiltroBusca.MeioPagamento = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroTipoOperacao()
+    {
+        FiltroBusca.TipoOperacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroTipoTransacao()
+    {
+        FiltroBusca.TipoTransacao = null;
+        await CarregarTransacoes();
+    }
+
+    async Task RemoverFiltroCategoria()
+    {
+        FiltroBusca.Categoria = null;
+        await CarregarTransacoes();
+    }
+
+    #endregion
+
+    #region [+ Carregar Transacoes]
+
+    async Task CarregarTransacoes()
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        await Task.Delay(100);
+
+        var result = await MyCoreBankingApp.ObterTransacoes(
+            mes: FiltroBusca.DataBusca.Month,
+            ano: FiltroBusca.DataBusca.Year,
+            dataEfetivacao: FiltroBusca.DataEfetivacao,
+            meioDePagamento: FiltroBusca.MeioPagamento,
+            tipoDeOperacao: FiltroBusca.TipoOperacao,
+            tipoDeTransacao: FiltroBusca.TipoTransacao,
+            categoria: FiltroBusca.Categoria);
+
+        if (result is null)
+        {
+            model = Array.Empty<TransacaoModel>();
+        }
+        else
+        {
+            model = result;
+        }
+
+        modalLoading.Close();
+    }
+
+    async Task VoltarMes()
+    {
+        FiltroBusca.DataBusca = FiltroBusca.DataBusca.AddMonths(-1);
+
+        await CarregarTransacoes();
+    }
+
+    async Task AvancarMes()
+    {
+        FiltroBusca.DataBusca = FiltroBusca.DataBusca.AddMonths(1);
+
+        await CarregarTransacoes();
+    }
+
+    #endregion
+
+    #region [+ Export CSV]
+
+    void ExportarCsv()
+    {
+        var memoryStream = new MemoryStream();
+        using var streamWriter = new StreamWriter(memoryStream);
+
+        var config = new CsvConfiguration(CultureInfo.GetCultureInfo("pt-BR"))
+        {
+            HasHeaderRecord = true,
+            Delimiter = ";",
+            Encoding = Encoding.UTF8,
+        };
+
+        using (var csv = new CsvWriter(streamWriter, config))
+        {
+            csv.Context.RegisterClassMap<TransacaoModelMap>();
+
+            csv.WriteHeader<TransacaoModel>();
+
+            csv.NextRecord();
+
+            foreach (var transacao in model)
+            {
+                csv.WriteRecord(transacao);
+                csv.NextRecord();
+            }
+        }
+
+        var bytes = memoryStream.ToArray();
+        DownloadCsv(bytes);
+    }
+
+    void DownloadCsv(byte[]? arquivo)
+    {
+        if (arquivo is null)
+        {
+            BlazoredToast.ShowError("Não foi possível exportar as transações para CSV.");
+            return;
+        }
+
+        var nomeArquivo = $"MyCoreBanking-Transações-{DateTime.Now:yyyyMMddHHmmss}.csv";
+        JS.InvokeVoidAsync("downloadCsv", nomeArquivo, Convert.ToBase64String(arquivo));
+
+        BlazoredToast.ShowSuccess("Transações exportadas com sucesso. Seu download deve começar em instantes.");
+    }
+
+    #endregion
+
+    #region [+ Efetivar Transação]
+
+    async Task AbrirModalEfetivacao(Guid transacaoId)
+    {
+        var modalResult = await MyCoreBankingApp.ShowModal<EfetivacaoTransacaoModal>().Result;
+
+        if (modalResult.Cancelled)
+        {
+            return;
+        }
+
+        var args = new TransacoesEfetivacaoPutArgs
+            {
+                DataEfetivacao = (DateTime)modalResult.Data!
+            };
+
+        await EfetivarTransacao(transacaoId, args);
+    }
+
+    async Task EfetivarTransacao(Guid transacaoId, TransacoesEfetivacaoPutArgs args)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.EfetivarTransacao(transacaoId, args);
+
+        if (result)
+        {
+            await CarregarTransacoes();
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+
+    #region [+ Modal Parcelamento]
+
+    async Task AbrirModalParcelamento(Guid parcelamentoId)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ObterParcelamentos(parcelamentoId);
+
+        if (result is not null)
+        {
+            Dictionary<string, object> parameters = new()
+            {
+                {nameof(ParcelamentosModal.Model), result },
+            };
+
+            MyCoreBankingApp.ShowModal<ParcelamentosModal>(parameters);
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+
+    #region [+ Excluir Transação]
+
+    async Task AbrirModalExcluirTransacao(Guid transacaoId, TransacaoTipo tipo)
+    {
+        switch (tipo)
+        {
+            case TransacaoTipo.Unica:
+                Dictionary<string, object> parameters = new()
+                {
+                    {nameof(DeleteModal.Title),"Exclusão de transação" },
+                    {nameof(DeleteModal.Message), "Tem certeza de que deseja excluir a transação?"},
+                    {nameof(DeleteModal.BtnText), "Confirmar" }
+                };
+
+                var modalDeleteUnicoResult = await MyCoreBankingApp.ShowModal<DeleteModal>(parameters).Result;
+
+                if (modalDeleteUnicoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId);
+                break;
+
+            case TransacaoTipo.Parcelada:
+                var modalDeleteParcelamentoResult = await MyCoreBankingApp.ShowModal<DeleteParcelamentoModal>().Result;
+
+                if (modalDeleteParcelamentoResult.Cancelled)
+                {
+                    return;
+                }
+
+                await ExcluirTransacao(transacaoId, modalDeleteParcelamentoResult.Data!.ToString());
+                break;
+
+            default:
+                MyCoreBankingApp.ShowError("Não foi possível reconhecer o tipo da transação");
+                break;
+        }
+    }
+
+    async Task ExcluirTransacao(Guid transacaoId, string? tipoDelete = null)
+    {
+        var modalLoading = MyCoreBankingApp.ShowLoading();
+
+        var result = await MyCoreBankingApp.ExcluirTransacao(transacaoId, tipoDelete);
+
+        if (result)
+        {
+            await CarregarTransacoes();
+        }
+
+        modalLoading.Close();
+    }
+
+    #endregion
+}
