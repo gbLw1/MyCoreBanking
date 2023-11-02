@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CleanLayout from "../../components/layouts/CleanLayout";
 import api from "../../services/api";
 import AuthTokenPostArgs from "../../interfaces/args/AuthTokenPostArgs";
-import { ToastContentProps, toast } from "react-toastify";
 import ApiErrorHandler from "../../services/apiErrorHandler";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Input from "../../components/input";
 import Button from "../../components/button";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 const AuthTokenPostArgsValidation = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Informe o e-mail"),
@@ -16,6 +17,8 @@ const AuthTokenPostArgsValidation = yup.object().shape({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -25,31 +28,15 @@ export default function Login() {
   });
 
   async function Login(data: AuthTokenPostArgs): Promise<void> {
-    api
-      .post("/auth/token", data)
-      .then(({ data }) => {
-        console.log(data); // AuthTokenModel
-        toast.success("Bem vindo!");
-      })
-      .catch((error) => {
-        console.log(error);
-        // toast.error(ApiErrorHandler(error));
-      });
-
-    // toast.promise(api.post("/auth/token", data), {
-    //   pending: "Entrando...",
-    //   success: {
-    //     render({ data }: ToastContentProps) {
-    //       return "Bem vindo!";
-    //     },
-    //     theme: "colored",
-    //   },
-    //   error: {
-    //     render({ data }: ToastContentProps) {
-    //       return ApiErrorHandler(data);
-    //     },
-    //   },
-    // });
+    toast.promise(api.post("/auth/token", data), {
+      loading: "Entrando...",
+      success: ({ data }) => {
+        localStorage.setItem("token", data);
+        navigate("/");
+        return "Bem vindo!";
+      },
+      error: (error: Error | AxiosError) => ApiErrorHandler(error),
+    });
   }
 
   return (
