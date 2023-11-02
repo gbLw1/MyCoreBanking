@@ -7,4 +7,6 @@ const defaultOptions: CreateAxiosDefaults = {
   },
 };
 
-export const api = axios.create(defaultOptions);
+const api = axios.create(defaultOptions);
+
+export default api;

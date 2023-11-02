@@ -7,7 +7,7 @@ export default interface ServiceResult<T = null> {
   messages: ServiceMessage[];
 }
 
-interface ServiceMessage {
+export interface ServiceMessage {
   messageType: "Error" | "Impediment" | "Warning";
   message: string;
   systemKey: string;

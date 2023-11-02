@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import CleanLayout from "../../components/layouts/CleanLayout";
-import { api } from "../../services/axios";
+import api from "../../services/api";
 import AuthTokenPostArgs from "../../interfaces/args/AuthTokenPostArgs";
+import { ToastContentProps, toast } from "react-toastify";
+import ApiErrorHandler from "../../services/apiErrorHandler";
 
 export default function Login() {
   // todo: react-hook-form
@@ -13,7 +15,15 @@ export default function Login() {
       senha: "",
     };
 
-    api.post("/auth/token", args);
+    toast.promise(api.post("/auth/token", args), {
+      pending: "Entrando...",
+      success: "Bem vindo!",
+      error: {
+        render({ data }: ToastContentProps) {
+          return ApiErrorHandler(data);
+        },
+      },
+    });
   }
 
   return (
