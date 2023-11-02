@@ -1,6 +1,8 @@
 import { isAxiosError } from "axios";
 
-export default function ApiErrorHandler(error: object | undefined): string {
+export default function ApiErrorHandler(
+  error: object | unknown | undefined
+): string {
   if (
     isAxiosError(error) &&
     error.response &&

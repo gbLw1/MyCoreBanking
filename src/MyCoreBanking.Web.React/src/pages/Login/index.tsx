@@ -4,26 +4,52 @@ import api from "../../services/api";
 import AuthTokenPostArgs from "../../interfaces/args/AuthTokenPostArgs";
 import { ToastContentProps, toast } from "react-toastify";
 import ApiErrorHandler from "../../services/apiErrorHandler";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import Input from "../../components/input";
+import Button from "../../components/button";
+
+const AuthTokenPostArgsValidation = yup.object().shape({
+  email: yup.string().email("E-mail inválido").required("Informe o e-mail"),
+  senha: yup.string().required("Informe a senha"),
+});
 
 export default function Login() {
-  // todo: react-hook-form
-  function handleLogin(event: React.FormEvent) {
-    event.preventDefault();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthTokenPostArgs>({
+    resolver: yupResolver<AuthTokenPostArgs>(AuthTokenPostArgsValidation),
+  });
 
-    const args: AuthTokenPostArgs = {
-      email: "",
-      senha: "",
-    };
+  async function Login(data: AuthTokenPostArgs): Promise<void> {
+    api
+      .post("/auth/token", data)
+      .then(({ data }) => {
+        console.log(data); // AuthTokenModel
+        toast.success("Bem vindo!");
+      })
+      .catch((error) => {
+        console.log(error);
+        // toast.error(ApiErrorHandler(error));
+      });
 
-    toast.promise(api.post("/auth/token", args), {
-      pending: "Entrando...",
-      success: "Bem vindo!",
-      error: {
-        render({ data }: ToastContentProps) {
-          return ApiErrorHandler(data);
-        },
-      },
-    });
+    // toast.promise(api.post("/auth/token", data), {
+    //   pending: "Entrando...",
+    //   success: {
+    //     render({ data }: ToastContentProps) {
+    //       return "Bem vindo!";
+    //     },
+    //     theme: "colored",
+    //   },
+    //   error: {
+    //     render({ data }: ToastContentProps) {
+    //       return ApiErrorHandler(data);
+    //     },
+    //   },
+    // });
   }
 
   return (
@@ -33,27 +59,26 @@ export default function Login() {
           Bem vindo de volta!
         </span>
 
-        <form onSubmit={handleLogin} className="gap-4 flex flex-col mt-8">
-          <input
-            type="text"
-            name="username"
-            id="username"
+        <form
+          onSubmit={handleSubmit(Login)}
+          className="gap-4 flex flex-col mt-8">
+          <Input
+            control={control}
+            fieldError={errors.email}
+            name="email"
+            type="email"
             placeholder="E-mail"
-            className="text-black p-4 rounded-full border border-zinc-300"
-          />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Senha"
-            className="text-black p-4 rounded-full border border-zinc-300"
           />
 
-          <button
-            type="submit"
-            className="bg-blue-400 text-white p-4 rounded-full font-bold">
-            Entrar
-          </button>
+          <Input
+            control={control}
+            fieldError={errors.senha}
+            name="senha"
+            type="password"
+            placeholder="Senha"
+          />
+
+          <Button type="submit" text="Entrar" />
         </form>
 
         <div className="w-full bg-zinc-300 h-px my-8" />
