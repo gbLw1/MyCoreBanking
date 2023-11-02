@@ -1,6 +1,6 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import AuthTokenModel from "../interfaces/models/AuthTokenModel";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const defaultOptions: CreateAxiosDefaults = {
   baseURL: import.meta.env.VITE_BASE_API_URL,
@@ -24,13 +24,17 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      toast.error("Sua sessão expirou. Faça login novamente.", {
-        autoClose: 5000,
-      });
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      window.location.pathname !== "/login"
+    ) {
+      toast.error("Sua sessão expirou. Faça login novamente.");
 
-      localStorage.removeItem("auth");
-      window.location.href = "/login";
+      setTimeout(() => {
+        localStorage.removeItem("auth");
+        window.location.href = "/login";
+      }, 3000);
     }
 
     return Promise.reject(error);
