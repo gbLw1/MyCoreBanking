@@ -31,7 +31,7 @@ export default function Login() {
     toast.promise(api.post("/auth/token", data), {
       loading: "Entrando...",
       success: ({ data }) => {
-        localStorage.setItem("token", data);
+        localStorage.setItem("auth", data);
         navigate("/");
         return "Bem vindo!";
       },
