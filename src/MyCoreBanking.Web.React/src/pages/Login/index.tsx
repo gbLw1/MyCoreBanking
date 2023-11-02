@@ -10,6 +10,7 @@ import Input from "../../components/input";
 import Button from "../../components/button";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import useValidateToken from "../../hooks/useValidateToken";
 
 const AuthTokenPostArgsValidation = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Informe o e-mail"),
@@ -18,6 +19,8 @@ const AuthTokenPostArgsValidation = yup.object().shape({
 
 export default function Login() {
   const navigate = useNavigate();
+
+  useValidateToken();
 
   const {
     control,
@@ -31,7 +34,7 @@ export default function Login() {
     toast.promise(api.post("/auth/token", data), {
       loading: "Entrando...",
       success: ({ data }) => {
-        localStorage.setItem("auth", data);
+        localStorage.setItem("auth", JSON.stringify(data));
         navigate("/");
         return "Bem vindo!";
       },
