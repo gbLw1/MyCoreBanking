@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "../pages/Login";
 import Home from "../pages";
 import PrivateRoute from "../components/PrivateRoute";
+import NotFound from "../components/NotFound";
 
 export default function AppRouter() {
   return (
@@ -17,6 +18,8 @@ export default function AppRouter() {
             </PrivateRoute>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
