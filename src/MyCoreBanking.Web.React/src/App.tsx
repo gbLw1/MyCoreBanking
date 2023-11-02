@@ -1,15 +1,19 @@
+import { Toaster } from "react-hot-toast";
 import AppRouter from "./routes";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
     <>
-      <ToastContainer
-        hideProgressBar={true}
-        draggable={true}
-        pauseOnHover={false}
-        pauseOnFocusLoss={false}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
       />
       <AppRouter />
     </>
