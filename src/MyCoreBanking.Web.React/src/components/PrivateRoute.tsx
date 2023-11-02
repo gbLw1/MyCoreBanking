@@ -12,7 +12,9 @@ export default function PrivateRoute({ children }: Props) {
   const isAuth: boolean = useIsAuth();
 
   useEffect(() => {
-    if (!isAuth) {
+    const currentLocation = window.location.pathname;
+
+    if (!isAuth && currentLocation !== "/login") {
       navigate("/login");
       toast.error("Você deve realizar o login para acessar essa página.");
     }
