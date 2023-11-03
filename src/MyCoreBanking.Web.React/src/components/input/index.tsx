@@ -22,7 +22,7 @@ export default function Input({
   fieldError,
 }: Props) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-1 w-full">
       <Controller
         control={control}
         name={name}
@@ -40,7 +40,7 @@ export default function Input({
                 focus:outline-none focus:border-blue-400
                 transition-colors duration-200
               `,
-              fieldError && "border-red-500"
+              fieldError && "!border-red-500"
             )}
             disabled={disabled}
           />
@@ -48,7 +48,7 @@ export default function Input({
       />
 
       {fieldError && (
-        <span className="text-red-500 text-sm mt-1">
+        <span className="text-red-500 text-sm">
           {fieldError.message?.toString()}
         </span>
       )}
