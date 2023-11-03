@@ -19,23 +19,17 @@ export default function Button({
       onClick={onClick}
       className={clsx(
         `
-        p-3 rounded-lg 
-        font-bold text-lg
-        active:bg-blue-600 active:outline-none
-        active:outline-none
-        duration-300
-      `,
-        variant === "primary" &&
-          `
-            bg-blue-400 text-white
-            hover:bg-blue-500 transition-colors
-            active:bg-blue-600
-          `,
+          p-3 rounded-lg 
+          font-bold text-lg
+          bg-blue-500 text-white
+          hover:bg-blue-600 transition-colors duration-300
+          active:bg-blue-700 active:outline-none
+        `,
         variant === "secondary" &&
           `
-            bg-green-400 text-slate-800
-            hover:bg-green-500 transition-colors
-            active:bg-green-600
+            !bg-green-500 !text-slate-800
+            hover:!bg-green-600
+            active:!bg-green-700
           `,
         disabled && "opacity-50 cursor-not-allowed"
       )}>
