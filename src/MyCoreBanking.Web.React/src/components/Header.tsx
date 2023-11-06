@@ -1,7 +1,15 @@
 import { FaPiggyBank } from "react-icons/fa6";
 import { Dropdown, Navbar } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  function Logout() {
+    localStorage.clear();
+    navigate("/login");
+  }
+
   return (
     <Navbar fluid className="bg-slate-950 dark:bg-gray-800">
       <Navbar.Brand href="/">
@@ -36,7 +44,7 @@ export default function Header() {
           <Dropdown.Item>Settings</Dropdown.Item>
           <Dropdown.Item>Earnings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={Logout}>Sign out</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
