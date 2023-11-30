@@ -17,6 +17,7 @@ export default function Button({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
         `
           p-3 rounded-lg 

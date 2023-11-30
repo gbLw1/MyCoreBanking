@@ -11,6 +11,7 @@ import Button from "../../components/button";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useValidateToken from "../../hooks/useValidateToken";
+import { useState } from "react";
 
 const AuthTokenPostArgsValidation = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Informe o e-mail"),
@@ -30,16 +31,23 @@ export default function Login() {
     resolver: yupResolver<AuthTokenPostArgs>(AuthTokenPostArgsValidation),
   });
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   async function Login(data: AuthTokenPostArgs): Promise<void> {
-    toast.promise(api.post("/auth/token", data), {
-      loading: "Entrando...",
-      success: ({ data }) => {
-        localStorage.setItem("auth", JSON.stringify(data));
-        navigate("/");
-        return "Bem vindo!";
-      },
-      error: (error: Error | AxiosError) => ApiErrorHandler(error),
-    });
+    setLoading(true);
+
+    toast.promise(
+      api.post("/auth/token", data).finally(() => setLoading(false)),
+      {
+        loading: "Entrando...",
+        success: ({ data }) => {
+          localStorage.setItem("auth", JSON.stringify(data));
+          navigate("/");
+          return "Bem vindo!";
+        },
+        error: (error: Error | AxiosError) => ApiErrorHandler(error),
+      }
+    );
   }
 
   return (
@@ -68,7 +76,7 @@ export default function Login() {
             placeholder="Senha"
           />
 
-          <Button type="submit" text="Entrar" />
+          <Button type="submit" disabled={loading} text="Entrar" />
         </form>
 
         <div className="w-full bg-zinc-300 h-px my-8" />
