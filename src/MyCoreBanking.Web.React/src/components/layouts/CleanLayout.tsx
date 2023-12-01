@@ -10,7 +10,13 @@ export default function CleanLayout({ children }: Props) {
       <div className="max-w-[600px] w-full p-8 gap-4 bg-white rounded-md shadow-md flex flex-col justify-start">
         <header className="flex flex-col justify-center items-center gap-4">
           <FaPiggyBank
-            className="text-yellow-200 rounded-full transform rotate-[-15deg] bg-black p-3.5 mr-3"
+            className="text-yellow-400 
+            bg-zinc-50
+            border-2 border-yellow-400 
+            rounded-full
+            transform rotate-[-15deg] 
+            p-1 mr-2 md:mr-3
+          "
             size={100}
           />
         </header>
