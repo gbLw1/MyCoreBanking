@@ -94,7 +94,7 @@ export default function Header() {
       </div>
 
       {/* Page links */}
-      <div className="hidden md:flex items-center gap-3">
+      <div className="hidden md:flex -ms-36 items-center gap-3">
         {pages.map((page) => (
           <Link
             key={page.path}
