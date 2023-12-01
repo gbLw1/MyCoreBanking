@@ -1,9 +1,5 @@
-import MainLayout from "../components/layouts/MainLayout";
+import Home from "./Home";
+import Cadastro from "./Cadastro";
+import Login from "./Login";
 
-export default function Home() {
-  return (
-    <MainLayout>
-      <h1>Home</h1>
-    </MainLayout>
-  );
-}
+export { Login, Cadastro, Home };

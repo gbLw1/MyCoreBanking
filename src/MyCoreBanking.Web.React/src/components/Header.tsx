@@ -12,52 +12,68 @@ export default function Header() {
   }
 
   return (
-    <Navbar fluid className="bg-zinc-950">
+    <Navbar fluid className="fixed w-full">
       <Navbar.Brand href="/">
         <FaPiggyBank
-          className="text-yellow-200 rounded-full transform rotate-[-15deg] bg-zinc-950 p-1.5 mr-3"
+          className="text-yellow-400 
+            border-2 border-yellow-400 
+            rounded-full
+            transform rotate-[-15deg] 
+            p-1 mr-2 md:mr-3
+          "
           size={40}
         />
-        <span className="self-center whitespace-nowrap text-xl font-normal">
+        <span className="text-zinc-700 self-center whitespace-nowrap text-lg md:text-xl font-normal">
           MyCoreBanking
         </span>
       </Navbar.Brand>
+
       <div className="flex md:order-2">
         <Dropdown
           arrowIcon={false}
           inline
           label={
             <span
-              className="me-3 md:me-0 w-8 h-8 text-white font-normal bg-transparent rounded-full
+              className="me-1 md:me-0 w-8 h-8 text-white font-normal bg-transparent rounded-full
                 flex items-center justify-center
                 border-2 border-cyan-700
                 text-lg
+                text-zinc-700 
               ">
               G
             </span>
           }>
           <Dropdown.Header>
-            <span className="block text-sm">gbL</span>
+            <span className="block text-sm font-bold mb-2">gbL</span>
             <span className="block truncate text-sm font-medium">
               teste@teste.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item onClick={Logout}>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={Logout}>Sair</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
+
       <Navbar.Collapse>
         <Navbar.Link href="/" active={location.pathname === "/"}>
           Home
         </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
+        <Navbar.Link
+          href="/transactions"
+          active={location.pathname === "/transactions"}>
+          Transações
+        </Navbar.Link>
+        <Navbar.Link
+          href="/accounts"
+          active={location.pathname === "/accounts"}>
+          Contas
+        </Navbar.Link>
+        <Navbar.Link href="/profile" active={location.pathname === "/profile"}>
+          Perfil
+        </Navbar.Link>
+        <Navbar.Link href="/about" active={location.pathname === "/about"}>
+          Sobre nós
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
