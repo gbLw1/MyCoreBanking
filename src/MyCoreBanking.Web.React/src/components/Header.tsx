@@ -76,32 +76,34 @@ export default function Header() {
   });
 
   return (
-    <header className="fixed px-3 py-2 w-full bg-white shadow-sm z-10 flex flex-wrap justify-between items-center">
+    <header className="fixed px-3 py-2 w-full bg-sky-500 shadow-sm z-10 flex flex-wrap justify-between items-center">
       <div className="flex items-center">
         <FaPiggyBank
-          className="text-yellow-400 
-            bg-zinc-50
-            border-2 border-yellow-400 
+          className="text-amber-400
+            border-2 border-amber-400
+            bg-black
+            bg-opacity-40
             rounded-full
             transform rotate-[-15deg] 
-            p-1 mr-2 md:mr-3
+            p-1.5 mr-2 lg:mr-3
           "
           size={40}
         />
-        <span className="text-zinc-700 self-center whitespace-nowrap text-lg md:text-xl font-normal">
+        <span className="text-white self-center whitespace-nowrap text-lg lg:text-xl font-normal">
           MyCoreBanking
         </span>
       </div>
 
       {/* Page links */}
-      <div className="hidden md:flex -ms-36 items-center gap-3">
+      <div className="hidden lg:flex -ms-36 items-center gap-3">
         {pages.map((page) => (
           <Link
             key={page.path}
             to={page.path}
             className={clsx(
-              "text-zinc-700 self-center whitespace-nowrap text-sm md:text-md font-normal",
-              path === page.path && "!text-cyan-700 !font-bold"
+              "text-white self-center whitespace-nowrap text-sm lg:text-base font-normal transition-all duration-100 hover:scale-110",
+              path === page.path &&
+                "!font-bold border-2 border-white rounded-full px-2 py-1 tracking-wider"
             )}>
             {page.name}
           </Link>
@@ -113,33 +115,27 @@ export default function Header() {
         <span
           ref={dropdownTargetRef}
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="me-1 md:me-0 w-8 h-8 
-                text-white font-normal 
-                bg-transparent rounded-full
-                flex items-center justify-center
-                border-2 border-cyan-700
-                text-lg
-                text-zinc-700 
-                cursor-pointer
-              ">
+          className="w-8 h-8 text-white font-normal bg-transparent rounded-full flex items-center justify-center border-2 border-amber-400 text-lg text-white cursor-pointer">
           G
         </span>
 
         <div
           ref={dropdownRef}
           className={clsx(
-            "absolute top-0 right-0 flex-col items-center justify-center rounded-md mt-10 border-2 border-zinc-300 me-2 w-36 md:w-28 py-2 px-4 bg-white text-black shadow-md z-10 transition-all duration-200",
+            "absolute top-0 right-0 flex-col items-center justify-center rounded-md border-2 border-white mt-12 w-36 lg:w-28 py-2 px-4 bg-white text-black shadow-md z-10 transition-all duration-200",
             dropdownOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           )}>
+          <div className="absolute top-0 right-0 w-3 h-3 bg-white transform rotate-45 -translate-y-1 -translate-x-2 -mt-1" />
+
           {/* 🟡📱 Mobile 📱🟡 -> Page links */}
-          <div className="flex md:hidden flex-col gap-2">
+          <div className="flex lg:hidden flex-col gap-2">
             {pages.map((page) => (
               <Link
                 key={page.path}
                 to={page.path}
                 className={clsx(
-                  "flex items-center justify-between text-zinc-700 whitespace-nowrap text-sm md:text-md font-normal",
-                  path === page.path && "!text-cyan-700 !font-bold"
+                  "flex items-center justify-between text-zinc-700 whitespace-nowrap text-sm lg:text-md font-normal",
+                  path === page.path && "!text-sky-500 !font-bold"
                 )}>
                 <span className="me-2">{page.icon}</span>
                 {page.name}
@@ -150,7 +146,7 @@ export default function Header() {
 
           <span
             onClick={Logout}
-            className="flex justify-between items-center cursor-pointer hover:text-cyan-700">
+            className="flex justify-between items-center cursor-pointer">
             <MdOutlineLogout className="me-2" />
             Sair
           </span>
