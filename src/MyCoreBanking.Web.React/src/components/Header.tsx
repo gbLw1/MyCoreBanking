@@ -76,23 +76,23 @@ export default function Header() {
   });
 
   return (
-    <header className="fixed px-3 py-2 w-full bg-sky-500 shadow-sm z-10 flex flex-wrap justify-between items-center">
-      <div className="flex items-center">
+    <header
+      className="fixed px-3 py-2 w-full bg-gradient-to-b from-sky-500 to-blue-500
+      shadow-sm z-10 flex flex-wrap justify-between items-center">
+      <Link to="/" className="flex items-center">
         <FaPiggyBank
           className="text-amber-400
             border-2 border-amber-400
-            bg-black
-            bg-opacity-40
             rounded-full
             transform rotate-[-15deg] 
-            p-1.5 mr-2 lg:mr-3
+            p-1 mr-2 lg:mr-1
           "
           size={40}
         />
         <span className="text-white self-center whitespace-nowrap text-lg lg:text-xl font-normal">
           MyCoreBanking
         </span>
-      </div>
+      </Link>
 
       {/* Page links */}
       <div className="hidden lg:flex -ms-36 items-center gap-3">
@@ -115,7 +115,7 @@ export default function Header() {
         <span
           ref={dropdownTargetRef}
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="w-8 h-8 text-white font-normal bg-transparent rounded-full flex items-center justify-center border-2 border-amber-400 text-lg text-white cursor-pointer">
+          className="w-9 h-9 font-bold bg-transparent rounded-full flex items-center justify-center border-2 border-white text-2xl text-white cursor-pointer">
           G
         </span>
 
