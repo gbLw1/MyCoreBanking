@@ -1,6 +1,7 @@
 import { FaPiggyBank } from "react-icons/fa6";
 import { Dropdown, Navbar } from "flowbite-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 export default function Header() {
   const location = useLocation();
@@ -16,6 +17,7 @@ export default function Header() {
       <Navbar.Brand href="/">
         <FaPiggyBank
           className="text-yellow-400 
+            bg-zinc-50
             border-2 border-yellow-400 
             rounded-full
             transform rotate-[-15deg] 
@@ -55,23 +57,34 @@ export default function Header() {
       </div>
 
       <Navbar.Collapse>
-        <Navbar.Link href="/" active={location.pathname === "/"}>
+        <Navbar.Link
+          href="/"
+          className={clsx(location.pathname === "/" && "font-bold")}
+          active={location.pathname === "/"}>
           Home
         </Navbar.Link>
         <Navbar.Link
           href="/transactions"
+          className={clsx(location.pathname === "/transactions" && "font-bold")}
           active={location.pathname === "/transactions"}>
           Transações
         </Navbar.Link>
         <Navbar.Link
           href="/accounts"
+          className={clsx(location.pathname === "/accounts" && "font-bold")}
           active={location.pathname === "/accounts"}>
           Contas
         </Navbar.Link>
-        <Navbar.Link href="/profile" active={location.pathname === "/profile"}>
+        <Navbar.Link
+          href="/profile"
+          className={clsx(location.pathname === "/profile" && "font-bold")}
+          active={location.pathname === "/profile"}>
           Perfil
         </Navbar.Link>
-        <Navbar.Link href="/about" active={location.pathname === "/about"}>
+        <Navbar.Link
+          href="/about"
+          className={clsx(location.pathname === "/about" && "font-bold")}
+          active={location.pathname === "/about"}>
           Sobre nós
         </Navbar.Link>
       </Navbar.Collapse>
