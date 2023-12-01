@@ -1,5 +1,11 @@
-import { FaPiggyBank } from "react-icons/fa6";
-import { CiLogout } from "react-icons/ci";
+import { FaHome } from "react-icons/fa";
+import {
+  FaMoneyBillTransfer,
+  FaPiggyBank,
+  FaCircleInfo,
+} from "react-icons/fa6";
+import { MdAccountBalance, MdOutlineLogout } from "react-icons/md";
+import { IoPerson } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -7,28 +13,34 @@ import { useEffect, useRef, useState } from "react";
 interface Page {
   name: string;
   path: string;
+  icon: JSX.Element;
 }
 
 const pages: Page[] = [
   {
     name: "Home",
     path: "/",
+    icon: <FaHome />,
   },
   {
     name: "Transações",
     path: "/transactions",
+    icon: <FaMoneyBillTransfer />,
   },
   {
     name: "Contas",
     path: "/accounts",
+    icon: <MdAccountBalance />,
   },
   {
     name: "Perfil",
     path: "/profile",
+    icon: <IoPerson />,
   },
   {
     name: "Sobre nós",
     path: "/about",
+    icon: <FaCircleInfo />,
   },
 ];
 
@@ -116,29 +128,30 @@ export default function Header() {
         <div
           ref={dropdownRef}
           className={clsx(
-            "absolute top-0 right-0 flex-col items-center justify-center rounded-md mt-10 border-2 border-zinc-300 me-2 w-36 md:w-28 p-2 bg-white text-black shadow-md z-10 transition-all duration-200",
+            "absolute top-0 right-0 flex-col items-center justify-center rounded-md mt-10 border-2 border-zinc-300 me-2 w-36 md:w-28 py-2 px-4 bg-white text-black shadow-md z-10 transition-all duration-200",
             dropdownOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           )}>
           {/* 🟡📱 Mobile 📱🟡 -> Page links */}
-          <div className="flex md:hidden flex-col items-center justify-center gap-2">
+          <div className="flex md:hidden flex-col gap-2">
             {pages.map((page) => (
               <Link
                 key={page.path}
                 to={page.path}
                 className={clsx(
-                  "text-zinc-700 self-center whitespace-nowrap text-sm md:text-md font-normal",
+                  "flex items-center justify-between text-zinc-700 whitespace-nowrap text-sm md:text-md font-normal",
                   path === page.path && "!text-cyan-700 !font-bold"
                 )}>
+                <span className="me-2">{page.icon}</span>
                 {page.name}
               </Link>
             ))}
-            <hr className="w-full border-gray-300 my-1" />
+            <hr className="w-full border-gray-300 my-2" />
           </div>
 
           <span
             onClick={Logout}
-            className="flex justify-center items-center cursor-pointer hover:text-cyan-700">
-            <CiLogout className="me-2" />
+            className="flex justify-between items-center cursor-pointer hover:text-cyan-700">
+            <MdOutlineLogout className="me-2" />
             Sair
           </span>
         </div>
