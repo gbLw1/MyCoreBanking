@@ -14,7 +14,7 @@ export default function CleanLayout({ children }: Props) {
             border-4 border-amber-400 
             rounded-full
             transform rotate-[-15deg] 
-            p-1.5 mr-2 md:mr-3
+            p-1.5 mr-2 lg:mr-3
           "
             size={100}
           />

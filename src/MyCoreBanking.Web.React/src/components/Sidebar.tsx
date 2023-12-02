@@ -18,12 +18,12 @@ export default function Sidebar() {
           <div className="sidebar-brand-icon rotate-n-15">
             <FaPiggyBank
               className="text-yellow-400 
-            bg-zinc-50
-            border-2 border-yellow-400 
-            rounded-full
-            transform rotate-[-15deg] 
-            p-1 mr-2 md:mr-3
-          "
+                bg-zinc-50
+                border-2 border-yellow-400 
+                rounded-full
+                transform rotate-[-15deg] 
+                p-1 mr-2 lg:mr-3
+              "
               size={40}
             />
           </div>
