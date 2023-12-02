@@ -82,7 +82,7 @@ export default function Login() {
         <div className="w-full bg-zinc-300 h-px my-8" />
 
         <Link
-          to="/cadastro"
+          to="/register"
           className="text-blue-500 underline underline-offset-1 flex justify-center">
           Criar uma nova conta
         </Link>

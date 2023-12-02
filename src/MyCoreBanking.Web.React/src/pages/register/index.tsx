@@ -23,7 +23,7 @@ const UsuariosPostArgsValidation = yup.object().shape({
     .required("Confirme a senha"),
 });
 
-export default function Cadastro() {
+export default function Register() {
   const navigate = useNavigate();
 
   useValidateToken();

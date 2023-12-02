@@ -1,14 +1,22 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "../components/PrivateRoute";
 import NotFound from "../components/NotFound";
-import { Cadastro, Home, Login } from "../pages";
+import {
+  Register,
+  Home,
+  Login,
+  Transactions,
+  Accounts,
+  Profile,
+  About,
+} from "../pages";
 
 export default function AppRouter() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/"
@@ -23,7 +31,7 @@ export default function AppRouter() {
           path="/transactions"
           element={
             <PrivateRoute>
-              <Home />
+              <Transactions />
             </PrivateRoute>
           }
         />
@@ -32,7 +40,7 @@ export default function AppRouter() {
           path="/accounts"
           element={
             <PrivateRoute>
-              <Home />
+              <Accounts />
             </PrivateRoute>
           }
         />
@@ -41,7 +49,7 @@ export default function AppRouter() {
           path="/profile"
           element={
             <PrivateRoute>
-              <Home />
+              <Profile />
             </PrivateRoute>
           }
         />
@@ -50,7 +58,7 @@ export default function AppRouter() {
           path="/about"
           element={
             <PrivateRoute>
-              <Home />
+              <About />
             </PrivateRoute>
           }
         />
