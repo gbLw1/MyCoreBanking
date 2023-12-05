@@ -1,6 +1,6 @@
 import axios, { CreateAxiosDefaults } from "axios";
-import AuthTokenModel from "../interfaces/models/AuthTokenModel";
 import toast from "react-hot-toast";
+import AuthTokenModel from "../../interfaces/models/AuthTokenModel";
 
 const defaultOptions: CreateAxiosDefaults = {
   baseURL: import.meta.env.VITE_BASE_API_URL,
