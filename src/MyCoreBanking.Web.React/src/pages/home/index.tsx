@@ -1,8 +1,30 @@
 import { FaBalanceScale, FaCalendarMinus, FaDollarSign } from "react-icons/fa";
 import MainLayout from "../../components/layouts/MainLayout";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { getEstatisticas } from "../../services/estatisticas.service";
+import RelatorioModel from "../../interfaces/models/RelatorioModel";
+import toast from "react-hot-toast";
+import { Spinner } from "flowbite-react";
+import utils from "../../utils";
 
 export default function Home() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [estatisticas, setEstatisticas] = useState<RelatorioModel>(
+    {} as RelatorioModel
+  );
+
+  useEffect(() => {
+    getEstatisticas()
+      .then(({ data }: { data: RelatorioModel }) => {
+        setEstatisticas(data);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <MainLayout>
       <div className="flex flex-col items-center p-4">
@@ -16,7 +38,13 @@ export default function Home() {
         <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
           <div className="flex flex-col justify-center">
             <span className="text-xl font-bold text-blue-500">Seu saldo</span>
-            <span className="text-md lg:text-lg">R$ 1.000,00</span>
+            <span className="text-md lg:text-lg">
+              {loading ? (
+                <Spinner />
+              ) : (
+                utils.formatCurrency(estatisticas.saldoTotal)
+              )}
+            </span>
           </div>
           <FaDollarSign className="text-4xl lg:text-5xl text-blue-500" />
         </div>
@@ -26,7 +54,13 @@ export default function Home() {
             <span className="text-xl font-bold text-green-400">
               Total investido
             </span>
-            <span className="text-md lg:text-lg">R$ 1.000,00</span>
+            <span className="text-md lg:text-lg">
+              {loading ? (
+                <Spinner />
+              ) : (
+                utils.formatCurrency(estatisticas.totalInvestido)
+              )}
+            </span>
           </div>
           <FaMoneyBillTrendUp className="text-4xl lg:text-5xl text-green-400" />
         </div>
@@ -36,7 +70,9 @@ export default function Home() {
             <span className="text-xl font-bold text-yellow-400">
               Pendências
             </span>
-            <span className="text-md lg:text-lg">0</span>
+            <span className="text-md lg:text-lg">
+              {loading ? <Spinner /> : estatisticas.transacoesPendentes}
+            </span>
           </div>
           <FaCalendarMinus className="text-4xl lg:text-5xl text-yellow-400" />
         </div>
@@ -46,7 +82,13 @@ export default function Home() {
             <span className="text-xl font-bold text-cyan-500">
               Balanço mensal
             </span>
-            <span className="text-md lg:text-lg">R$ 1.000,00</span>
+            <span className="text-md lg:text-lg">
+              {loading ? (
+                <Spinner />
+              ) : (
+                utils.formatCurrency(estatisticas.balancoMensal)
+              )}
+            </span>
           </div>
           <FaBalanceScale className="text-4xl lg:text-5xl text-cyan-500" />
         </div>
