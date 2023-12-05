@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import CleanLayout from "../../components/layouts/CleanLayout";
-import api from "../../services/api";
 import AuthTokenPostArgs from "../../interfaces/args/AuthTokenPostArgs";
-import ApiErrorHandler from "../../services/apiErrorHandler";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -12,6 +10,8 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import useValidateToken from "../../hooks/useValidateToken";
 import { useState } from "react";
+import api from "../../services/client/api";
+import ApiErrorHandler from "../../services/client/apiErrorHandler";
 
 const AuthTokenPostArgsValidation = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Informe o e-mail"),
