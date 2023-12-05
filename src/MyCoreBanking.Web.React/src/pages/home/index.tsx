@@ -12,8 +12,8 @@ export default function Home() {
         </span>
       </div>
 
-      <div className="flex flex-wrap mt-4">
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full md:w-2/4 lg:w-1/4">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
           <div className="flex flex-col justify-center">
             <span className="text-xl font-bold text-blue-500">Seu saldo</span>
             <span className="text-md lg:text-lg">R$ 1.000,00</span>
@@ -21,7 +21,7 @@ export default function Home() {
           <FaDollarSign className="text-4xl lg:text-5xl text-blue-500" />
         </div>
 
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full md:w-2/4 lg:w-1/4">
+        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
           <div className="flex flex-col justify-center">
             <span className="text-xl font-bold text-green-400">
               Total investido
@@ -31,7 +31,7 @@ export default function Home() {
           <FaMoneyBillTrendUp className="text-4xl lg:text-5xl text-green-400" />
         </div>
 
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full md:w-2/4 lg:w-1/4">
+        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
           <div className="flex flex-col justify-center">
             <span className="text-xl font-bold text-yellow-400">
               Pendências
@@ -41,7 +41,7 @@ export default function Home() {
           <FaCalendarMinus className="text-4xl lg:text-5xl text-yellow-400" />
         </div>
 
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full md:w-2/4 lg:w-1/4">
+        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
           <div className="flex flex-col justify-center">
             <span className="text-xl font-bold text-cyan-500">
               Balanço mensal
