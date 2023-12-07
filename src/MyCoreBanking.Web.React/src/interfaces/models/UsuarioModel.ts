@@ -3,4 +3,3 @@ export default interface UsuarioModel {
   nome: string;
   email: string;
 }
-

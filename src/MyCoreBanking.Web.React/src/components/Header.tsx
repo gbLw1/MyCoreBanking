@@ -9,6 +9,11 @@ import { IoPerson } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { getPerfil } from "../services/user.service";
+import toast from "react-hot-toast";
+import { Spinner } from "flowbite-react";
+import UsuarioModel from "../interfaces/models/UsuarioModel";
+import { useUser } from "../contexts/UserContext";
 
 interface Page {
   name: string;
@@ -49,6 +54,9 @@ export default function Header() {
   const path = location.pathname;
   const navigate = useNavigate();
 
+  const { setUser, nome } = useUser();
+
+  const [loading, setLoading] = useState<boolean>(false);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownTargetRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -56,6 +64,34 @@ export default function Header() {
   function Logout() {
     localStorage.clear();
     navigate("/login");
+  }
+
+  async function getUserData() {
+    if (nome) {
+      return;
+    }
+
+    const auth = localStorage.getItem("auth");
+
+    if (!auth) {
+      return;
+    }
+
+    setLoading(true);
+
+    getPerfil()
+      .then(({ data }) => {
+        const user: UsuarioModel = data;
+        setUser(user);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.message || "Erro ao carregar dados do usuário"
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -74,6 +110,11 @@ export default function Header() {
       document.removeEventListener("mousedown", closeDropdownOnOverlayClick);
     };
   });
+
+  useEffect(() => {
+    getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header
@@ -115,8 +156,8 @@ export default function Header() {
         <span
           ref={dropdownTargetRef}
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="w-9 h-9 font-bold bg-transparent rounded-full flex items-center justify-center border-2 border-white text-2xl text-white cursor-pointer">
-          G
+          className="leading-4 w-9 h-9 font-bold bg-transparent rounded-full flex items-center justify-center border-2 border-white text-2xl text-white cursor-pointer">
+          {loading ? <Spinner /> : nome?.[0]?.toUpperCase() || "?"}
         </span>
 
         <div
