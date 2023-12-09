@@ -7,6 +7,7 @@ import RelatorioModel from "../../interfaces/models/RelatorioModel";
 import toast from "react-hot-toast";
 import { Spinner } from "flowbite-react";
 import utils from "../../utils";
+import LineChart from "./components/LineChart";
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -91,6 +92,40 @@ export default function Home() {
             </span>
           </div>
           <FaBalanceScale className="text-4xl lg:text-5xl text-cyan-500" />
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <span className="text-2xl font-bold">Estatísticas</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="sm:hidden">
+            <span className="text-lg">
+              Visualize as estatísticas dos gráficos de movimentações de entrada
+              e saída em dispositivos maiores (tablets, notebooks, desktops).
+            </span>
+          </div>
+          <div className="w-full lg:h-[700px] md:h-[500px] sm:h-[400px] hidden sm:block">
+            {loading ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <Spinner size="xl" />
+              </div>
+            ) : (
+              <LineChart
+                data={estatisticas.graficoMovimentacaoUltimos12Meses}
+              />
+            )}
+          </div>
+          <div className="w-full lg:h-[700px] md:h-[500px] sm:h-[400px] hidden sm:block">
+            {loading ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <Spinner size="xl" />
+              </div>
+            ) : (
+              <LineChart
+                data={estatisticas.graficoMovimentacaoUltimos12Meses}
+              />
+            )}
+          </div>
         </div>
       </div>
     </MainLayout>
