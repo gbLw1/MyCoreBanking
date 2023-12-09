@@ -1,7 +1,7 @@
 export const graphColors = [
-  "#FF6384",
   "#36A2EB",
   "#FFCE56",
+  "#FF6384",
   "#33FF99",
   "#FF5733",
   "#8A2BE2",
