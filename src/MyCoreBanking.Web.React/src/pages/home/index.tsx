@@ -9,11 +9,54 @@ import { Spinner } from "flowbite-react";
 import utils from "../../utils";
 import LineChart from "./components/LineChart";
 
+interface Card {
+  title: string;
+  color: string;
+  valueType: "currency" | "number";
+  value: number;
+  icon: JSX.Element;
+}
+
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [estatisticas, setEstatisticas] = useState<RelatorioModel>(
     {} as RelatorioModel
   );
+
+  const cards: Card[] = [
+    {
+      title: "Seu saldo",
+      color: "blue-500",
+      valueType: "currency",
+      value: estatisticas.saldoTotal,
+      icon: <FaDollarSign className="text-4xl lg:text-5xl text-blue-500" />,
+    },
+    {
+      title: "Total investido",
+      color: "green-400",
+      valueType: "currency",
+      value: estatisticas.totalInvestido,
+      icon: (
+        <FaMoneyBillTrendUp className="text-4xl lg:text-5xl text-green-400" />
+      ),
+    },
+    {
+      title: "Pendências",
+      color: "yellow-400",
+      valueType: "number",
+      value: estatisticas.transacoesPendentes,
+      icon: (
+        <FaCalendarMinus className="text-4xl lg:text-5xl text-yellow-400" />
+      ),
+    },
+    {
+      title: "Balanço mensal",
+      color: "cyan-500",
+      valueType: "currency",
+      value: estatisticas.balancoMensal,
+      icon: <FaBalanceScale className="text-4xl lg:text-5xl text-cyan-500" />,
+    },
+  ];
 
   useEffect(() => {
     getEstatisticas()
@@ -36,63 +79,28 @@ export default function Home() {
       </div>
 
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
-          <div className="flex flex-col justify-center">
-            <span className="text-xl font-bold text-blue-500">Seu saldo</span>
-            <span className="text-md lg:text-lg">
-              {loading ? (
-                <Spinner />
-              ) : (
-                utils.formatCurrency(estatisticas.saldoTotal)
-              )}
-            </span>
+        {cards.map((card) => (
+          <div
+            key={card.title}
+            className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
+            <div className="flex flex-col justify-center">
+              <span
+                className={`text-md lg:text-lg font-bold text-${card.color}`}>
+                {card.title}
+              </span>
+              <span className="text-md lg:text-lg">
+                {loading ? (
+                  <Spinner />
+                ) : card.valueType === "currency" ? (
+                  utils.formatCurrency(card.value)
+                ) : (
+                  card.value
+                )}
+              </span>
+            </div>
+            {card.icon}
           </div>
-          <FaDollarSign className="text-4xl lg:text-5xl text-blue-500" />
-        </div>
-
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
-          <div className="flex flex-col justify-center">
-            <span className="text-xl font-bold text-green-400">
-              Total investido
-            </span>
-            <span className="text-md lg:text-lg">
-              {loading ? (
-                <Spinner />
-              ) : (
-                utils.formatCurrency(estatisticas.totalInvestido)
-              )}
-            </span>
-          </div>
-          <FaMoneyBillTrendUp className="text-4xl lg:text-5xl text-green-400" />
-        </div>
-
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
-          <div className="flex flex-col justify-center">
-            <span className="text-xl font-bold text-yellow-400">
-              Pendências
-            </span>
-            <span className="text-md lg:text-lg">
-              {loading ? <Spinner /> : estatisticas.transacoesPendentes}
-            </span>
-          </div>
-          <FaCalendarMinus className="text-4xl lg:text-5xl text-yellow-400" />
-        </div>
-
-        <div className="flex justify-between items-center border-2 border-zinc-300 rounded-lg p-4 w-full">
-          <div className="flex flex-col justify-center">
-            <span className="text-xl font-bold text-cyan-500">
-              Balanço mensal
-            </span>
-            <span className="text-md lg:text-lg">
-              {loading ? (
-                <Spinner />
-              ) : (
-                utils.formatCurrency(estatisticas.balancoMensal)
-              )}
-            </span>
-          </div>
-          <FaBalanceScale className="text-4xl lg:text-5xl text-cyan-500" />
-        </div>
+        ))}
       </div>
 
       <div className="mt-8">
