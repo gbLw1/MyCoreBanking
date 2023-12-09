@@ -9,6 +9,7 @@ import { Spinner } from "flowbite-react";
 import utils from "../../utils";
 import LineChart from "./components/LineChart";
 import PieChart from "./components/PieChart";
+import BarChart from "./components/BarChart";
 
 interface Card {
   title: string;
@@ -125,6 +126,34 @@ export default function Home() {
               </div>
             ) : (
               <PieChart data={estatisticas.graficoDespesaPorCategoriaMensal} />
+            )}
+          </div>
+
+          <div className="w-full h-full md:h-[500px] sm:h-[400px] lg:col-span-3">
+            {loading ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <Spinner size="xl" />
+              </div>
+            ) : (
+              <BarChart data={estatisticas.graficoDespesaPorCategoriaAnual} />
+            )}
+          </div>
+          <div className="w-full h-full flex flex-col items-center justify-center lg:col-span-1">
+            {loading ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <Spinner size="xl" />
+              </div>
+            ) : (
+              <>
+                <p className="text-sm lg:text-md my-2 font-semibold text-[#666666]">
+                  Espaço para anúncio do plano de assinatura
+                </p>
+                <img
+                  src="images/dog.jpeg"
+                  alt="Lucas"
+                  className="rounded-lg shadow-lg w-full h-full md:max-h-[500px] object-cover"
+                />
+              </>
             )}
           </div>
         </div>

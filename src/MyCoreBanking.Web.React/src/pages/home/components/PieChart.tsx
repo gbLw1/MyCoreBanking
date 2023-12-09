@@ -1,6 +1,7 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import GraficoDespesaPorCategoria from "../../../interfaces/models/GraficoDespesaPorCategoria";
+import { graphColors } from "../../../constants/graph-colors";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -45,38 +46,8 @@ export default function PieChart({ data }: Props) {
       {
         label: "Gastos por categoria neste mês",
         data: data?.map((d) => d.valor) || [],
-        backgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#33FF99",
-          "#FF5733",
-          "#8A2BE2",
-          "#7FFFD4",
-          "#B0E0E6",
-          "#FFD700",
-          "#7FFF00",
-          "#CD5C5C",
-          "#9370DB",
-          "#00FF7F",
-          "#20B2AA",
-        ],
-        borderColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#33FF99",
-          "#FF5733",
-          "#8A2BE2",
-          "#7FFFD4",
-          "#B0E0E6",
-          "#FFD700",
-          "#7FFF00",
-          "#CD5C5C",
-          "#9370DB",
-          "#00FF7F",
-          "#20B2AA",
-        ],
+        backgroundColor: graphColors,
+        borderColor: graphColors,
         borderWidth: 1,
       },
     ],

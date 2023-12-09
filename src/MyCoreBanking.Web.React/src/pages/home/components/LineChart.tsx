@@ -54,7 +54,7 @@ interface Props {
 }
 
 /**
- * Line chart component to display the last 12 months of income and expenses
+ * Line chart component to display the current and last 12 months of income and expenses
  * @param data GraficoDespesaReceita[] | null;
  */
 export default function LineChart({ data }: Props) {
