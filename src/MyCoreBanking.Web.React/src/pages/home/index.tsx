@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Spinner } from "flowbite-react";
 import utils from "../../utils";
 import LineChart from "./components/LineChart";
+import PieChart from "./components/PieChart";
 
 interface Card {
   title: string;
@@ -105,14 +106,8 @@ export default function Home() {
 
       <div className="mt-8">
         <span className="text-2xl font-bold">Estatísticas</span>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="sm:hidden">
-            <span className="text-lg">
-              Visualize as estatísticas dos gráficos de movimentações de entrada
-              e saída em dispositivos maiores (tablets, notebooks, desktops).
-            </span>
-          </div>
-          <div className="w-full lg:h-[700px] md:h-[500px] sm:h-[400px] hidden sm:block">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="w-full md:h-[500px] sm:h-[400px] lg:col-span-3">
             {loading ? (
               <div className="flex justify-center items-center h-[400px]">
                 <Spinner size="xl" />
@@ -123,15 +118,13 @@ export default function Home() {
               />
             )}
           </div>
-          <div className="w-full lg:h-[700px] md:h-[500px] sm:h-[400px] hidden sm:block">
+          <div className="w-full lg:h-[400px] md:h-[500px] sm:h-[400px] lg:col-span-1">
             {loading ? (
               <div className="flex justify-center items-center h-[400px]">
                 <Spinner size="xl" />
               </div>
             ) : (
-              <LineChart
-                data={estatisticas.graficoMovimentacaoUltimos12Meses}
-              />
+              <PieChart data={estatisticas.graficoDespesaPorCategoriaMensal} />
             )}
           </div>
         </div>
