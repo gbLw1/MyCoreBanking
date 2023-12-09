@@ -58,7 +58,8 @@ interface Props {
  * @param data GraficoDespesaPorCategoria[] | null;
  */
 export default function BarChart({ data }: Props) {
-  const labels = Object.entries(Categoria).map(([key, value]) => value);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const labels = Object.entries(Categoria).map(([_key, value]) => value);
 
   const chartData = {
     labels,
