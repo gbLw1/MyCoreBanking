@@ -1,0 +1,16 @@
+export const graphColors = [
+  "#FF6384",
+  "#36A2EB",
+  "#FFCE56",
+  "#33FF99",
+  "#FF5733",
+  "#8A2BE2",
+  "#7FFFD4",
+  "#B0E0E6",
+  "#FFD700",
+  "#7FFF00",
+  "#CD5C5C",
+  "#9370DB",
+  "#00FF7F",
+  "#20B2AA",
+];
