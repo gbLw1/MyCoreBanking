@@ -44,7 +44,7 @@ export default function PieChart({ data }: Props) {
     labels,
     datasets: [
       {
-        label: "Gastos por categoria neste mês",
+        label: "Total gasto",
         data: data?.map((d) => d.valor) || [],
         backgroundColor: graphColors,
         borderColor: graphColors,

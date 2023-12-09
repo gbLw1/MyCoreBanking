@@ -64,7 +64,7 @@ export default function BarChart({ data }: Props) {
     labels,
     datasets: [
       {
-        label: "Gastos",
+        label: "Total gasto",
         data: data?.map((d) => d.valor) || [],
         backgroundColor: graphColors,
         borderColor: graphColors,
