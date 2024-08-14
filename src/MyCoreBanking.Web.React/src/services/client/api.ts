@@ -6,6 +6,7 @@ const defaultOptions: CreateAxiosDefaults = {
   baseURL: import.meta.env.VITE_BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
   },
 };
 

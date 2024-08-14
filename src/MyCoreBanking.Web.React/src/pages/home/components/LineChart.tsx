@@ -64,14 +64,52 @@ export default function LineChart({ data }: Props) {
     .map((i) => {
       const d = new Date();
       d.setMonth(d.getMonth() - i);
-      return `${d.toLocaleString("default", {
-        month: "short",
-      })}/${d.getFullYear()}`;
+      return `${d.toLocaleString("default", { month: "short" })}/${d.getFullYear()}`;
     })
     .reverse() as string[];
 
+  // ===================================================================
+
+  // add 3 items to `data`
+  data = [
+    { valorReceita: 0, valorDespesa: 0, ano: 2024, mes: 6 },
+    { valorReceita: 0, valorDespesa: 0, ano: 2024, mes: 6 },
+    ...(data || []),
+  ];
+
+  // ex: API retorna 04/06/2024, 05/06/2024, 06/06/2024, 07/06/2024...
+  // dos últimos 15 dias (por padrão)
+  data =
+    data?.map((d, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      return { ...d, date };
+    }) || [];
+
+  console.log(
+    data.map((g, i) => {
+      return {
+        date: g.date?.toISOString(),
+        status: "emitido",
+        quantidade: 1 + i,
+      };
+    })
+  );
+
+  const day_month_label: string[] =
+    data
+      ?.map((g) => {
+        const date: Date = new Date(g.date!);
+
+        // return format: 15/Fev, 16/Fev, 18/Fev, 19/Fev...
+        return `${date.getDate()}/${date.toLocaleString("default", { month: "short" })}`;
+      })
+      .reverse() || [];
+
+  // ===================================================================
+
   const chartData = {
-    labels,
+    labels: day_month_label,
     datasets: [
       {
         label: "Receitas",
