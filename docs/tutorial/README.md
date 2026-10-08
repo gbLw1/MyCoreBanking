@@ -81,7 +81,7 @@ func start --csharp
 
 Para o projeto web funcionar corretamente, é necessário que a API esteja rodando.
 
-Então, em outro terminal do vscode, certifique-se de estar na pasta `~\MyCoreBanking\src\MyCoreBanking.Web` e execute o comando abaixo:
+Então, em outro terminal do vscode, certifique-se de estar na pasta `~\MyCoreBanking\src\MyCoreBanking.Web.Blazor` e execute o comando abaixo:
 
 ```bash
 dotnet run
