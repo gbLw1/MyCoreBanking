@@ -1,8 +1,7 @@
 /* Global styles */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../../node_modules/flowbite-react";
 
 * {
   box-sizing: border-box;
